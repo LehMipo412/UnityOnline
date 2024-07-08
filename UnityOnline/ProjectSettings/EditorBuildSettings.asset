@@ -8,4 +8,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/CurrentMainGameScene.unity
+    guid: 16d17c7183802f84eb728eca65f605ce
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

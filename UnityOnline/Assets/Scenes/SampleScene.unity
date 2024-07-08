@@ -191,7 +191,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -622,6 +622,16 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
       value: OnJoinedRoom
       objectReference: {fileID: 0}
+    - target: {fileID: 2478265672248550842, guid: bc134452c2e5327428cf99d45ecb643f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2660621603994572121, guid: bc134452c2e5327428cf99d45ecb643f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3252936450353718494, guid: bc134452c2e5327428cf99d45ecb643f,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -666,6 +676,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: OnLeftRoom
+      objectReference: {fileID: 0}
+    - target: {fileID: 4441137986944860016, guid: bc134452c2e5327428cf99d45ecb643f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4863158302839160697, guid: bc134452c2e5327428cf99d45ecb643f,
         type: 3}
@@ -812,6 +827,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: StartGame
       objectReference: {fileID: 0}
+    - target: {fileID: 8013975173375517500, guid: bc134452c2e5327428cf99d45ecb643f,
+        type: 3}
+      propertyPath: m_BlockingObjects
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8762873774674350620, guid: bc134452c2e5327428cf99d45ecb643f,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -842,7 +862,15 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
       value: OnJoinedRoom
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8789524338659760326, guid: bc134452c2e5327428cf99d45ecb643f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6051287321106812727, guid: bc134452c2e5327428cf99d45ecb643f, type: 3}
+    - {fileID: 5185174815688193384, guid: bc134452c2e5327428cf99d45ecb643f, type: 3}
+    - {fileID: 1296690383519556401, guid: bc134452c2e5327428cf99d45ecb643f, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
