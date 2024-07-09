@@ -187,7 +187,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
 
     public void JoinRandomRoom()
     {
-        PhotonNetwork.JoinRandomRoom();
+        //PhotonNetwork.JoinRandomRoom();
+        PhotonNetwork.JoinRandomOrCreateRoom();
     }
 
     public override void OnJoinedRoom()
