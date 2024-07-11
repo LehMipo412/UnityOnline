@@ -1,18 +1,22 @@
 using System;
-using System.Net.Mime;
+using System.Collections;
 using Photon.Pun;
-using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
+
 
 public class PlayerController : MonoBehaviourPun
 {
+    private const string ProjectileTag = "Projectile";
     private const string ProjectilePrefabName = "Prefabs\\Projectile";
+    private const string RecievedamageRPC = "RecieveDamage";
     [SerializeField] private Transform projectileSpawnTransform;
     [SerializeField] private float speed = 10;
     [SerializeField] private PhotonView _photonView;
     private Vector3 raycastPos;
     private Camera cachedCamera;
-    private int HP;
+    private int HP = 30;
 
     private void Start()
     {
@@ -55,12 +59,40 @@ public class PlayerController : MonoBehaviourPun
     [PunRPC]
     public void TakeDamage()
     {
-        HP -= 10;
         if(HP <= 0)
         {
             PhotonNetwork.Destroy(gameObject);
         }
-    }    
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag(ProjectileTag))
+        {
+            ProjectileMovement otherProjectile = other.GetComponent<ProjectileMovement>();
+
+            if (otherProjectile.photonView.Owner.ActorNumber == photonView.Owner.ActorNumber)
+                return;
+
+            if (otherProjectile.photonView.IsMine)
+            {
+                //run login that affect other players! only the projectile owner should do that
+                StartCoroutine(DestroyDelay(5f, otherProjectile.gameObject));
+                photonView.RPC(RecievedamageRPC, RpcTarget.All, 10);
+                TakeDamage();
+            }
+
+            otherProjectile.visualPanel.SetActive(false);
+            //add bool for projectile hit
+        }
+    }
+
+    IEnumerator DestroyDelay(float delay, GameObject otherObject)
+    {
+        yield return new WaitForSeconds(delay);
+        PhotonNetwork.Destroy(otherObject);
+    }
+
     public void Shoot()
     {
         GameObject projectile = PhotonNetwork.Instantiate(ProjectilePrefabName,
