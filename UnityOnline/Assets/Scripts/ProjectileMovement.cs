@@ -10,12 +10,19 @@ public class ProjectileMovement : MonoBehaviourPun, IPunInstantiateMagicCallback
     [SerializeField] private MeshRenderer meshRenderer;
     public GameObject visualPanel;
     [SerializeField] private float speed = 20;
+    private float timer = 3;
 
     // Update is called once per frame
     void Update()
     {
         if (photonView.IsMine)
             transform.Translate(Vector3.forward * (Time.deltaTime * speed));
+
+        timer -= Time.deltaTime;
+
+        if(timer <=0)
+            PhotonNetwork.Destroy(gameObject);
+
     }
 
     // private void OnTriggerEnter(Collider other)

@@ -8,10 +8,29 @@ public class ChampSelectManger : MonoBehaviourPun
 {
     [SerializeField] Button[] champsButtons;
     [SerializeField] Canvas champSelectCanvas;
+    [SerializeField] Canvas gameOverCanvas;
     [SerializeField] MultiplayerGameManager currentMultiplayerManager;
     [SerializeField] PhotonView ChampSelectManagerPhotonView;
-
+    private int livingPlayersCounter;
+    public static bool isPaused = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    [PunRPC]
+    public void AddLivingPkayer()
+    {
+        livingPlayersCounter++;
+    }
+    [PunRPC]
+    public void RemoveLivingPkayer()
+    {
+        livingPlayersCounter--;
+
+        if(livingPlayersCounter <= 1)
+        {
+            gameOverCanvas.gameObject.SetActive(true);
+            isPaused = true;
+        }
+    }
     void Start()
     {
         
@@ -20,6 +39,7 @@ public class ChampSelectManger : MonoBehaviourPun
     public void ChampSelectedForEveryone(int index)
     {
         champsButtons[index].interactable = false;
+        AddLivingPkayer();
 
 
     }

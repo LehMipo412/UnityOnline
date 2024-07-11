@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] private Transform projectileSpawnTransform;
     [SerializeField] private float speed = 10;
     [SerializeField] private PhotonView _photonView;
+    [SerializeField] private PhotonView champSelectPhotonView;
+    [SerializeField] private ChampSelectManger _champSelectManger;
     private Vector3 raycastPos;
     private Camera cachedCamera;
     private int HP = 30;
@@ -21,39 +23,44 @@ public class PlayerController : MonoBehaviourPun
     private void Start()
     {
         cachedCamera = Camera.main;
+        champSelectPhotonView = GameObject.Find("ChampSelectManagerGO").GetComponent<PhotonView>();
+        _champSelectManger = GameObject.Find("ChampSelectManagerGO").GetComponent<ChampSelectManger>();
     }
     private void Update()
     {
         if (photonView.IsMine)
         {
-            Ray ray = cachedCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (!ChampSelectManger.isPaused)
             {
-                // hit.point contains the world position where the ray hit.
-                raycastPos = hit.point;
+                Ray ray = cachedCamera.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    // hit.point contains the world position where the ray hit.
+                    raycastPos = hit.point;
+                }
+                if (!_photonView.IsMine)
+                    return;
+
+                if (Input.GetKey(KeyCode.W))
+                    transform.Translate(Vector3.forward * (Time.deltaTime * speed));
+                if (Input.GetKey(KeyCode.A))
+                    transform.Translate(Vector3.left * (Time.deltaTime * speed));
+                if (Input.GetKey(KeyCode.S))
+                    transform.Translate(Vector3.back * (Time.deltaTime * speed));
+                if (Input.GetKey(KeyCode.D))
+                    transform.Translate(Vector3.right * (Time.deltaTime * speed));
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                    Shoot();
+
+
+                Vector3 directionToFace = raycastPos - gameObject.transform.position;
+                Quaternion lookAtRotation = Quaternion.LookRotation(directionToFace);
+                Vector3 eulerRotation = lookAtRotation.eulerAngles;
+                eulerRotation.x = 0;
+                eulerRotation.z = 0;
+                transform.eulerAngles = eulerRotation;
             }
-            if (!_photonView.IsMine)
-                return;
-
-            if (Input.GetKey(KeyCode.W))
-                transform.Translate(Vector3.forward * (Time.deltaTime * speed));
-            if (Input.GetKey(KeyCode.A))
-                transform.Translate(Vector3.left * (Time.deltaTime * speed));
-            if (Input.GetKey(KeyCode.S))
-                transform.Translate(Vector3.back * (Time.deltaTime * speed));
-            if (Input.GetKey(KeyCode.D))
-                transform.Translate(Vector3.right * (Time.deltaTime * speed));
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-                Shoot();
-
-
-            Vector3 directionToFace = raycastPos - gameObject.transform.position;
-            Quaternion lookAtRotation = Quaternion.LookRotation(directionToFace);
-            Vector3 eulerRotation = lookAtRotation.eulerAngles;
-            eulerRotation.x = 0;
-            eulerRotation.z = 0;
-            transform.eulerAngles = eulerRotation;
         }
     }
     [PunRPC]
@@ -61,6 +68,7 @@ public class PlayerController : MonoBehaviourPun
     {
         if(HP <= 0)
         {
+            champSelectPhotonView.RPC(nameof(_champSelectManger.RemoveLivingPkayer), RpcTarget.All);
             PhotonNetwork.Destroy(gameObject);
         }
     }
@@ -79,14 +87,20 @@ public class PlayerController : MonoBehaviourPun
                 //run login that affect other players! only the projectile owner should do that
                 StartCoroutine(DestroyDelay(5f, otherProjectile.gameObject));
                 photonView.RPC(RecievedamageRPC, RpcTarget.All, 10);
-                TakeDamage();
+                
             }
 
             otherProjectile.visualPanel.SetActive(false);
             //add bool for projectile hit
         }
     }
-
+    [PunRPC]
+    private void RecieveDamage(int damageAmount)
+    {
+        HP -= damageAmount;
+        Debug.Log("Hp left is " + HP);
+        TakeDamage();
+    }
     IEnumerator DestroyDelay(float delay, GameObject otherObject)
     {
         yield return new WaitForSeconds(delay);
@@ -95,6 +109,7 @@ public class PlayerController : MonoBehaviourPun
 
     public void Shoot()
     {
+        Debug.Log("fire in the hole");
         GameObject projectile = PhotonNetwork.Instantiate(ProjectilePrefabName,
             projectileSpawnTransform.position, projectileSpawnTransform.rotation, 0,
             new object[] {});

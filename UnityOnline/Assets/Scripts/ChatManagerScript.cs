@@ -23,24 +23,24 @@ public class ChatManagerScript : MonoBehaviourPun
     public void UpdateChat(string msg, int colorIndex, PhotonMessageInfo info)
     {
 
-        
+        string wantedColor = "";
         
         if (colorIndex == 0)
         {
-            textShower.textComponent.color = Color.black;
+            wantedColor = "black";
            
         }
         if (colorIndex == 1)
         {
-            textShower.textComponent.color = Color.yellow;
+            wantedColor = "yellow";
             
         }
         if (colorIndex == 2)
         {
-            textShower.textComponent.color = Color.red;
+            wantedColor = "red";
             
         }
-        textShower.text +=(info.Sender.NickName+": "+ msg +"\n");
+        textShower.text +=($"<color={wantedColor}>{info.Sender.NickName}: {msg}</color> \n");
         playerInputField.text = "";
     }
 
