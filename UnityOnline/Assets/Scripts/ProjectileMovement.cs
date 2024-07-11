@@ -6,17 +6,25 @@ public class ProjectileMovement : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     [SerializeField] Rigidbody projectileRB;
     [SerializeField] float speed = 20f;
+    private float lifeSpan;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        projectileRB.AddForce(Vector3.forward * (Time.deltaTime * speed));
+        lifeSpan = 3f;
     }
 
     // Update is called once per frame
     void Update()
     {
-       
         
+        if (photonView.IsMine)
+            transform.Translate(Vector3.forward * (Time.deltaTime * speed));
+        lifeSpan -= Time.deltaTime;
+
+        if(lifeSpan <= 0)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
 
 
     }
@@ -30,7 +38,7 @@ public class ProjectileMovement : MonoBehaviourPun, IPunInstantiateMagicCallback
 
             if (photonView.IsMine)
             {
-                //run login that affect other players! only the projectile owner should do that
+                playerController.TakeDamage();
                 PhotonNetwork.Destroy(gameObject);
             }
         }
