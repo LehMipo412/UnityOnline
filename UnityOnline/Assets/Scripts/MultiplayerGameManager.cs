@@ -19,11 +19,10 @@ public class MultiplayerGameManager : MonoBehaviourPun
 
     private void Start()
     {
-        SpawnPlayer(GetRandomSpawnPoint());
-        Debug.Log("MovedScene");
+      
     }
 
-    SpawnPoint GetRandomSpawnPoint()
+  public  SpawnPoint GetRandomSpawnPoint()
     {
         List<SpawnPoint> availableSpawnPoints = new List<SpawnPoint>();
 
@@ -43,7 +42,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
         int index = UnityEngine.Random.Range(0, availableSpawnPoints.Count);
         return availableSpawnPoints[index];
     }
-    void SpawnPlayer(SpawnPoint targetSpawnPoint)
+    public void SpawnPlayer(SpawnPoint targetSpawnPoint)
     {
         targetSpawnPoint.Take();
         PhotonNetwork.Instantiate(PlayerPrefabName,

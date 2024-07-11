@@ -15,6 +15,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_InputField LobbyWanted;
     [SerializeField] private TextMeshProUGUI debugPhoton;
     [SerializeField] private TextMeshProUGUI RoomInfo;
+    [SerializeField] private TMP_InputField nicknameEditorInputField;
 
     private const string LobbyDefultName = "Our First Lobby";
     private const string LobbySecondName = "Our Second Lobby";
@@ -278,7 +279,11 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         }
     }
 
-
+    public void EditNickname()
+    {
+        PhotonNetwork.NickName = nicknameEditorInputField.text;
+        Debug.Log("The name of this Client is:" + PhotonNetwork.NickName);
+    }
     public void Update()
     {
         debugPhoton.text = PhotonNetwork.NetworkClientState.ToString();

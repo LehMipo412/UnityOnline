@@ -14,16 +14,7 @@ public class ChatManagerScript : MonoBehaviourPun
     {
         playerView.RPC(nameof(UpdateChat),RpcTarget.All, playerInputField.text);
     }
-    [PunRPC]
-    public void ConnectAndSendChatMessage(PhotonMessageInfo messageInfo)
-    {
-        Debug.Log(messageInfo.Sender + "Sent a Message");
-
-        
-
-        messageInfo.photonView.RPC(nameof(UpdateChat), messageInfo.Sender, messageInfo.Sender.ToString(), playerInputField.text);
-    }
-
+  
     [PunRPC]
     public void UpdateChat(string msg, PhotonMessageInfo info)
     {
