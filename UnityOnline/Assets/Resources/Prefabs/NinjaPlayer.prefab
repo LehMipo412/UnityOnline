@@ -78,6 +78,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: -4077851122016829500}
   - {fileID: 6748785935870189712}
+  - {fileID: 2895240506697370052}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -362,7 +363,7 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: IsRunning
   m_SynchronizeLayers:
   - SynchronizeType: 0
