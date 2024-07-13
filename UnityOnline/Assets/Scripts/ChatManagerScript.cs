@@ -62,4 +62,12 @@ public class ChatManagerScript : MonoBehaviourPun
             chatColorIndex = 2;
         }
     }
+
+    //public void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.KeypadEnter))
+    //    {
+            
+    //    }
+    //}
 }
