@@ -51,12 +51,9 @@ public class ChampSelectManger : MonoBehaviourPun
         champSelectCanvas.gameObject.SetActive(false);
 
 
-        currentMultiplayerManager.SpawnPlayer(currentMultiplayerManager.GetRandomSpawnPoint());
+        currentMultiplayerManager.SpawnPlayer(currentMultiplayerManager.GetRandomSpawnPoint(), index);
         Debug.Log("MovedScene");
     }
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

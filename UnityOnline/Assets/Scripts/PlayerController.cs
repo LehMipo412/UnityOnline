@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviourPun
     private const string RecievedamageRPC = "RecieveDamage";
     [SerializeField] private Transform projectileSpawnTransform;
     [SerializeField] private float speed = 10;
+    [SerializeField] private Animator playerAnimator;
     [SerializeField] private PhotonView _photonView;
     [SerializeField] private PhotonView champSelectPhotonView;
     [SerializeField] private ChampSelectManger _champSelectManger;
@@ -43,17 +44,36 @@ public class PlayerController : MonoBehaviourPun
                     return;
 
                 if (Input.GetKey(KeyCode.W))
+                {
+                    playerAnimator.SetBool("IsRunning", true);
+                    Debug.Log("runing");
                     transform.Translate(Vector3.forward * (Time.deltaTime * speed));
+                }
                 if (Input.GetKey(KeyCode.A))
+                {
+                    playerAnimator.SetBool("IsRunning", true);
                     transform.Translate(Vector3.left * (Time.deltaTime * speed));
+                }
+
                 if (Input.GetKey(KeyCode.S))
+                {
+                    playerAnimator.SetBool("IsRunning", true);
                     transform.Translate(Vector3.back * (Time.deltaTime * speed));
+                }
+
                 if (Input.GetKey(KeyCode.D))
+                {
+                    playerAnimator.SetBool("IsRunning", true);
                     transform.Translate(Vector3.right * (Time.deltaTime * speed));
+                }
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                     Shoot();
 
-
+                if(!Input.anyKey)
+                {
+                    playerAnimator.SetBool("IsRunning", false);
+                    Debug.Log("Idle");
+                }
                 Vector3 directionToFace = raycastPos - gameObject.transform.position;
                 Quaternion lookAtRotation = Quaternion.LookRotation(directionToFace);
                 Vector3 eulerRotation = lookAtRotation.eulerAngles;

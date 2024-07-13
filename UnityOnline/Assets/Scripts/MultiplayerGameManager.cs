@@ -6,7 +6,9 @@ using UnityEngine.Serialization;
 
 public class MultiplayerGameManager : MonoBehaviourPun
 {
-    private const string PlayerPrefabName = "Prefabs\\Player";
+    private const string NinjaPlayerPathName = "Prefabs\\NinjaPlayer";
+    private const string WomanPlayerPathName = "Prefabs\\WomanPrefab";
+
 
     [Header("Spawn Points")]
     [SerializeField] private bool randomizeSpawnPoint;
@@ -42,11 +44,20 @@ public class MultiplayerGameManager : MonoBehaviourPun
         int index = UnityEngine.Random.Range(0, availableSpawnPoints.Count);
         return availableSpawnPoints[index];
     }
-    public void SpawnPlayer(SpawnPoint targetSpawnPoint)
+    public void SpawnPlayer(SpawnPoint targetSpawnPoint, int index)
     {
-        targetSpawnPoint.Take();
-        PhotonNetwork.Instantiate(PlayerPrefabName,
-            targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
+        if (index == 0)
+        {
+            targetSpawnPoint.Take();
+            PhotonNetwork.Instantiate(NinjaPlayerPathName,
+                targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
+        }
+        if (index == 1)
+        {
+            targetSpawnPoint.Take();
+            PhotonNetwork.Instantiate(WomanPlayerPathName,
+                targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
+        }
     }
     [PunRPC]
     private void SetSpawnPoint(SpawnPoint spawnPoint)
