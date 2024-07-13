@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1266242792862040560}
   - component: {fileID: 6748785935870189712}
   - component: {fileID: 8078945749166920225}
+  - component: {fileID: -1106039666776851410}
   m_Layer: 0
   m_Name: WomanPrefab
   m_TagString: Player
@@ -108,6 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileSpawnTransform: {fileID: 931737457757261167}
   speed: 10
+  playerAnimator: {fileID: -1106039666776851410}
   _photonView: {fileID: 9119552357703264867}
   champSelectPhotonView: {fileID: 0}
   _champSelectManger: {fileID: 0}
@@ -217,6 +219,28 @@ CapsuleCollider:
   m_Height: 1.8497343
   m_Direction: 1
   m_Center: {x: 0, y: 0.9253068, z: 0}
+--- !u!95 &-1106039666776851410
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 587932012441280637}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: e00c84fc9083317468172789fb06d32b, type: 3}
+  m_Controller: {fileID: 9100000, guid: b8563a3b24d44da49bb5d11c171dbc51, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1784876174589371524
 GameObject:
   m_ObjectHideFlags: 0

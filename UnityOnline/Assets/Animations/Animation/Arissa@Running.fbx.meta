@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: dc775fa5a38e4874eb281c79ddc59995
+guid: 12e34ddc951243645873094dfd665e8e
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: NinjaPlayerIdle
+      name: WomanPlayerRunning
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 263
+      lastFrame: 21
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

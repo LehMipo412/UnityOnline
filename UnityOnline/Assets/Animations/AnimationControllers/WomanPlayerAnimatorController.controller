@@ -21,7 +21,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: dc775fa5a38e4874eb281c79ddc59995,
+  m_Motion: {fileID: -203655887218126122, guid: e00c84fc9083317468172789fb06d32b,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -74,7 +74,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: f5db0f57329664547acbb6dcaebf3b1a,
+  m_Motion: {fileID: -203655887218126122, guid: 12e34ddc951243645873094dfd665e8e,
     type: 3}
   m_Tag: 
   m_SpeedParameter: 
@@ -137,7 +137,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: NinjaPlayerAnimator
+  m_Name: WomanPlayerAnimatorController
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: IsRunning

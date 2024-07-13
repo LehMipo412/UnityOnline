@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: dc775fa5a38e4874eb281c79ddc59995
+guid: adce2dbc1e66e2a44b5bd35863168f75
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: NinjaPlayerIdle
+      name: Dwarf Idle
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 263
+      lastFrame: 210
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
