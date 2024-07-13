@@ -53,6 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileSpawnTransform: {fileID: 931737457757261167}
   speed: 10
+  playerRB: {fileID: 1266242792862040560}
   playerAnimator: {fileID: 7934794586953182158}
   _photonView: {fileID: 9119552357703264867}
   champSelectPhotonView: {fileID: 0}

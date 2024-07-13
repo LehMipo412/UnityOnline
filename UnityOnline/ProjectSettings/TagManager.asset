@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - Rooms
+  - Projectile
+  - BoostBox
+  - DamageBox
   layers:
   - Default
   - TransparentFX

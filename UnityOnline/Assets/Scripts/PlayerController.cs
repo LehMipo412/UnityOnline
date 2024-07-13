@@ -9,17 +9,20 @@ using Random = UnityEngine.Random;
 public class PlayerController : MonoBehaviourPun
 {
     private const string ProjectileTag = "Projectile";
+    private const string BoostBoxTag = "BoostBox";
+    private const string DamageBoxTag = "DamageBox";
     private const string ProjectilePrefabName = "Prefabs\\Projectile";
     private const string RecievedamageRPC = "RecieveDamage";
     [SerializeField] private Transform projectileSpawnTransform;
     [SerializeField] private float speed = 10;
+    [SerializeField] private Rigidbody playerRB;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private PhotonView _photonView;
     [SerializeField] private PhotonView champSelectPhotonView;
     [SerializeField] private ChampSelectManger _champSelectManger;
     private Vector3 raycastPos;
     private Camera cachedCamera;
-    private int HP = 30;
+    private int HP = 200;
 
     private void Start()
     {
@@ -112,6 +115,15 @@ public class PlayerController : MonoBehaviourPun
 
             otherProjectile.visualPanel.SetActive(false);
             //add bool for projectile hit
+        }
+
+        if (other.CompareTag(BoostBoxTag))
+        {
+            playerRB.AddForce(Vector3.up * 20, ForceMode.Impulse);
+        }
+        if (other.CompareTag(DamageBoxTag))
+        {
+            photonView.RPC(RecievedamageRPC, RpcTarget.All, 10);
         }
     }
     [PunRPC]

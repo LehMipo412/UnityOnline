@@ -53,6 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileSpawnTransform: {fileID: 931737457757261167}
   speed: 10
+  playerRB: {fileID: 1266242792862040560}
   playerAnimator: {fileID: 8029559907794002352}
   _photonView: {fileID: 9119552357703264867}
   champSelectPhotonView: {fileID: 0}
@@ -106,7 +107,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 587932012441280637}
   serializedVersion: 4
-  m_Mass: 1.5
+  m_Mass: 2
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
