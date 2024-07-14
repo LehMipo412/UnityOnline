@@ -59,7 +59,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
             PhotonNetwork.Instantiate(WomanPlayerPathName,
                 targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
         }
-        if (index == 3)
+        if (index == 2)
         {
             targetSpawnPoint.Take();
             PhotonNetwork.Instantiate(CyborgPlayerPathName,
