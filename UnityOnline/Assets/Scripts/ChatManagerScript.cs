@@ -9,6 +9,7 @@ public class ChatManagerScript : MonoBehaviourPun
     public PhotonView playerView;
     public TMP_InputField playerInputField;
     public TMP_InputField textShower;
+    public Canvas chatCanvas;
     private int chatColorIndex;
     
 
@@ -63,11 +64,18 @@ public class ChatManagerScript : MonoBehaviourPun
         }
     }
 
-    //public void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.KeypadEnter))
-    //    {
-            
-    //    }
-    //}
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            if (chatCanvas.gameObject.activeSelf)
+            {
+                chatCanvas.gameObject.SetActive(false);
+            }
+            else
+            {
+                chatCanvas.gameObject.SetActive(true);
+            }
+        }
+    }
 }
