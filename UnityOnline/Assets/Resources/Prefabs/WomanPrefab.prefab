@@ -335,7 +335,7 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: IsRunning
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 2
     LayerIndex: 0
 --- !u!4 &4106756702852133300 stripped
 Transform:
