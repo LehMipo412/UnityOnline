@@ -2,6 +2,7 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections.Generic;
 //using UnityEngine.UIElements;
 
 public class ChampSelectManger : MonoBehaviourPun
@@ -11,13 +12,16 @@ public class ChampSelectManger : MonoBehaviourPun
     [SerializeField] Canvas gameOverCanvas;
     [SerializeField] MultiplayerGameManager currentMultiplayerManager;
     [SerializeField] PhotonView ChampSelectManagerPhotonView;
+    [SerializeField] TMP_Text winnerText;
     private int livingPlayersCounter;
     public static bool isPaused = false;
+    private List<PhotonView> alivePlayersList = new List<PhotonView>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     [PunRPC]
     public void AddLivingPkayer()
     {
+        
         livingPlayersCounter++;
     }
     [PunRPC]
@@ -28,12 +32,31 @@ public class ChampSelectManger : MonoBehaviourPun
         if(livingPlayersCounter <= 1)
         {
             gameOverCanvas.gameObject.SetActive(true);
+            //alivePlayersList.Remove(playerPhotonView);
+            //alivePlayersList.Sort();
+            GameObject winnerPV = GameObject.FindGameObjectWithTag("Player");
+            alivePlayersList.Add(winnerPV.GetComponent<PhotonView>()) ;
+            winnerText.text = $"The winner is: {alivePlayersList[0].Owner.NickName}!";
             isPaused = true;
         }
     }
     void Start()
     {
         
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
+   
+    public void ReturnToMainMenu()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel("MainMenu");
+        }
     }
     [PunRPC]    
     public void ChampSelectedForEveryone(int index)
