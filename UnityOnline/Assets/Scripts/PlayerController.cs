@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviourPun
             if (otherProjectile.photonView.IsMine)
             {
                 //run login that affect other players! only the projectile owner should do that
-                StartCoroutine(DestroyDelay(5f, otherProjectile.gameObject));
+                StartCoroutine(DestroyDelay(1f, otherProjectile.gameObject));
                 photonView.RPC(RecievedamageRPC, RpcTarget.All, 10);
                 
             }
