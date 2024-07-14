@@ -8,6 +8,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
 {
     private const string NinjaPlayerPathName = "Prefabs\\NinjaPlayer";
     private const string WomanPlayerPathName = "Prefabs\\WomanPrefab";
+    private const string CyborgPlayerPathName = "Prefabs\\CyborgPlayer";
 
 
     [Header("Spawn Points")]
@@ -56,6 +57,12 @@ public class MultiplayerGameManager : MonoBehaviourPun
         {
             targetSpawnPoint.Take();
             PhotonNetwork.Instantiate(WomanPlayerPathName,
+                targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
+        }
+        if (index == 3)
+        {
+            targetSpawnPoint.Take();
+            PhotonNetwork.Instantiate(CyborgPlayerPathName,
                 targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
         }
     }
