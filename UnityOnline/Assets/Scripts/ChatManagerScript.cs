@@ -66,7 +66,7 @@ public class ChatManagerScript : MonoBehaviourPun
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             if (chatCanvas.gameObject.activeSelf)
             {

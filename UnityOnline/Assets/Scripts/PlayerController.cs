@@ -91,8 +91,11 @@ public class PlayerController : MonoBehaviourPun
     {
         if(HP <= 0)
         {
-            champSelectPhotonView.RPC(nameof(_champSelectManger.RemoveLivingPkayer), RpcTarget.All);
-            PhotonNetwork.Destroy(gameObject);
+            if (photonView.IsMine)
+            {
+                champSelectPhotonView.RPC(nameof(_champSelectManger.RemoveLivingPkayer), RpcTarget.All);
+                PhotonNetwork.Destroy(gameObject);
+            }
         }
     }
 
