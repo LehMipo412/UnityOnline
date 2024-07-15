@@ -62,7 +62,7 @@ public class ChampSelectManger : MonoBehaviourPun
     public void ChampSelectedForEveryone(int index)
     {
         champsButtons[index].interactable = false;
-        AddLivingPkayer();
+        photonView.RPC(nameof(AddLivingPkayer), RpcTarget.All);
 
 
     }
