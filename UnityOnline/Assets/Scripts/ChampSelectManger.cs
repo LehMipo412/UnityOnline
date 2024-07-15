@@ -63,6 +63,7 @@ public class ChampSelectManger : MonoBehaviourPun
     {
         champsButtons[index].interactable = false;
         photonView.RPC(nameof(AddLivingPkayer), RpcTarget.All);
+        Debug.Log("Added Player");
 
 
     }
