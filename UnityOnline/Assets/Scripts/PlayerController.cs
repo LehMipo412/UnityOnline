@@ -89,12 +89,13 @@ public class PlayerController : MonoBehaviourPun
     [PunRPC]
     public void TakeDamage()
     {
-        if(HP <= 0)
+        if(HP == 0)
         {
-            champSelectPhotonView.RPC(nameof(_champSelectManger.RemoveLivingPkayer), RpcTarget.All);
+            
             if (photonView.IsMine)
             {
-
+                champSelectPhotonView.RPC(nameof(_champSelectManger.RemoveLivingPkayer), RpcTarget.All);
+                Debug.Log("Players Remaining: " + _champSelectManger.livingPlayersCounter);
                 StartCoroutine(DestroyDelay(2f, gameObject));
             }
         }

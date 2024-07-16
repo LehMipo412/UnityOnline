@@ -11,9 +11,9 @@ public class ChampSelectManger : MonoBehaviourPun
     [SerializeField] Canvas champSelectCanvas;
     [SerializeField] Canvas gameOverCanvas;
     [SerializeField] MultiplayerGameManager currentMultiplayerManager;
-    [SerializeField] PhotonView ChampSelectManagerPhotonView;
+   // [SerializeField] PhotonView ChampSelectManagerPhotonView;
     [SerializeField] TMP_Text winnerText;
-    private int livingPlayersCounter;
+    public int livingPlayersCounter;
     public static bool isPaused = false;
     private List<PhotonView> alivePlayersList = new List<PhotonView>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,7 +29,7 @@ public class ChampSelectManger : MonoBehaviourPun
     {
         livingPlayersCounter--;
 
-        if(livingPlayersCounter <= 1)
+        if(livingPlayersCounter == 1)
         {
             gameOverCanvas.gameObject.SetActive(true);
             //alivePlayersList.Remove(playerPhotonView);
@@ -62,8 +62,11 @@ public class ChampSelectManger : MonoBehaviourPun
     public void ChampSelectedForEveryone(int index)
     {
         champsButtons[index].interactable = false;
-        photonView.RPC(nameof(AddLivingPkayer), RpcTarget.All);
-        Debug.Log("Added Player");
+        if (photonView.IsMine)
+        {
+            photonView.RPC(nameof(AddLivingPkayer), RpcTarget.All);
+        }
+        Debug.Log("Added Player: " + livingPlayersCounter);
 
 
     }
@@ -71,7 +74,9 @@ public class ChampSelectManger : MonoBehaviourPun
     [PunRPC]
     public void ChampSelectedForMe(int index)
     {
-        ChampSelectManagerPhotonView.RPC(nameof(ChampSelectedForEveryone), RpcTarget.All, index);
+            photonView.RPC(nameof(ChampSelectedForEveryone), RpcTarget.All, index);
+           
+        
         champSelectCanvas.gameObject.SetActive(false);
 
 
