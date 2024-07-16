@@ -31,17 +31,22 @@ public class PlayerController : MonoBehaviourPun
         _champSelectManger = GameObject.Find("ChampSelectManagerGO").GetComponent<ChampSelectManger>();
         if(playerRB.mass ==2f)
         {
-            ProjectilePrefabName = "Prefabs\\Kunai";
+            ProjectilePrefabName = "Prefabs\\KunaiPrefab";
         
         }
         if (playerRB.mass == 1f)
         {
-            ProjectilePrefabName = "Prefabs\\ArrowPrefab";
+            ProjectilePrefabName = "Prefabs\\NewArrowPrefab";
 
         }
         if (playerRB.mass == 1.2f)
         {
-            ProjectilePrefabName = "Prefabs\\Fist";
+            ProjectilePrefabName = "Prefabs\\FistPrefab";
+
+        }
+        if (playerRB.mass == 1.5f)
+        {
+            ProjectilePrefabName = "Prefabs\\SlashPrefab";
 
         }
     }
@@ -121,6 +126,7 @@ public class PlayerController : MonoBehaviourPun
         if (other.CompareTag(ProjectileTag))
         {
             ProjectileMovement otherProjectile = other.GetComponent<ProjectileMovement>();
+            Debug.Log("player Got hurt!");
 
             if (otherProjectile.photonView.Owner.ActorNumber == photonView.Owner.ActorNumber)
                 return;
