@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviourPun
     private const string ProjectileTag = "Projectile";
     private const string BoostBoxTag = "BoostBox";
     private const string DamageBoxTag = "DamageBox";
-    private const string ProjectilePrefabName = "Prefabs\\Projectile";
+    private string ProjectilePrefabName = "Prefabs\\Projectile";
     private const string RecievedamageRPC = "RecieveDamage";
     [SerializeField] private Transform projectileSpawnTransform;
     [SerializeField] private float speed = 10;
@@ -29,6 +29,16 @@ public class PlayerController : MonoBehaviourPun
         cachedCamera = Camera.main;
         champSelectPhotonView = GameObject.Find("ChampSelectManagerGO").GetComponent<PhotonView>();
         _champSelectManger = GameObject.Find("ChampSelectManagerGO").GetComponent<ChampSelectManger>();
+        if(playerRB.mass ==2f)
+        {
+            ProjectilePrefabName = "Prefabs\\Kunai";
+        
+        }
+        if (playerRB.mass == 1f)
+        {
+            ProjectilePrefabName = "Prefabs\\ArrowPrefab";
+
+        }
     }
     private void Update()
     {
