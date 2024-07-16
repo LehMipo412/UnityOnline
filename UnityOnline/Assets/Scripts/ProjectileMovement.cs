@@ -7,7 +7,7 @@ public class ProjectileMovement : MonoBehaviourPun, IPunInstantiateMagicCallback
     private const string PlayerTag = "Player";
 
     [SerializeField] private Material[] projectileColors;
-    [SerializeField] private MeshRenderer meshRenderer;
+    [SerializeField] public MeshRenderer meshRenderer;
     public GameObject visualPanel;
     [SerializeField] private float speed = 20;
     private float timer = 3;

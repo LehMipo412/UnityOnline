@@ -56,53 +56,57 @@ public class PlayerController : MonoBehaviourPun
         {
             if (!ChampSelectManger.isPaused)
             {
-                Ray ray = cachedCamera.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit))
+                if (!ChatManagerScript.isChatting)
                 {
-                    // hit.point contains the world position where the ray hit.
-                    raycastPos = hit.point;
-                }
-                if (!_photonView.IsMine)
-                    return;
+                    Ray ray = cachedCamera.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit hit;
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        // hit.point contains the world position where the ray hit.
+                        raycastPos = hit.point;
+                    }
+                    if (!_photonView.IsMine)
+                        return;
 
-                if (Input.GetKey(KeyCode.W))
-                {
-                    playerAnimator.SetBool("IsRunning", true);
-                    Debug.Log("runing");
-                    transform.Translate(Vector3.forward * (Time.deltaTime * speed));
-                }
-                if (Input.GetKey(KeyCode.A))
-                {
-                    playerAnimator.SetBool("IsRunning", true);
-                    transform.Translate(Vector3.left * (Time.deltaTime * speed));
-                }
+                    if (Input.GetKey(KeyCode.W))
+                    {
+                        playerAnimator.SetBool("IsRunning", true);
+                        Debug.Log("runing");
+                        transform.Translate(Vector3.forward * (Time.deltaTime * speed));
+                    }
+                    if (Input.GetKey(KeyCode.A))
+                    {
+                        playerAnimator.SetBool("IsRunning", true);
+                        transform.Translate(Vector3.left * (Time.deltaTime * speed));
+                    }
 
-                if (Input.GetKey(KeyCode.S))
-                {
-                    playerAnimator.SetBool("IsRunning", true);
-                    transform.Translate(Vector3.back * (Time.deltaTime * speed));
-                }
+                    if (Input.GetKey(KeyCode.S))
+                    {
+                        playerAnimator.SetBool("IsRunning", true);
+                        transform.Translate(Vector3.back * (Time.deltaTime * speed));
+                    }
 
-                if (Input.GetKey(KeyCode.D))
-                {
-                    playerAnimator.SetBool("IsRunning", true);
-                    transform.Translate(Vector3.right * (Time.deltaTime * speed));
-                }
-                if (Input.GetKeyDown(KeyCode.Mouse0))
-                    Shoot();
+                    if (Input.GetKey(KeyCode.D))
+                    {
+                        playerAnimator.SetBool("IsRunning", true);
+                        transform.Translate(Vector3.right * (Time.deltaTime * speed));
+                    }
+                    if (Input.GetKeyDown(KeyCode.Mouse0))
+                        Shoot();
 
-                if(!Input.anyKey)
-                {
-                    playerAnimator.SetBool("IsRunning", false);
-                    Debug.Log("Idle");
+                    if (!Input.anyKey)
+                    {
+                        playerAnimator.SetBool("IsRunning", false);
+                        Debug.Log("Idle");
+                    }
+                    Vector3 directionToFace = raycastPos - gameObject.transform.position;
+                    Quaternion lookAtRotation = Quaternion.LookRotation(directionToFace);
+                    Vector3 eulerRotation = lookAtRotation.eulerAngles;
+                    eulerRotation.x = 0;
+                    eulerRotation.z = 0;
+                    transform.eulerAngles = eulerRotation;
+
                 }
-                Vector3 directionToFace = raycastPos - gameObject.transform.position;
-                Quaternion lookAtRotation = Quaternion.LookRotation(directionToFace);
-                Vector3 eulerRotation = lookAtRotation.eulerAngles;
-                eulerRotation.x = 0;
-                eulerRotation.z = 0;
-                transform.eulerAngles = eulerRotation;
             }
         }
     }
@@ -121,6 +125,11 @@ public class PlayerController : MonoBehaviourPun
         }
     }
 
+    public void ShutDownRenderer(MeshRenderer rendererToShutDown)
+    {
+        rendererToShutDown.enabled = false;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag(ProjectileTag))
@@ -133,9 +142,11 @@ public class PlayerController : MonoBehaviourPun
 
             if (otherProjectile.photonView.IsMine)
             {
+                photonView.RPC(RecievedamageRPC, RpcTarget.All, 10);
                 //run login that affect other players! only the projectile owner should do that
                 StartCoroutine(DestroyDelay(1f, otherProjectile.gameObject));
-                photonView.RPC(RecievedamageRPC, RpcTarget.All, 10);
+                photonView.RPC(nameof(ShutDownRenderer), RpcTarget.All, otherProjectile.meshRenderer);
+                
                 
             }
 

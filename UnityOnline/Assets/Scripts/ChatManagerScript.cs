@@ -11,6 +11,7 @@ public class ChatManagerScript : MonoBehaviourPun
     public TMP_InputField textShower;
     public Canvas chatCanvas;
     private int chatColorIndex;
+    public static bool isChatting;
     
 
 
@@ -72,10 +73,12 @@ public class ChatManagerScript : MonoBehaviourPun
             if (chatCanvas.gameObject.activeSelf)
             {
                 chatCanvas.gameObject.SetActive(false);
+                isChatting = false;
             }
             else
             {
                 chatCanvas.gameObject.SetActive(true);
+                isChatting = true;
             }
         }
     }
