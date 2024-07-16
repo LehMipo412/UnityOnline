@@ -39,6 +39,11 @@ public class PlayerController : MonoBehaviourPun
             ProjectilePrefabName = "Prefabs\\ArrowPrefab";
 
         }
+        if (playerRB.mass == 1.2f)
+        {
+            ProjectilePrefabName = "Prefabs\\Fist";
+
+        }
     }
     private void Update()
     {
