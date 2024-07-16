@@ -18,6 +18,7 @@ public class ChatManagerScript : MonoBehaviourPun
     public void ButtonChatUpdate()
     {
         playerView.RPC(nameof(UpdateChat),RpcTarget.All, playerInputField.text, chatColorIndex);
+        playerInputField.text = "";
     }
   
     [PunRPC]
@@ -42,7 +43,7 @@ public class ChatManagerScript : MonoBehaviourPun
             
         }
         textShower.text +=($"<color={wantedColor}>{info.Sender.NickName}: {msg}</color> \n");
-        playerInputField.text = "";
+        
     }
 
     public void UpdateColor(int index)
