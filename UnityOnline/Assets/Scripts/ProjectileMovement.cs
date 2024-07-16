@@ -45,4 +45,10 @@ public class ProjectileMovement : MonoBehaviourPun, IPunInstantiateMagicCallback
         object[] instantiationData = info.photonView.InstantiationData;
         meshRenderer.material = projectileColors[(int)instantiationData[0]];
     }
+
+    [PunRPC]
+    public void DisableRenderer()
+    {
+        meshRenderer.enabled = false;
+    }
 }
