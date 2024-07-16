@@ -141,7 +141,7 @@ public class PlayerController : MonoBehaviourPun
             {
                 photonView.RPC(RecievedamageRPC, RpcTarget.All, 10);
 
-                otherProjectile.photonView.RPC(nameof(otherProjectile.DisableRenderer), RpcTarget.All);
+               // otherProjectile.photonView.RPC(nameof(otherProjectile.DisableRenderer), RpcTarget.All);
                 //run login that affect other players! only the projectile owner should do that
                 StartCoroutine(DestroyDelay(1f, otherProjectile.gameObject));
                
