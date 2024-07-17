@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviourPun
                     if (Input.GetKeyDown(KeyCode.Mouse1))
                     {
                         Debug.Log("Strike!");
-                       StartCoroutine(Strike());
+                        photonView.RPC(nameof(StrikeFunc), RpcTarget.All);
                     }
 
                     if (!Input.anyKey)
@@ -137,7 +137,18 @@ public class PlayerController : MonoBehaviourPun
     [PunRPC]
     public void DisableProjectileMesh(ProjectileMovement otherProjectile)
     {
-        otherProjectile.GetComponentInChildren<MeshRenderer>().enabled = false;
+        if (photonView.IsMine)
+        {
+
+            otherProjectile.GetComponentInChildren<MeshRenderer>().enabled = false;
+        }
+    }
+
+
+    [PunRPC]
+    public void StrikeFunc()
+    {
+        StartCoroutine(Strike());
     }
 
     [PunRPC]
