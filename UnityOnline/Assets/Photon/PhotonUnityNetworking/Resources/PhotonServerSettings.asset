@@ -53,6 +53,7 @@ MonoBehaviour:
   - ShutDownRenderer
   - OnTriggerEnter
   - DisableRenderer
+  - DisableProjectileMesh
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

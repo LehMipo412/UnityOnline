@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] private PhotonView _photonView;
     [SerializeField] private PhotonView champSelectPhotonView;
     [SerializeField] private ChampSelectManger _champSelectManger;
+    [SerializeField] private GameObject strikeZone;
     private Vector3 raycastPos;
     private Camera cachedCamera;
     private int HP = 200;
@@ -92,7 +93,14 @@ public class PlayerController : MonoBehaviourPun
                         transform.Translate(Vector3.right * (Time.deltaTime * speed));
                     }
                     if (Input.GetKeyDown(KeyCode.Mouse0))
+                    {
                         Shoot();
+                    }
+                    if (Input.GetKeyDown(KeyCode.Mouse1))
+                    {
+                        Debug.Log("Strike!");
+                       StartCoroutine(Strike());
+                    }
 
                     if (!Input.anyKey)
                     {
@@ -123,7 +131,15 @@ public class PlayerController : MonoBehaviourPun
                 StartCoroutine(DestroyDelay(2f, gameObject));
             }
         }
+    
     }
+
+    [PunRPC]
+    public void DisableProjectileMesh(ProjectileMovement otherProjectile)
+    {
+        otherProjectile.GetComponentInChildren<MeshRenderer>().enabled = false;
+    }
+
     [PunRPC]
     
 
@@ -141,7 +157,8 @@ public class PlayerController : MonoBehaviourPun
             {
                 photonView.RPC(RecievedamageRPC, RpcTarget.All, 10);
 
-               // otherProjectile.photonView.RPC(nameof(otherProjectile.DisableRenderer), RpcTarget.All);
+                photonView.RPC(nameof(DisableProjectileMesh), RpcTarget.All, otherProjectile);
+                
                 //run login that affect other players! only the projectile owner should do that
                 StartCoroutine(DestroyDelay(1f, otherProjectile.gameObject));
                
@@ -171,6 +188,7 @@ public class PlayerController : MonoBehaviourPun
     }
     IEnumerator DestroyDelay(float delay, GameObject otherObject)
     {
+        
         yield return new WaitForSeconds(delay);
         PhotonNetwork.Destroy(otherObject);
     }
@@ -181,5 +199,17 @@ public class PlayerController : MonoBehaviourPun
         GameObject projectile = PhotonNetwork.Instantiate(ProjectilePrefabName,
             projectileSpawnTransform.position, projectileSpawnTransform.rotation, 0,
             new object[] {});
+    }
+
+    IEnumerator Strike()
+    {
+
+        playerAnimator.SetBool("IsStriking", true);
+        strikeZone.SetActive(true);
+
+        yield return new WaitForSeconds(2f);
+
+        strikeZone.SetActive(false);
+        playerAnimator.SetBool("IsStriking", false);
     }
 }

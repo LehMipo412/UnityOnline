@@ -58,6 +58,7 @@ MonoBehaviour:
   _photonView: {fileID: 9119552357703264867}
   champSelectPhotonView: {fileID: 0}
   _champSelectManger: {fileID: 0}
+  strikeZone: {fileID: 0}
 --- !u!114 &9119552357703264867
 MonoBehaviour:
   m_ObjectHideFlags: 0

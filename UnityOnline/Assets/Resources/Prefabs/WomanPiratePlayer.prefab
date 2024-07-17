@@ -58,6 +58,7 @@ MonoBehaviour:
   _photonView: {fileID: 9119552357703264867}
   champSelectPhotonView: {fileID: 0}
   _champSelectManger: {fileID: 0}
+  strikeZone: {fileID: 6410827152714084968}
 --- !u!114 &9119552357703264867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,6 +229,59 @@ Transform:
   - {fileID: 1225872810409809760}
   m_Father: {fileID: 5271725958691177362}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6410827152714084968
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7580812804808992733}
+  - component: {fileID: 4539051744403148774}
+  m_Layer: 0
+  m_Name: StrikeZoneGO
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7580812804808992733
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6410827152714084968}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.037280593, y: 0.5894531, z: -0.06961613, w: 0.8039333}
+  m_LocalPosition: {x: 0.08474462, y: 0.22682118, z: 0.10703564}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1410750541762898808}
+  m_LocalEulerAnglesHint: {x: 1.268, y: 72.399, z: -8.97}
+--- !u!65 &4539051744403148774
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6410827152714084968}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.102415785, y: 0.23315756, z: 0.067456566}
+  m_Center: {x: 0.078194335, y: -0.2480885, z: -0.10524331}
 --- !u!1 &7585720586351735520
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,7 +384,11 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 176e200bca4094c469deee9bcacc4b59, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1852576806548013000, guid: 55e6a3c9544edca4f817124507298a51,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7580812804808992733}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 55e6a3c9544edca4f817124507298a51,
         type: 3}
@@ -367,6 +425,12 @@ MonoBehaviour:
 --- !u!4 &985421437691048795 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 55e6a3c9544edca4f817124507298a51,
+    type: 3}
+  m_PrefabInstance: {fileID: 731363175493817520}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1410750541762898808 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: 55e6a3c9544edca4f817124507298a51,
     type: 3}
   m_PrefabInstance: {fileID: 731363175493817520}
   m_PrefabAsset: {fileID: 0}

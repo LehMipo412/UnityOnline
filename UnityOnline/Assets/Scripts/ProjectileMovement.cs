@@ -42,8 +42,8 @@ public class ProjectileMovement : MonoBehaviourPun, IPunInstantiateMagicCallback
     // }
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-        object[] instantiationData = info.photonView.InstantiationData;
-        meshRenderer.material = projectileColors[(int)instantiationData[0]];
+      /*  object[] instantiationData = info.photonView.InstantiationData;
+        meshRenderer.material = projectileColors[(int)instantiationData[0]];*/
     }
 
     [PunRPC]
