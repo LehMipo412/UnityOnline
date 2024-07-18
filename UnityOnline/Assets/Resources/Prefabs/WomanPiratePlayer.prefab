@@ -164,10 +164,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.48411703
+  m_Radius: 0.4086311
   m_Height: 1.3663366
   m_Direction: 1
-  m_Center: {x: 0, y: 0.68360794, z: 0}
+  m_Center: {x: 0, y: 0.68360794, z: 0.075485945}
 --- !u!1 &1979978665054664415
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,8 +282,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.25308344, y: 0.54752153, z: 0.06745657}
-  m_Center: {x: 0.08041311, y: -0.09090671, z: -0.105243176}
+  m_Size: {x: 0.25308344, y: 2.6532931, z: 0.06745657}
+  m_Center: {x: 0.080410905, y: 0.9619753, z: -0.105241895}
 --- !u!1 &7585720586351735520
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,6 +421,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 2
     Name: IsRunning
+  - Type: 4
+    SynchronizeType: 0
+    Name: IsStriking
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0
