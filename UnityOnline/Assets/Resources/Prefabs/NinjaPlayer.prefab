@@ -35,8 +35,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 931737457757261167}
   - {fileID: 3963004081438543340}
+  - {fileID: 931737457757261167}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8055843406682671152
@@ -52,6 +52,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileSpawnTransform: {fileID: 931737457757261167}
+  damage: 4
+  knockbackPrecentage: 0
   speed: 10
   playerRB: {fileID: 1266242792862040560}
   playerAnimator: {fileID: 8029559907794002352}
@@ -222,7 +224,7 @@ Transform:
   m_GameObject: {fileID: 4537401452706744879}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.421, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -241,11 +243,11 @@ GameObject:
   - component: {fileID: 4104638763312173446}
   m_Layer: 0
   m_Name: StrikeZone
-  m_TagString: Untagged
+  m_TagString: Strike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &9121809648847634284
 Transform:
   m_ObjectHideFlags: 0
@@ -276,12 +278,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.123421386, y: 0.5828538, z: 0.17181963}
-  m_Center: {x: -0.2999975, y: 0.29935747, z: 0.25457}
+  m_Size: {x: 1.156552, y: 1.0502193, z: 0.17181963}
+  m_Center: {x: -0.33198842, y: 0.06567367, z: 0.25457245}
 --- !u!1 &7585720586351735520
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,7 +309,7 @@ Transform:
   m_GameObject: {fileID: 7585720586351735520}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.415, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -424,6 +426,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 2
     Name: IsRunning
+  - Type: 4
+    SynchronizeType: 0
+    Name: IsStriking
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

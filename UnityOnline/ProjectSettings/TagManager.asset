@@ -8,6 +8,7 @@ TagManager:
   - Projectile
   - BoostBox
   - DamageBox
+  - Strike
   layers:
   - Default
   - TransparentFX

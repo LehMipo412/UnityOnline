@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviourPun
     private string ProjectilePrefabName = "Prefabs\\Projectile";
     private const string RecievedamageRPC = "RecieveDamage";
     [SerializeField] private Transform projectileSpawnTransform;
+    [SerializeField] public float damage;
+    [SerializeField] private float knockbackPrecentage;
     [SerializeField] private float speed = 10;
     [SerializeField] private Rigidbody playerRB;
     [SerializeField] private Animator playerAnimator;
@@ -50,6 +52,13 @@ public class PlayerController : MonoBehaviourPun
             ProjectilePrefabName = "Prefabs\\SlashPrefab";
 
         }
+    }
+
+    [PunRPC]
+    public void GetKnockedBack(Vector3 hitDitraction,float additionalKBPrec)
+    {
+        knockbackPrecentage += additionalKBPrec;
+        playerRB.AddForce(hitDitraction * (1 * knockbackPrecentage) * -1*2, ForceMode.Impulse);
     }
     private void Update()
     {
@@ -180,8 +189,16 @@ public class PlayerController : MonoBehaviourPun
             otherProjectile.visualPanel.SetActive(false);
             //add bool for projectile hit
         }
-
-        if (other.CompareTag(BoostBoxTag))
+        if (other.CompareTag("Strike"))
+        {
+            if (photonView.IsMine)
+            {
+                Debug.Log("A Player got knocked away!");
+                PlayerController strikingActor = other.GetComponentInParent<PlayerController>();
+                photonView.RPC(nameof(GetKnockedBack), RpcTarget.All, other.transform.localPosition, strikingActor.damage);
+            }
+        }
+            if (other.CompareTag(BoostBoxTag))
         {
             playerRB.AddForce(Vector3.up * 20, ForceMode.Impulse);
         }

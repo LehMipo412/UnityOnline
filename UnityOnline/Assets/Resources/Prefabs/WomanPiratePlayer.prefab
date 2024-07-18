@@ -52,6 +52,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileSpawnTransform: {fileID: 931737457757261167}
+  damage: 3
+  knockbackPrecentage: 0
   speed: 10
   playerRB: {fileID: 1266242792862040560}
   playerAnimator: {fileID: 6578852263955851553}
@@ -241,7 +243,7 @@ GameObject:
   - component: {fileID: 4539051744403148774}
   m_Layer: 0
   m_Name: StrikeZoneGO
-  m_TagString: Untagged
+  m_TagString: Strike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -280,8 +282,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.102415785, y: 0.23315756, z: 0.067456566}
-  m_Center: {x: 0.078194335, y: -0.2480885, z: -0.10524331}
+  m_Size: {x: 0.25308344, y: 0.54752153, z: 0.06745657}
+  m_Center: {x: 0.08041311, y: -0.09090671, z: -0.105243176}
 --- !u!1 &7585720586351735520
 GameObject:
   m_ObjectHideFlags: 0

@@ -52,6 +52,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileSpawnTransform: {fileID: 931737457757261167}
+  damage: 3
+  knockbackPrecentage: 0
   speed: 10
   playerRB: {fileID: 1266242792862040560}
   playerAnimator: {fileID: 3188141001297796892}
