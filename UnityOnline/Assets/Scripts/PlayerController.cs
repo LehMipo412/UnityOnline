@@ -56,8 +56,9 @@ public class PlayerController : MonoBehaviourPun
     [PunRPC]
     public void GetKnockedBack(Vector3 hitDitraction,float additionalKBPrec)
     {
-        knockbackPrecentage += additionalKBPrec;
+     
         playerRB.AddForce(hitDitraction * (1 * knockbackPrecentage*0.8f) * -1*2*1.2f, ForceMode.Impulse);
+        knockbackPrecentage += additionalKBPrec;
         playerRB.AddForce(Vector3.up * (1 * knockbackPrecentage/3) * 2, ForceMode.Impulse);
     }
     private void Update()
