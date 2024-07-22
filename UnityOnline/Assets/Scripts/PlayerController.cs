@@ -20,7 +20,6 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] private Rigidbody playerRB;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private PhotonView _photonView;
-    [SerializeField] private PhotonView champSelectPhotonView;
     [SerializeField] private ChampSelectManger _champSelectManger;
     [SerializeField] private GameObject strikeZone;
     private Vector3 raycastPos;
@@ -30,8 +29,8 @@ public class PlayerController : MonoBehaviourPun
     private void Start()
     {
         cachedCamera = Camera.main;
-        champSelectPhotonView = GameObject.Find("ChampSelectManagerGO").GetComponent<PhotonView>();
-        _champSelectManger = GameObject.Find("ChampSelectManagerGO").GetComponent<ChampSelectManger>();
+        
+        _champSelectManger = ChampSelectManger.Instance;
         if(playerRB.mass ==2f)
         {
             ProjectilePrefabName = "Prefabs\\KunaiPrefab";
@@ -136,7 +135,7 @@ public class PlayerController : MonoBehaviourPun
             
             if (photonView.IsMine)
             {
-                champSelectPhotonView.RPC(nameof(_champSelectManger.RemoveLivingPkayer), RpcTarget.All);
+                _champSelectManger.photonView.RPC(nameof(_champSelectManger.RemoveLivingPkayer), RpcTarget.All);
                 Debug.Log("Players Remaining: " + _champSelectManger.livingPlayersCounter);
                 StartCoroutine(DestroyDelay(2f, gameObject));
             }

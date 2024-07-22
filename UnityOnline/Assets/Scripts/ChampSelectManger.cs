@@ -11,12 +11,27 @@ public class ChampSelectManger : MonoBehaviourPun
     [SerializeField] Canvas champSelectCanvas;
     [SerializeField] Canvas gameOverCanvas;
     [SerializeField] MultiplayerGameManager currentMultiplayerManager;
-   // [SerializeField] PhotonView ChampSelectManagerPhotonView;
     [SerializeField] TMP_Text winnerText;
     public int livingPlayersCounter;
     public static bool isPaused = false;
 
     private List<PhotonView> alivePlayersList = new List<PhotonView>();
+
+    public static ChampSelectManger Instance { get; private set; }
+
+    private void Awake()
+    {
+        
+
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     [PunRPC]
