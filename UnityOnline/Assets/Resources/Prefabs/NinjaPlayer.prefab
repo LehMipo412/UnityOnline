@@ -58,7 +58,6 @@ MonoBehaviour:
   playerRB: {fileID: 1266242792862040560}
   playerAnimator: {fileID: 8029559907794002352}
   _photonView: {fileID: 9119552357703264867}
-  champSelectPhotonView: {fileID: 0}
   _champSelectManger: {fileID: 0}
   strikeZone: {fileID: 7154444215207190756}
 --- !u!114 &9119552357703264867
