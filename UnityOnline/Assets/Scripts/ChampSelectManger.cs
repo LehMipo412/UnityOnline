@@ -3,6 +3,8 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
+
+
 //using UnityEngine.UIElements;
 
 public class ChampSelectManger : MonoBehaviourPun
@@ -14,6 +16,7 @@ public class ChampSelectManger : MonoBehaviourPun
     [SerializeField] TMP_Text winnerText;
     public int livingPlayersCounter;
     public static bool isPaused = false;
+    
 
     private List<PhotonView> alivePlayersList = new List<PhotonView>();
 

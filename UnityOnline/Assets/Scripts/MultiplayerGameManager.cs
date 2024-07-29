@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Unity.Cinemachine;
 
 public class MultiplayerGameManager : MonoBehaviourPun
 {
@@ -10,6 +11,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
     private const string WomanPlayerPathName = "Prefabs\\WomanPrefab";
     private const string CyborgPlayerPathName = "Prefabs\\CyborgPlayer";
     private const string PiratePlayerPathName = "Prefabs\\WomanPiratePlayer";
+    public CinemachineVirtualCamera playerFollowerCamera;
 
 
     [Header("Spawn Points")]
@@ -19,7 +21,9 @@ public class MultiplayerGameManager : MonoBehaviourPun
 
     [SerializeField] private SpawnPoint defaultSpawnPoint;
 
-    
+    private GameObject selectedPlayer;
+
+
 
     private void Start()
     {
@@ -48,30 +52,34 @@ public class MultiplayerGameManager : MonoBehaviourPun
     }
     public void SpawnPlayer(SpawnPoint targetSpawnPoint, int index)
     {
+        
         if (index == 0)
         {
             targetSpawnPoint.Take();
-            PhotonNetwork.Instantiate(NinjaPlayerPathName,
+            selectedPlayer = PhotonNetwork.Instantiate(NinjaPlayerPathName,
                 targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
         }
         if (index == 1)
         {
             targetSpawnPoint.Take();
-            PhotonNetwork.Instantiate(WomanPlayerPathName,
+            selectedPlayer = PhotonNetwork.Instantiate(WomanPlayerPathName,
                 targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
         }
         if (index == 2)
         {
             targetSpawnPoint.Take();
-            PhotonNetwork.Instantiate(CyborgPlayerPathName,
+            selectedPlayer = PhotonNetwork.Instantiate(CyborgPlayerPathName,
                 targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
         }
         if (index == 3)
         {
             targetSpawnPoint.Take();
-            PhotonNetwork.Instantiate(PiratePlayerPathName,
+            selectedPlayer = PhotonNetwork.Instantiate(PiratePlayerPathName,
                 targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
         }
+        playerFollowerCamera.Follow = selectedPlayer.GetComponent<PlayerController>().neckIndicator;
+        playerFollowerCamera.LookAt = selectedPlayer.GetComponent<PlayerController>().mouseIndicator; ;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
     [PunRPC]
     private void SetSpawnPoint(SpawnPoint spawnPoint)

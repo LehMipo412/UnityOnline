@@ -22,13 +22,16 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] private PhotonView _photonView;
     [SerializeField] private ChampSelectManger _champSelectManger;
     [SerializeField] private GameObject strikeZone;
+    public Transform neckIndicator;
+    public Transform mouseIndicator;
+
     private Vector3 raycastPos;
-    private Camera cachedCamera;
+   // private Camera cachedCamera;
     private int HP = 200;
 
     private void Start()
     {
-        cachedCamera = Camera.main;
+        //cachedCamera = Camera.main;
         
         _champSelectManger = ChampSelectManger.Instance;
         if(playerRB.mass ==2f)
@@ -69,13 +72,13 @@ public class PlayerController : MonoBehaviourPun
             {
                 if (!ChatManagerScript.isChatting)
                 {
-                    Ray ray = cachedCamera.ScreenPointToRay(Input.mousePosition);
-                    RaycastHit hit;
-                    if (Physics.Raycast(ray, out hit))
-                    {
-                        // hit.point contains the world position where the ray hit.
-                        raycastPos = hit.point;
-                    }
+                    //Ray ray = cachedCamera.ScreenPointToRay(Input.mousePosition);
+                    //RaycastHit hit;
+                    //if (Physics.Raycast(ray, out hit))
+                    //{
+                    //    // hit.point contains the world position where the ray hit.
+                    //    raycastPos = hit.point;
+                    //}
                     if (!_photonView.IsMine)
                         return;
 
@@ -117,12 +120,12 @@ public class PlayerController : MonoBehaviourPun
                         playerAnimator.SetBool("IsRunning", false);
                         Debug.Log("Idle");
                     }
-                    Vector3 directionToFace = raycastPos - gameObject.transform.position;
-                    Quaternion lookAtRotation = Quaternion.LookRotation(directionToFace);
-                    Vector3 eulerRotation = lookAtRotation.eulerAngles;
-                    eulerRotation.x = 0;
-                    eulerRotation.z = 0;
-                    transform.eulerAngles = eulerRotation;
+                    //Vector3 directionToFace = raycastPos - gameObject.transform.position;
+                    //Quaternion lookAtRotation = Quaternion.LookRotation(directionToFace);
+                    //Vector3 eulerRotation = lookAtRotation.eulerAngles;
+                    //eulerRotation.x = 0;
+                    //eulerRotation.z = 0;
+                    //transform.eulerAngles = eulerRotation;
 
                 }
             }

@@ -74,11 +74,13 @@ public class ChatManagerScript : MonoBehaviourPun
             {
                 chatCanvas.gameObject.SetActive(false);
                 isChatting = false;
+                UnityEngine.Cursor.lockState = CursorLockMode.Locked;
             }
             else
             {
                 chatCanvas.gameObject.SetActive(true);
                 isChatting = true;
+                UnityEngine.Cursor.lockState = CursorLockMode.None;
             }
         }
     }
