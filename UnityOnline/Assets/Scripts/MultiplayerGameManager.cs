@@ -77,8 +77,8 @@ public class MultiplayerGameManager : MonoBehaviourPun
             selectedPlayer = PhotonNetwork.Instantiate(PiratePlayerPathName,
                 targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
         }
-        playerFollowerCamera.Follow = selectedPlayer.GetComponent<PlayerController>().neckIndicator;
-        playerFollowerCamera.LookAt = selectedPlayer.GetComponent<PlayerController>().mouseIndicator; ;
+        playerFollowerCamera.LookAt = selectedPlayer.GetComponent<PlayerController>().neckIndicator;
+        playerFollowerCamera.Follow= selectedPlayer.GetComponent<PlayerController>().mouseIndicator; ;
         //Cursor.lockState = CursorLockMode.Locked;
     }
     [PunRPC]
