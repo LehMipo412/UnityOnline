@@ -3,18 +3,15 @@ using UnityEngine;
 
 public class FollowMouse : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
+   [SerializeField] PlayerController myPlayerController;
+   
     // Update is called once per frame
     void Update()
     {
         transform.Rotate(new Vector3(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X") , 0) * -1 );
         //transform.localEulerAngles = Input.mousePosition;
         var horizonAngle = transform.localEulerAngles.x;
+        var verticalAngle = transform.localEulerAngles.y;
 
         if (horizonAngle > 180 && horizonAngle < 340)
         {
@@ -25,8 +22,17 @@ public class FollowMouse : MonoBehaviour
         {
             horizonAngle = 40;
         }
+        if (verticalAngle > 180 && verticalAngle < 340)
+        {
+            verticalAngle = 340;
 
-        transform.localEulerAngles = new Vector3(horizonAngle, transform.localEulerAngles.y, 0);
+        }
+        else if (verticalAngle < 180 && verticalAngle > 40)
+        {
+            verticalAngle = 40;
+        }
+
+        transform.localEulerAngles = new Vector3(horizonAngle, verticalAngle, 0);
 
 
         //if (transform.eulerAngles.x > 180)
