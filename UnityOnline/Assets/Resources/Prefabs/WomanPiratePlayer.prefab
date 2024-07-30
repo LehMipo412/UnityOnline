@@ -210,6 +210,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6226548437691656664}
+  - component: {fileID: 6314157215040347934}
   m_Layer: 0
   m_Name: NeckIndicator
   m_TagString: Untagged
@@ -232,6 +233,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5271725958691177362}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6314157215040347934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3798161841891744140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f546d7e251454c4fac47b6e69443627, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4537401452706744879
 GameObject:
   m_ObjectHideFlags: 0
