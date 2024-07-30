@@ -12,22 +12,22 @@ public class FollowMouse : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //transform.Rotate(new Vector3(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X") * Time.deltaTime, 0) );
+        transform.Rotate(new Vector3(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X") , 0) * -1 );
         //transform.localEulerAngles = Input.mousePosition;
         var horizonAngle = transform.localEulerAngles.x;
 
-        if (horizonAngle > 180 && horizonAngle <340)
+        if (horizonAngle > 180 && horizonAngle < 340)
         {
             horizonAngle = 340;
-            
+
         }
-        else if(horizonAngle < 180 && horizonAngle > 40)
+        else if (horizonAngle < 180 && horizonAngle > 40)
         {
             horizonAngle = 40;
         }
 
         transform.localEulerAngles = new Vector3(horizonAngle, transform.localEulerAngles.y, 0);
-        
+
 
         //if (transform.eulerAngles.x > 180)
         //{

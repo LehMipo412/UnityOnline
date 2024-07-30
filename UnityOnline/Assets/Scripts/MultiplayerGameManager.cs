@@ -11,7 +11,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
     private const string WomanPlayerPathName = "Prefabs\\WomanPrefab";
     private const string CyborgPlayerPathName = "Prefabs\\CyborgPlayer";
     private const string PiratePlayerPathName = "Prefabs\\WomanPiratePlayer";
-    public CinemachineVirtualCamera playerFollowerCamera;
+    public CinemachineCamera playerFollowerCamera;
 
 
     [Header("Spawn Points")]
@@ -77,8 +77,9 @@ public class MultiplayerGameManager : MonoBehaviourPun
             selectedPlayer = PhotonNetwork.Instantiate(PiratePlayerPathName,
                 targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
         }
-        playerFollowerCamera.Follow = selectedPlayer.GetComponent<PlayerController>().neckIndicator;
-        //playerFollowerCamera.Follow= selectedPlayer.GetComponent<PlayerController>().mouseIndicator; ;
+        playerFollowerCamera.Target.TrackingTarget = selectedPlayer.GetComponent<PlayerController>().neckIndicator;
+        //playerFollowerCamera.Follow = selectedPlayer.GetComponent<PlayerController>().neckIndicator;
+        //playerFollowerCamera.LookAt= selectedPlayer.GetComponent<PlayerController>().mouseIndicator; ;
         //Cursor.lockState = CursorLockMode.Locked;
     }
     [PunRPC]
