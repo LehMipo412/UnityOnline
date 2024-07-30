@@ -117,6 +117,7 @@ public class PlayerController : MonoBehaviourPun
 
                     if (!Input.anyKey)
                     {
+                       
                         playerAnimator.SetBool("IsRunning", false);
                         Debug.Log("Idle");
                     }
