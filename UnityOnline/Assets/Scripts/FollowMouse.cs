@@ -8,7 +8,7 @@ public class FollowMouse : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(new Vector3(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X") , 0) * -1 );
+        transform.Rotate(new Vector3(Input.GetAxis("Mouse Y")*-1, Input.GetAxis("Mouse X") , 0) * -1 );
         //transform.localEulerAngles = Input.mousePosition;
         var horizonAngle = transform.localEulerAngles.x;
         var verticalAngle = transform.localEulerAngles.y;
