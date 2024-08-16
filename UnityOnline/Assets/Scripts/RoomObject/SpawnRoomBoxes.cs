@@ -46,7 +46,8 @@ public class SpawnRoomBoxes : MonoBehaviourPun
                 if (pickupToSpawn != "")
                 {
 
-                    PhotonNetwork.InstantiateRoomObject(pickupToSpawn, currentSpawnPoint.position, Quaternion.identity);
+                    PhotonNetwork.InstantiateRoomObject(pickupToSpawn, currentSpawnPoint.position, currentSpawnPoint.rotation);
+                    
                     Debug.Log($"{spawnPointsArray.Length}, {takenIndex}");
                     Debug.Log("Pickup Spawned");
                     timer = 3f;
@@ -147,22 +148,25 @@ public class SpawnRoomBoxes : MonoBehaviourPun
     }
     public void ApplyNewLocation()
     {
-        loopTimes++;
-        if (ContainTransform(takenPlacesList, currentSpawnPoint))
+        if (loopTimes <= 6000)
         {
+            loopTimes++;
+            if (ContainTransform(takenPlacesList, currentSpawnPoint))
+            {
 
 
-            var randomIndex = Random.Range(0, spawnPointsArray.Length);
-            takenPlacesList[takenIndex] = (spawnPointsArray[randomIndex]);
-            currentSpawnPoint = spawnPointsArray[randomIndex];
-            ApplyNewLocation();
+                var randomIndex = Random.Range(0, spawnPointsArray.Length);
+                takenPlacesList[takenIndex] = (spawnPointsArray[randomIndex]);
+                currentSpawnPoint = spawnPointsArray[randomIndex];
+                ApplyNewLocation();
+            }
         }
     }
     public int GetIndexOfTransformInArray(Transform transformInArray)
     {
         for (int i = 0; i < takenPlacesList.Length; i++)
         {
-            if (transformInArray == takenPlacesList[i])
+            if (transformInArray.position == takenPlacesList[i].position)
             {
                 return i;
             }
@@ -177,10 +181,12 @@ public class SpawnRoomBoxes : MonoBehaviourPun
     [PunRPC]
     public void GetPickupTransformFromGM()
     {
+        Debug.Log("This pickup was taken!");
         PickUpWasTaken(ChampSelectManger.Instance.currentPickupTransform);
     }
     public void PickUpWasTaken(Transform pickupTransform)
     {
+        Debug.LogWarning("The Index That Supposed To Be Deleted Is: "+GetIndexOfTransformInArray(  pickupTransform));
         takenPlacesList[GetIndexOfTransformInArray(pickupTransform)] = transform;
         takenIndex--;
     }

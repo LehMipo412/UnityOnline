@@ -218,7 +218,8 @@ public class PlayerController : MonoBehaviourPun
         }
         if (other.CompareTag("SpeedPickUp"))
         {
-            StartCoroutine(DestroyDelay(0.2f, other.gameObject));
+            Debug.LogWarning("I AM SPEED");
+          //  StartCoroutine(DestroyDelay(0.2f, other.gameObject));
             StartCoroutine(GetSpeedBoost());
         }
     }

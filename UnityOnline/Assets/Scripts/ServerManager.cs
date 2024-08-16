@@ -253,6 +253,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         base.OnPlayerLeftRoom(otherPlayer);
+        
 
         Room room = PhotonNetwork.CurrentRoom;
         if (RoomInfo != null && PhotonNetwork.CurrentRoom != null)
@@ -266,6 +267,7 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         base.OnPlayerEnteredRoom(newPlayer);
 
         Room room = PhotonNetwork.CurrentRoom;
+        
         if (RoomInfo != null && PhotonNetwork.CurrentRoom != null)
         {
             RoomInfo.text = $"Room: {room.Name} - Players: {room.PlayerCount + " / " + room.MaxPlayers}";
