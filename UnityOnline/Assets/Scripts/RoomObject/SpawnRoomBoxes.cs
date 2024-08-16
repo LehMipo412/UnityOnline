@@ -18,6 +18,7 @@ public class SpawnRoomBoxes : MonoBehaviourPun
     public Transform[] takenPlacesList;
     int takenIndex = 0;
     private float timer = 3f;
+    private int loopTimes = 0;
     private Transform currentSpawnPoint;
 
     
@@ -93,6 +94,7 @@ public class SpawnRoomBoxes : MonoBehaviourPun
     [PunRPC]
     public void SetNextSpawnPoint()
     {
+        loopTimes = 1;
         if (takenIndex == spawnPointsArray.Length)
         {
             Debug.Log("No Available Spawn Points");
@@ -109,6 +111,7 @@ public class SpawnRoomBoxes : MonoBehaviourPun
         {
             ApplyNewLocation();
         }
+        Debug.Log($"It Found New Location After {loopTimes} Times");
 
 
         
@@ -143,6 +146,7 @@ public class SpawnRoomBoxes : MonoBehaviourPun
     }
     public void ApplyNewLocation()
     {
+        loopTimes++;
         if (ContainTransform(takenPlacesList, currentSpawnPoint))
         {
 
