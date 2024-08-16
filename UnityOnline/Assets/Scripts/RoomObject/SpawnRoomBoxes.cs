@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using Unity.VisualScripting;
@@ -14,24 +15,21 @@ public class SpawnRoomBoxes : MonoBehaviourPun
     public Transform[] spawnPointsArray;
     private const string HealthPickUpName = "Prefabs\\HealthPickUp";
     private const string SpeedBoostPickupName = "Prefabs\\SpeedPickUp";
-    public List<Transform> takenPlacesList = new List<Transform>();
+    public Transform[] takenPlacesList;
+    int takenIndex = 0;
     private float timer = 3f;
     private Transform currentSpawnPoint;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    
     void Start()
     {
-        //for (int i = 0; i < spawnPointsArray.Length; i++)
+
+
+        //for (int i = 0; i < takenPlacesList.Length; i++)
         //{
-        //    if(i % 2 == 0)
-        //    {
-        //        PhotonNetwork.InstantiateRoomObject(HealthPickUpName, spawnPointsArray[i].position, Quaternion.identity);
-        //    }
-        //    if (i % 2 == 1)
-        //    {
-        //        PhotonNetwork.InstantiateRoomObject(SpeedBoostPickupName, spawnPointsArray[i].position, Quaternion.identity);
-        //    }
+        //    takenPlacesList[i] = default;
         //}
-        SetNextSpawnPoint();
+        SetNextSpawnPoint(); 
     }
 
     void Update()
@@ -45,11 +43,13 @@ public class SpawnRoomBoxes : MonoBehaviourPun
                 string pickupToSpawn = ChooseRandomPickupAndLocation();
                 if (pickupToSpawn != "")
                 {
+                    
                     PhotonNetwork.InstantiateRoomObject(pickupToSpawn, currentSpawnPoint.position, Quaternion.identity);
-                    Debug.Log($"{spawnPointsArray.Length}, {takenPlacesList.Count}");
+                    Debug.Log($"{spawnPointsArray.Length}, {takenIndex}");
                     Debug.Log("Pickup Spawned");
-                    photonView.RPC(nameof( SetNextSpawnPoint), RpcTarget.All);
                     timer = 3f;
+                    photonView.RPC(nameof( SetNextSpawnPoint), RpcTarget.All);
+                    
                 }
                 else
                 {
@@ -93,28 +93,64 @@ public class SpawnRoomBoxes : MonoBehaviourPun
     [PunRPC]
     public void SetNextSpawnPoint()
     {
-        int randomIndex = Random.Range(0, spawnPointsArray.Length);
-
-        if (takenPlacesList.Count == spawnPointsArray.Length)
+        if (takenIndex == spawnPointsArray.Length)
         {
             Debug.Log("No Available Spawn Points");
             currentSpawnPoint = default;
             return;
         }
+
+        int randomIndex = Random.Range(0, spawnPointsArray.Length);
+        Debug.Log(randomIndex);
+
+        
         currentSpawnPoint = spawnPointsArray[randomIndex];
-        takenPlacesList.Add(spawnPointsArray[randomIndex]);
-
-
-        while (takenPlacesList.Contains(currentSpawnPoint))
+        if (ContainTransform(takenPlacesList, currentSpawnPoint))
         {
-           
-
-            randomIndex = Random.Range(0, spawnPointsArray.Length);
-            takenPlacesList.Add(spawnPointsArray[randomIndex]);
-            currentSpawnPoint = spawnPointsArray[randomIndex];
-           
+            ApplyNewLocation();
         }
+
+
+        
+        //while (ContainTransform(takenPlacesList, currentSpawnPoint))
+        //{
+        //    //looptime++;
+        //    //Debug.Log(looptime);
+
+        //    randomIndex = Random.Range(0, spawnPointsArray.Length);
+        //    takenPlacesList[takenIndex] = (spawnPointsArray[randomIndex]);
+        //    currentSpawnPoint = spawnPointsArray[randomIndex];
+
+        //}
+        takenPlacesList[takenIndex] = spawnPointsArray[randomIndex];
+        Debug.Log("Spawn Point Added");
+        takenIndex++;
     }
 
+    public bool ContainTransform(Transform[] containingArray, Transform isContained)
+    {
+        foreach(Transform location in containingArray)
+        {
+          //  Debug.Log($"Locations comparer: {isContained} In Compare to {location}");
+            if (isContained.position == location.position)
+            {
+               // Debug.Log("Found Your Location, FBI On the way");
+                return true;
+            }
+        }
+       // Debug.Log("Location is not taken");
+        return false;
+    }
+    public void ApplyNewLocation()
+    {
+        if (ContainTransform(takenPlacesList, currentSpawnPoint))
+        {
 
+
+            var randomIndex = Random.Range(0, spawnPointsArray.Length);
+            takenPlacesList[takenIndex] = (spawnPointsArray[randomIndex]);
+            currentSpawnPoint = spawnPointsArray[randomIndex];
+            ApplyNewLocation();
+        }
+    }
 }
