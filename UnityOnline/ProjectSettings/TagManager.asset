@@ -9,6 +9,8 @@ TagManager:
   - BoostBox
   - DamageBox
   - Strike
+  - HealthPickup
+  - SpeedPickUp
   layers:
   - Default
   - TransparentFX

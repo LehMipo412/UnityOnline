@@ -14,8 +14,10 @@ public class ChampSelectManger : MonoBehaviourPun
     [SerializeField] Canvas gameOverCanvas;
     [SerializeField] MultiplayerGameManager currentMultiplayerManager;
     [SerializeField] TMP_Text winnerText;
+    public PickupCollectedEventScript _pickupCollectedEventScript;
     public int livingPlayersCounter;
     public static bool isPaused = false;
+    public Transform currentPickupTransform;
     
 
     private List<PhotonView> alivePlayersList = new List<PhotonView>();
@@ -103,5 +105,6 @@ public class ChampSelectManger : MonoBehaviourPun
         Debug.Log("MovedScene");
     }
     // Update is called once per frame
-    
+
+   
 }

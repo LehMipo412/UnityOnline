@@ -190,6 +190,7 @@ public class PlayerController : MonoBehaviourPun
                 
                 
             }
+            
 
             otherProjectile.visualPanel.SetActive(false);
             //add bool for projectile hit
@@ -211,6 +212,15 @@ public class PlayerController : MonoBehaviourPun
         {
             photonView.RPC(RecievedamageRPC, RpcTarget.All, 10);
         }
+        if(other.CompareTag("HealthPickup"))
+        {
+            knockbackPrecentage -= 2;
+        }
+        if (other.CompareTag("SpeedPickUp"))
+        {
+            StartCoroutine(DestroyDelay(0.2f, other.gameObject));
+            StartCoroutine(GetSpeedBoost());
+        }
     }
     [PunRPC]
     private void RecieveDamage(int damageAmount)
@@ -224,6 +234,13 @@ public class PlayerController : MonoBehaviourPun
         
         yield return new WaitForSeconds(delay);
         PhotonNetwork.Destroy(otherObject);
+    }
+
+    IEnumerator GetSpeedBoost()
+    {
+        speed += 5;
+        yield return new WaitForSeconds(5f);
+        speed -= 5;
     }
 
     public void Shoot()

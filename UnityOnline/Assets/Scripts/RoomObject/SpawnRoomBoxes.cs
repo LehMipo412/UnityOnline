@@ -21,16 +21,17 @@ public class SpawnRoomBoxes : MonoBehaviourPun
     private int loopTimes = 0;
     private Transform currentSpawnPoint;
 
-    
+
     void Start()
     {
 
+        ChampSelectManger.Instance._pickupCollectedEventScript.pickupedEvent.AddListener(TellEveryoneYouPickedUpBoost);
 
-        //for (int i = 0; i < takenPlacesList.Length; i++)
-        //{
-        //    takenPlacesList[i] = default;
-        //}
-        SetNextSpawnPoint(); 
+       
+        if ((photonView.Owner == PhotonNetwork.MasterClient))
+         {
+            photonView.RPC(nameof(SetNextSpawnPoint), RpcTarget.All);
+        }
     }
 
     void Update()
@@ -44,13 +45,13 @@ public class SpawnRoomBoxes : MonoBehaviourPun
                 string pickupToSpawn = ChooseRandomPickupAndLocation();
                 if (pickupToSpawn != "")
                 {
-                    
+
                     PhotonNetwork.InstantiateRoomObject(pickupToSpawn, currentSpawnPoint.position, Quaternion.identity);
                     Debug.Log($"{spawnPointsArray.Length}, {takenIndex}");
                     Debug.Log("Pickup Spawned");
                     timer = 3f;
-                    photonView.RPC(nameof( SetNextSpawnPoint), RpcTarget.All);
-                    
+                    photonView.RPC(nameof(SetNextSpawnPoint), RpcTarget.All);
+
                 }
                 else
                 {
@@ -59,36 +60,36 @@ public class SpawnRoomBoxes : MonoBehaviourPun
                     return;
                 }
             }
-           
+
         }
-        
+
     }
     public string ChooseRandomPickupAndLocation()
     {
-        if(currentSpawnPoint == default)
+        if (currentSpawnPoint == default)
         {
             return "";
         }
 
-        
+
 
         int randomPickup = Random.Range(0, 2);
 
-       
 
-        if(randomPickup== 0)
+
+        if (randomPickup == 0)
         {
-          
+
             return HealthPickUpName;
         }
         else
         {
-            
+
             return SpeedBoostPickupName;
         }
 
 
-        
+
     }
 
     [PunRPC]
@@ -103,9 +104,9 @@ public class SpawnRoomBoxes : MonoBehaviourPun
         }
 
         int randomIndex = Random.Range(0, spawnPointsArray.Length);
-        Debug.Log(randomIndex);
+       // Debug.Log(randomIndex);
 
-        
+
         currentSpawnPoint = spawnPointsArray[randomIndex];
         if (ContainTransform(takenPlacesList, currentSpawnPoint))
         {
@@ -114,7 +115,7 @@ public class SpawnRoomBoxes : MonoBehaviourPun
         Debug.Log($"It Found New Location After {loopTimes} Times");
 
 
-        
+
         //while (ContainTransform(takenPlacesList, currentSpawnPoint))
         //{
         //    //looptime++;
@@ -132,16 +133,16 @@ public class SpawnRoomBoxes : MonoBehaviourPun
 
     public bool ContainTransform(Transform[] containingArray, Transform isContained)
     {
-        foreach(Transform location in containingArray)
+        foreach (Transform location in containingArray)
         {
-          //  Debug.Log($"Locations comparer: {isContained} In Compare to {location}");
+            //  Debug.Log($"Locations comparer: {isContained} In Compare to {location}");
             if (isContained.position == location.position)
             {
-               // Debug.Log("Found Your Location, FBI On the way");
+                // Debug.Log("Found Your Location, FBI On the way");
                 return true;
             }
         }
-       // Debug.Log("Location is not taken");
+        // Debug.Log("Location is not taken");
         return false;
     }
     public void ApplyNewLocation()
@@ -156,5 +157,31 @@ public class SpawnRoomBoxes : MonoBehaviourPun
             currentSpawnPoint = spawnPointsArray[randomIndex];
             ApplyNewLocation();
         }
+    }
+    public int GetIndexOfTransformInArray(Transform transformInArray)
+    {
+        for (int i = 0; i < takenPlacesList.Length; i++)
+        {
+            if (transformInArray == takenPlacesList[i])
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+    [PunRPC]
+    public void TellEveryoneYouPickedUpBoost()
+    {
+        photonView.RPC(nameof(GetPickupTransformFromGM), RpcTarget.All);
+    }
+    [PunRPC]
+    public void GetPickupTransformFromGM()
+    {
+        PickUpWasTaken(ChampSelectManger.Instance.currentPickupTransform);
+    }
+    public void PickUpWasTaken(Transform pickupTransform)
+    {
+        takenPlacesList[GetIndexOfTransformInArray(pickupTransform)] = transform;
+        takenIndex--;
     }
 }
