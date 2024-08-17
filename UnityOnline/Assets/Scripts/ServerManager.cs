@@ -132,6 +132,8 @@ public class ConnectionManager : MonoBehaviourPunCallbacks
         {
             MaxPlayers = maxPlayers,
         };
+        roomOptions.PlayerTtl = 30000;
+        roomOptions.EmptyRoomTtl = 60000;
         string roomName;
 
         if (PhotonNetwork.CurrentLobby.Name == LobbyDefultName)
