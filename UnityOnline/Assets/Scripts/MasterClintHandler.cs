@@ -27,6 +27,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
+        Debug.Log("MasterLeft");
         base.OnLeftRoom();
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
@@ -63,7 +64,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
         Debug.Log("Master Client Changed");
         ChangeNextPlayer();
     }
-
+    [PunRPC]
     public void ShowEveryoneMasterChanged()
     {
         StartCoroutine(AnnounceMasterChange());
