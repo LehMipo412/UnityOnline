@@ -23,6 +23,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
             ChangeNextPlayer();
         }
        
+       
     }
 
     public override void OnLeftRoom()
@@ -34,7 +35,11 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
             Debug.LogWarning("MasterLeft");
             CustomChangeMasterClient();
         }
-        base.OnLeftRoom();
+        else
+        {
+            Debug.LogWarning("This Player Is Not Master");
+        }
+            base.OnLeftRoom();
     }
 //    public override void OnPlayerLeftRoom(Player otherPlayer)
 //{
