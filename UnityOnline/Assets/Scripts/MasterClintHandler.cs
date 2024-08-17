@@ -51,10 +51,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
 
         base.OnLeftRoom();
     }
-    public void Update()
-    {
-        
-    }
+   
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
@@ -107,12 +104,15 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
 
     public void GiveTheMasterCrown()
     {
-        foreach (var player in PhotonNetwork.PlayerList)
+        if (PhotonNetwork.IsMasterClient)
         {
-            if (PhotonNetwork.PlayerList.ToListPooled().IndexOf(player) != PhotonNetwork.PlayerList.ToListPooled().IndexOf(PhotonNetwork.MasterClient))
+            foreach (var player in PhotonNetwork.PlayerList)
             {
-                PhotonNetwork.SetMasterClient(player);
-                break;
+                if (PhotonNetwork.PlayerList.ToListPooled().IndexOf(player) != PhotonNetwork.PlayerList.ToListPooled().IndexOf(PhotonNetwork.MasterClient))
+                {
+                    PhotonNetwork.SetMasterClient(player);
+                    break;
+                }
             }
         }
     }
