@@ -14,20 +14,30 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
 {
     [SerializeField] Canvas masterAnnouncer;
     [SerializeField] TMP_Text MasterChangerText;
-    private int[] spooped = {1,2 };
     public Player nextMasterClient;
 
     private void Awake()
     {
-        ChangeNextPlayer();
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            ChangeNextPlayer();
+        }
+       
     }
+
     public override void OnLeftRoom()
     {
-        if(PhotonNetwork.LocalPlayer.IsMasterClient)
+        base.OnLeftRoom();
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
+            Debug.Log("MasterLeft");
             CustomChangeMasterClient();
         }
     }
+//    public override void OnPlayerLeftRoom(Player otherPlayer)
+//{
+        
+//    }
 
     public void CustomChangeMasterClient()
     {
