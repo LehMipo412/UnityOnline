@@ -15,12 +15,14 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     [SerializeField] Canvas masterAnnouncer;
     [SerializeField] TMP_Text MasterChangerText;
     public Player nextMasterClient;
+    private bool isReallyMasterClient;
 
     private void Awake()
     {
         if (PhotonNetwork.IsMasterClient)
         {
             Debug.Log("youAreMaster");
+            isReallyMasterClient = true;
             ChangeNextPlayer();
         }
        
@@ -31,7 +33,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     {
         Debug.LogWarning("MasterLeft");
        
-        if (PhotonNetwork.IsMasterClient)
+        if (isReallyMasterClient)
         {
             Debug.LogWarning("MasterLeft");
             CustomChangeMasterClient();
@@ -41,6 +43,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
             Debug.LogWarning("This Player Is Not Master");
         }
             base.OnLeftRoom();
+
     }
 //    public override void OnPlayerLeftRoom(Player otherPlayer)
 //{
@@ -99,7 +102,14 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
         newMasterClient = nextMasterClient;
         base.OnMasterClientSwitched(newMasterClient);
         photonView.RPC(nameof(ShowEveryoneMasterChanged), RpcTarget.All);
+        if(newMasterClient.UserId == PhotonNetwork.LocalPlayer.UserId)
+        {
+            isReallyMasterClient = true;
+        }
+        
+        
         
     }
 
+     
 }
