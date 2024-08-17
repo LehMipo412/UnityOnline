@@ -9,8 +9,9 @@ using ExitGames.Client.Photon;
 
 public class NewServerManager : MonoBehaviourPunCallbacks
 {[Header("Texts")]
-    [SerializeField] private TMP_Text _roomStatus;
+    [SerializeField] private TMP_Text _gameStatus;
     [SerializeField] private TMP_Text _playerAmmount;
+    [SerializeField] private TMP_Text _roomStatus;
 
     [Header("DropDowns")]
     [SerializeField] private TMP_Dropdown _lobbiesDropDown;
@@ -26,6 +27,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject _leaveRoomButton;
     [SerializeField] private GameObject _outsideRoom;
     [SerializeField] private GameObject _startButton;
+    [SerializeField] private GameObject _roomStatusObj;
 
 
     [Header("Text")]
@@ -34,6 +36,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     [Header("Others")]
     private bool _hasLeftRoom = false;
     private int _motherfucker = 0;
+    private bool isInRoom = false;
 
     #region Awake/Start
 
@@ -44,7 +47,9 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     }
     public void Update()
     {
-        _roomStatus.text = PhotonNetwork.NetworkClientState.ToString();
+        _gameStatus.text = PhotonNetwork.NetworkClientState.ToString();
+        if (isInRoom) _roomStatus.text = "Room Name : " + PhotonNetwork.CurrentRoom.Name + " - "
+                + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers + " Players";
     }
 
     #endregion
@@ -134,17 +139,21 @@ public class NewServerManager : MonoBehaviourPunCallbacks
         base.OnJoinedRoom();
         _leaveRoomButton.SetActive(true);
         _startButton.SetActive(true);
+        _roomStatusObj.SetActive(true);
         _outsideRoom.SetActive(false);
+        isInRoom = true;
         Debug.Log("Joined room " + PhotonNetwork.CurrentRoom.Name);
     }
     public override void OnLeftRoom()
     {
         Debug.Log("Left Room");
         base.OnLeftRoom();
+        _outsideRoom.SetActive(true);
         _leaveRoomButton.SetActive(false);
         _startButton.SetActive(false);
-        _outsideRoom.SetActive(true);
+        _roomStatusObj.SetActive(false);
         _hasLeftRoom = true;
+        isInRoom = false;
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
