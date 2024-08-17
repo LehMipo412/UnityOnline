@@ -28,12 +28,13 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         Debug.Log("MasterLeft");
-        base.OnLeftRoom();
+       
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
             Debug.Log("MasterLeft");
             CustomChangeMasterClient();
         }
+        base.OnLeftRoom();
     }
 //    public override void OnPlayerLeftRoom(Player otherPlayer)
 //{
