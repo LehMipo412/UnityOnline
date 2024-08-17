@@ -69,7 +69,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     {
         //foreach (var player in PhotonNetwork.PlayerList)
         //{
-        //    if(PhotonNetwork.PlayerList.ToListPooled().IndexOf(player) != PhotonNetwork.PlayerList.ToListPooled().IndexOf(PhotonNetwork.MasterClient))
+        //    if (PhotonNetwork.PlayerList.ToListPooled().IndexOf(player) != PhotonNetwork.PlayerList.ToListPooled().IndexOf(PhotonNetwork.MasterClient))
         //    {
         //        PhotonNetwork.SetMasterClient(player);
         //        break;
@@ -102,6 +102,18 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
         if (PhotonNetwork.PlayerList[playerIndex + 1] != null)
         {
            // nextMasterClient = PhotonNetwork.PlayerList[playerIndex + 1];
+        }
+    }
+
+    public void GiveTheMasterCrown()
+    {
+        foreach (var player in PhotonNetwork.PlayerList)
+        {
+            if (PhotonNetwork.PlayerList.ToListPooled().IndexOf(player) != PhotonNetwork.PlayerList.ToListPooled().IndexOf(PhotonNetwork.MasterClient))
+            {
+                PhotonNetwork.SetMasterClient(player);
+                break;
+            }
         }
     }
 
