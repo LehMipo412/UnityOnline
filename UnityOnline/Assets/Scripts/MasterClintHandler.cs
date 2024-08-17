@@ -16,6 +16,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     [SerializeField] TMP_Text MasterChangerText;
     public Player nextMasterClient;
     private bool isReallyMasterClient;
+    private bool didLeftRoom;
 
     private void Awake()
     {
@@ -38,19 +39,23 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     {
        // Debug.LogWarning("MasterLeft");
         
-        if (isReallyMasterClient)
-        {
-            Debug.LogWarning("MasterLeft");
-            CustomChangeMasterClient();
-        }
-        else
-        {
-            Debug.LogWarning("This Player Is Not Master");
-        }
+        //if (isReallyMasterClient)
+        //{
+        //    Debug.LogWarning("MasterLeft");
+        //    CustomChangeMasterClient();
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("This Player Is Not Master");
+        //}
 
         base.OnLeftRoom();
     }
-   
+    public void Update()
+    {
+        
+    }
+
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
        
@@ -62,14 +67,14 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
 
     public void CustomChangeMasterClient()
     {
-        foreach (var player in PhotonNetwork.PlayerList)
-        {
-            if(PhotonNetwork.PlayerList.ToListPooled().IndexOf(player) != PhotonNetwork.PlayerList.ToListPooled().IndexOf(PhotonNetwork.MasterClient))
-            {
-                PhotonNetwork.SetMasterClient(player);
-                break;
-            }
-        }
+        //foreach (var player in PhotonNetwork.PlayerList)
+        //{
+        //    if(PhotonNetwork.PlayerList.ToListPooled().IndexOf(player) != PhotonNetwork.PlayerList.ToListPooled().IndexOf(PhotonNetwork.MasterClient))
+        //    {
+        //        PhotonNetwork.SetMasterClient(player);
+        //        break;
+        //    }
+        //}
         photonView.RPC(nameof(TellEveryOneThatMasteClientChanged), RpcTarget.All);
        
         
@@ -111,6 +116,15 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     {
         newMasterClient = nextMasterClient;
         base.OnMasterClientSwitched(newMasterClient);
+        if (isReallyMasterClient)
+        {
+            Debug.LogWarning("MasterLeft");
+            CustomChangeMasterClient();
+        }
+        else
+        {
+            Debug.LogWarning("This Player Is Not Master");
+        }
         photonView.RPC(nameof(ShowEveryoneMasterChanged), RpcTarget.All);
         if(newMasterClient.UserId == PhotonNetwork.LocalPlayer.UserId)
         {
