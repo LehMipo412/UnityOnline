@@ -126,7 +126,8 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     }
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        newMasterClient = nextMasterClient;
+        //newMasterClient = nextMasterClient;
+        Debug.Log("new Master here");
         base.OnMasterClientSwitched(newMasterClient);
         if (isReallyMasterClient)
         {
