@@ -37,7 +37,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
        // Debug.LogWarning("MasterLeft");
-        base.OnLeftRoom();
+        
         if (isReallyMasterClient)
         {
             Debug.LogWarning("MasterLeft");
@@ -47,8 +47,8 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
         {
             Debug.LogWarning("This Player Is Not Master");
         }
-           
 
+        base.OnLeftRoom();
     }
    
     public override void OnPlayerLeftRoom(Player otherPlayer)
