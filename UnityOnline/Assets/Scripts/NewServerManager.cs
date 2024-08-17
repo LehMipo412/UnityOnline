@@ -38,6 +38,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
 
     public void Awake()
     {
+        PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings();
     }
     public void Update()
