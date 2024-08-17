@@ -18,6 +18,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
 
     [Header("Inputs")]
     [SerializeField] private TMP_InputField _roomNameInput;
+    [SerializeField] TMP_InputField nicknameEditorInputField;
 
     [Header("GameObjects")]
     [SerializeField] private GameObject _lobbySection;
@@ -90,6 +91,12 @@ public class NewServerManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.LoadLevel("CurrentMainGameScene");
         }
+
+    }
+    public void EditNickname()
+    {
+        PhotonNetwork.NickName = nicknameEditorInputField.text;
+        Debug.Log("The name of this Client is:" + PhotonNetwork.NickName);
     }
 
     #endregion
