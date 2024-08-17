@@ -39,13 +39,27 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
                 break;
             }
         }
-        MasterChangerText.text = $"The New Master Client IS: {PhotonNetwork.MasterClient.NickName}";
-        ChangeNextPlayer();
+        photonView.RPC(nameof(TellEveryOneThatMasteClientChanged), RpcTarget.All);
        
         
 
 
     }
+
+    [PunRPC]
+    public void TellEveryOneThatMasteClientChanged()
+    {
+        MasterChangerText.text = $"The New Master Client IS: {PhotonNetwork.MasterClient.NickName}";
+        Debug.Log("Master Client Changed");
+        ChangeNextPlayer();
+    }
+
+    public void ShowEveryoneMasterChanged()
+    {
+        StartCoroutine(AnnounceMasterChange());
+    }
+
+
     public void ChangeNextPlayer()
     {
         int playerIndex = PhotonNetwork.PlayerList.ToListPooled().IndexOf((PhotonNetwork.LocalPlayer));
@@ -66,7 +80,8 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     {
         newMasterClient = nextMasterClient;
         base.OnMasterClientSwitched(newMasterClient);
-        StartCoroutine(AnnounceMasterChange());
+        photonView.RPC(nameof(ShowEveryoneMasterChanged), RpcTarget.All);
+        
     }
 
 }
