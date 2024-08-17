@@ -18,7 +18,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
             ChangeNextPlayer();
         }
@@ -30,7 +30,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     {
         Debug.LogWarning("MasterLeft");
        
-        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
             Debug.LogWarning("MasterLeft");
             CustomChangeMasterClient();
