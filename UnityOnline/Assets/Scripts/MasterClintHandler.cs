@@ -87,7 +87,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     {
         MasterChangerText.text = $"The New Master Client IS: {PhotonNetwork.MasterClient.NickName}";
         Debug.LogWarning("Master Client Changed");
-        ChangeNextPlayer();
+       // ChangeNextPlayer();
     }
     [PunRPC]
     public void ShowEveryoneMasterChanged()
@@ -101,7 +101,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
         int playerIndex = PhotonNetwork.PlayerList.ToListPooled().IndexOf((PhotonNetwork.LocalPlayer));
         if (PhotonNetwork.PlayerList[playerIndex + 1] != null)
         {
-            nextMasterClient = PhotonNetwork.PlayerList[playerIndex + 1];
+           // nextMasterClient = PhotonNetwork.PlayerList[playerIndex + 1];
         }
     }
 
