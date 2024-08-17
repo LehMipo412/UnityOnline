@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using ExitGames.Client.Photon;
 
 public class NewServerManager : MonoBehaviourPunCallbacks
-{   [Header("Texts")]
+{[Header("Texts")]
     [SerializeField] private TMP_Text _roomStatus;
     [SerializeField] private TMP_Text _playerAmmount;
 
@@ -59,16 +59,16 @@ public class NewServerManager : MonoBehaviourPunCallbacks
 
     public void JoinRoom()
     {
-        if(_roomsDropDown.options.Count>0)
-        PhotonNetwork.JoinRoom(_roomsDropDown.options[_roomsDropDown.value].text.Substring(0, _roomsDropDown.options[_roomsDropDown.value].text.IndexOf(':')));
+        if (_roomsDropDown.options.Count > 0)
+            PhotonNetwork.JoinRoom(_roomsDropDown.options[_roomsDropDown.value].text.Substring(0, _roomsDropDown.options[_roomsDropDown.value].text.IndexOf(':')));
     }
     public void CreateRoom()
     {
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = (int)_playerAmmountSlider.value;
         roomOptions.EmptyRoomTtl = 30000;
-        PhotonNetwork.CreateRoom(_roomNameInput.text,roomOptions,PhotonNetwork.CurrentLobby);
-    
+        PhotonNetwork.CreateRoom(_roomNameInput.text, roomOptions, PhotonNetwork.CurrentLobby);
+
     }
 
     public void JoinLobby()
@@ -88,7 +88,6 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     }
 
     #endregion
-
 
     #region callbacks
 
@@ -140,12 +139,24 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     {
         base.OnRoomListUpdate(roomList);
         Debug.Log("Room list updated");
+
         //PhotonNetwork.CurrentRoom.Name + ":" + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
         if (roomList.Count > 0)
         {
+            //_roomsDropDown.options[i].text.Substring(0, _roomsDropDown.options[i].text.IndexOf(':')) + ":" + roomList[i].PlayerCount + "/" + roomList[i].MaxPlayers
+            Debug.Log("Room list counter "  + roomList.Count);
             for (int i = 0; i < roomList.Count; i++)
+            {
+                if (_roomsDropDown.options[i].text == "" && _roomsDropDown.options[i].text != roomList[i].Name + ":" + roomList[i].PlayerCount + "/" + roomList[i].MaxPlayers)
+                {
+                    _roomsDropDown.options.Add(new TMP_Dropdown.OptionData(roomList[i].Name + ":" + roomList[i].PlayerCount + "/" + roomList[i].MaxPlayers));
+                }
+                else Debug.Log("Nothing happened");
+            }
+          
+                for (int i = 0; i < roomList.Count; i++)
             {/*.Substring(_roomsDropDown.options[_roomsDropDown.value].text.IndexOf(':'), _roomsDropDown.options[_roomsDropDown.value].text.Length - 1);*/
-                _roomsDropDown.options[i].text = _roomsDropDown.options[i].text.Substring(0,_roomsDropDown.options[i].text.IndexOf(':'))+ ":" + roomList[i].PlayerCount+"/"+ roomList[i].MaxPlayers;
+                //_roomsDropDown.options[i].text = _roomsDropDown.options[i].text.Substring(0,_roomsDropDown.options[i].text.IndexOf(':'))+ ":" + roomList[i].PlayerCount+"/"+ roomList[i].MaxPlayers;
                 if (roomList[i].RemovedFromList)
                 { 
                     Debug.Log("Room is closed" + roomList[i].Name);
