@@ -61,6 +61,7 @@ MonoBehaviour:
   _champSelectManger: {fileID: 0}
   strikeZone: {fileID: 3473974448797558478}
   neckIndicator: {fileID: 0}
+  mouseIndicator: {fileID: 0}
 --- !u!114 &9119552357703264867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,6 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f546d7e251454c4fac47b6e69443627, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myPlayerController: {fileID: 0}
 --- !u!1 &1979978665054664415
 GameObject:
   m_ObjectHideFlags: 0
