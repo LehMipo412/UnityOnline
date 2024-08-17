@@ -3893,7 +3893,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1165295538}
         m_TargetAssemblyTypeName: NewServerManager, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: JoinRandomRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
