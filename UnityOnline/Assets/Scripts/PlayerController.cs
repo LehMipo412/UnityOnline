@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviourPun
                     if (Input.GetKey(KeyCode.W))
                     {
                         playerAnimator.SetBool("IsRunning", true);
-                        Debug.Log("runing");
+                       // Debug.Log("runing");
                         transform.Translate(Vector3.forward * (Time.deltaTime * speed));
                     }
                     if (Input.GetKey(KeyCode.A))
@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviourPun
                     {
                        
                         playerAnimator.SetBool("IsRunning", false);
-                        Debug.Log("Idle");
+                      //  Debug.Log("Idle");
                     }
                     //Vector3 directionToFace = raycastPos - gameObject.transform.position;
                     //Quaternion lookAtRotation = Quaternion.LookRotation(directionToFace);

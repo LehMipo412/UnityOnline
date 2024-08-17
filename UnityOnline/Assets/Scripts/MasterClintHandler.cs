@@ -29,9 +29,14 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
        
     }
 
+    public void LeaveTheRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
     public override void OnLeftRoom()
     {
-        Debug.LogWarning("MasterLeft");
+       // Debug.LogWarning("MasterLeft");
         base.OnLeftRoom();
         if (isReallyMasterClient)
         {
@@ -45,6 +50,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
            
 
     }
+   
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
        
