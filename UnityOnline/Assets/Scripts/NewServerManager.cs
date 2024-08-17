@@ -32,7 +32,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
 
     [Header("Others")]
     private bool _hasLeftRoom = false;
-    private int motherfucker = 0;
+    private int _motherfucker = 0;
 
     #region Awake/Start
 
@@ -71,6 +71,13 @@ public class NewServerManager : MonoBehaviourPunCallbacks
         roomOptions.EmptyRoomTtl = 30000;
         PhotonNetwork.CreateRoom(_roomNameInput.text, roomOptions,TypedLobby.Default);
 
+    }
+    public void JoinRandomRoom()
+    {
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.EmptyRoomTtl = 30000;
+        PhotonNetwork.JoinRandomOrCreateRoom(null, 20, MatchmakingMode.FillRoom, TypedLobby.Default, null, "Default", roomOptions);
+        //PhotonNetwork.JoinRandomRoom();
     }
 
     public void JoinLobby()
@@ -134,10 +141,19 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        if (motherfucker == 0)
+        if (_motherfucker == 0)
         {
             base.OnRoomListUpdate(roomList);
             Debug.Log("Room list updated");
+
+
+            if (roomList.Count > 0)
+            {
+                for (int i = 0; i < roomList.Count; i++)
+                {
+                    _roomsDropDown.options.Add(new TMP_Dropdown.OptionData((roomList[i].Name + ":" + roomList[i].PlayerCount + "/" + roomList[i].MaxPlayers)));
+                }
+            }
 
             for (int i = 0; i < roomList.Count; i++)
             {
@@ -149,21 +165,14 @@ public class NewServerManager : MonoBehaviourPunCallbacks
                 }
             }
 
-            if (roomList.Count > 0)
-            {
-                for (int i = 0; i < roomList.Count; i++)
-                {
-                    _roomsDropDown.options.Add(new TMP_Dropdown.OptionData((roomList[i].Name + ":" + roomList[i].PlayerCount + "/" + roomList[i].MaxPlayers)));
-                }
-            }
-            motherfucker++;
+            _motherfucker++;
         }
-        else motherfucker = 0;
+        else _motherfucker = 0;
         
     }
     
 
-    //Fails
+    //Fails , not everything impelemented yet
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
