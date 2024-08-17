@@ -20,6 +20,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
+            Debug.Log("youAreMaster");
             ChangeNextPlayer();
         }
        
