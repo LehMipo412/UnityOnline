@@ -56,12 +56,7 @@ MonoBehaviour:
   - DisableProjectileMesh
   - StrikeFunc
   - GetKnockedBack
-  - SetNextSpawnPoint
-  - TellEveryoneYouPickedUpBoost
-  - GetPickupTransformFromGM
-  - TellEveryOneThatMasteClientChanged
-  - ShowEveryoneMasterChanged
-  - ChangeTextAndShowEveryoneToSpecificPlayer
+  - UpdateRoomsDropDown
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
