@@ -15,8 +15,9 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     [SerializeField] Canvas masterAnnouncer;
     [SerializeField] TMP_Text MasterChangerText;
     public Player nextMasterClient;
+    public Player naughtyPlayer;
     private bool isReallyMasterClient;
-    private bool didLeftRoom;
+   
 
     private void Awake()
     {
@@ -30,6 +31,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
        
     }
 
+    [ContextMenu("Get The Hell Out Of It")]
     public void LeaveTheRoom()
     {
         PhotonNetwork.LeaveRoom();
@@ -55,13 +57,10 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-       
-        if(otherPlayer.IsMasterClient)
-        {
-            Debug.LogWarning("Was Master Client");
-        }
+        naughtyPlayer = otherPlayer;
+        photonView.RPC(nameof(ChangeTextAndShowEveryoneToSpecificPlayer), RpcTarget.All);
     }
-
+    
     public void CustomChangeMasterClient()
     {
         //foreach (var player in PhotonNetwork.PlayerList)
@@ -77,6 +76,12 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
         
 
 
+    }
+    [PunRPC]
+    public void ChangeTextAndShowEveryoneToSpecificPlayer( PhotonMessageInfo messageInfo)
+    {
+        MasterChangerText.text = $"The Player Named {naughtyPlayer.NickName} Left The Room, Bonk Him With A Bat!";
+        ShowEveryoneMasterChanged();
     }
 
     [PunRPC]
