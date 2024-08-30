@@ -163,6 +163,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
             base.OnRoomListUpdate(roomList);
             Debug.Log("Room list updated");
 
+            //roomList[index].
 
             if (roomList.Count > 0)
             {

@@ -54,6 +54,11 @@ public class PlayerController : MonoBehaviourPun
             ProjectilePrefabName = "Prefabs\\SlashPrefab";
 
         }
+        if (playerRB.mass == 1.7f)
+        {
+            ProjectilePrefabName = "Prefabs\\PencilProjectile";
+
+        }
     }
 
     [PunRPC]
