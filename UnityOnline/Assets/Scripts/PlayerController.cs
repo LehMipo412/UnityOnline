@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] private GameObject strikeZone;
     public Transform neckIndicator;
     public Transform mouseIndicator;
+    [Header("AIChange")]
     public bool isSupposedToBeControlledByAI = false;
     private float AIChangeTimerTimer = 5f;
     private float AIRandomDiraction;
