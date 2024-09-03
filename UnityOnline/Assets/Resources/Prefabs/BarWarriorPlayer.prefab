@@ -61,8 +61,10 @@ MonoBehaviour:
   _photonView: {fileID: 9119552357703264867}
   _champSelectManger: {fileID: 0}
   strikeZone: {fileID: 4389095616869173216}
+  animationOffset: 0.25
   neckIndicator: {fileID: 6030989786506252308}
-  mouseIndicator: {fileID: 7654558989221638095}
+  mouseIndicator: {fileID: 0}
+  isSupposedToBeControlledByAI: 0
 --- !u!114 &9119552357703264867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,6 +248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPlayerController: {fileID: 0}
+  myPlayer: {fileID: 0}
 --- !u!1 &4026123817233970507
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,7 +275,7 @@ Transform:
   m_GameObject: {fileID: 4026123817233970507}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.113, y: 1.634, z: -0.53}
+  m_LocalPosition: {x: 0.022, y: 1.127, z: -0.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -291,6 +294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPlayerController: {fileID: 8055843406682671152}
+  myPlayer: {fileID: 5271725958691177362}
 --- !u!1 &4389095616869173216
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,8 +481,15 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 0df08a6f8d775db489de4b20e635f511, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 984ab5019325715429efbed4703328fa,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 65702495048144492, guid: 984ab5019325715429efbed4703328fa, type: 3}
+    - {fileID: -8700617353114198275, guid: 984ab5019325715429efbed4703328fa, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 984ab5019325715429efbed4703328fa, type: 3}

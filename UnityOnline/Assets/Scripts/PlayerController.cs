@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] private PhotonView _photonView;
     [SerializeField] private ChampSelectManger _champSelectManger;
     [SerializeField] private GameObject strikeZone;
+    [SerializeField] private float animationOffset;
     public Transform neckIndicator;
     public Transform mouseIndicator;
     public bool isSupposedToBeControlledByAI = false;
@@ -310,7 +311,9 @@ public class PlayerController : MonoBehaviourPun
         playerAnimator.SetBool("IsStriking", true);
         strikeZone.SetActive(true);
 
-        yield return new WaitForSeconds(2f);
+        float CRAL = playerAnimator.GetCurrentAnimatorClipInfo(0).Length;
+        Math.Clamp(CRAL,0.26f,CRAL);
+        yield return new WaitForSeconds(CRAL-animationOffset);
 
         strikeZone.SetActive(false);
         playerAnimator.SetBool("IsStriking", false);

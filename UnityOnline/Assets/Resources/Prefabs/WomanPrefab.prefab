@@ -35,6 +35,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6278493769418419671}
   - {fileID: 931737457757261167}
   - {fileID: 7013195896099820859}
   m_Father: {fileID: 0}
@@ -60,8 +61,10 @@ MonoBehaviour:
   _photonView: {fileID: 9119552357703264867}
   _champSelectManger: {fileID: 0}
   strikeZone: {fileID: 8078255535204110426}
-  neckIndicator: {fileID: 0}
+  animationOffset: 0.25
+  neckIndicator: {fileID: 6278493769418419671}
   mouseIndicator: {fileID: 0}
+  isSupposedToBeControlledByAI: 0
 --- !u!114 &9119552357703264867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,6 +235,52 @@ Transform:
   - {fileID: 4106756702852133300}
   m_Father: {fileID: 5271725958691177362}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5164476631506839562
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6278493769418419671}
+  - component: {fileID: 1892126863733784865}
+  m_Layer: 0
+  m_Name: NeckIndicator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6278493769418419671
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5164476631506839562}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.069, y: 0.813, z: 0.049999237}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5271725958691177362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1892126863733784865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5164476631506839562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f546d7e251454c4fac47b6e69443627, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myPlayerController: {fileID: 8055843406682671152}
+  myPlayer: {fileID: 5271725958691177362}
 --- !u!1 &8078255535204110426
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,6 +407,11 @@ PrefabInstance:
       propertyPath: m_WarningMessage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: e00c84fc9083317468172789fb06d32b,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -395,6 +449,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 2
     Name: IsRunning
+  - Type: 4
+    SynchronizeType: 2
+    Name: IsStriking
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0

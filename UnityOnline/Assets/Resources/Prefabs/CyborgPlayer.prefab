@@ -35,6 +35,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8731715892381326925}
   - {fileID: 931737457757261167}
   - {fileID: 3963004081438543340}
   m_Father: {fileID: 0}
@@ -60,7 +61,8 @@ MonoBehaviour:
   _photonView: {fileID: 9119552357703264867}
   _champSelectManger: {fileID: 0}
   strikeZone: {fileID: 3473974448797558478}
-  neckIndicator: {fileID: 0}
+  animationOffset: 0.25
+  neckIndicator: {fileID: 8731715892381326925}
   mouseIndicator: {fileID: 0}
   isSupposedToBeControlledByAI: 0
 --- !u!114 &9119552357703264867
@@ -186,7 +188,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4091756354992622828
 Transform:
   m_ObjectHideFlags: 0
@@ -215,6 +217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPlayerController: {fileID: 0}
+  myPlayer: {fileID: 0}
 --- !u!1 &1979978665054664415
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,6 +303,52 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0665288, y: 0.6215843, z: 0.11360938}
   m_Center: {x: -0.3294082, y: 0.18920374, z: 0.019402493}
+--- !u!1 &4273840012953629120
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8731715892381326925}
+  - component: {fileID: 3159970333284151628}
+  m_Layer: 0
+  m_Name: NeckIndicator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8731715892381326925
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4273840012953629120}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.034, y: 1.019, z: 0.049999237}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5271725958691177362}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3159970333284151628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4273840012953629120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f546d7e251454c4fac47b6e69443627, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myPlayerController: {fileID: 8055843406682671152}
+  myPlayer: {fileID: 5271725958691177362}
 --- !u!1 &4537401452706744879
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,6 +486,11 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 5a3b2ad3441ec1b439af4f904673ad0a, type: 2}
+    - target: {fileID: 5866666021909216657, guid: ab8fdb0962460ed418181855ef1a262d,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -486,6 +540,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 2
     Name: IsRunning
+  - Type: 4
+    SynchronizeType: 0
+    Name: IsStriking
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0

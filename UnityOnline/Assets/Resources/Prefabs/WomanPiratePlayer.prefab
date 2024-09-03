@@ -61,8 +61,10 @@ MonoBehaviour:
   _photonView: {fileID: 9119552357703264867}
   _champSelectManger: {fileID: 0}
   strikeZone: {fileID: 6410827152714084968}
+  animationOffset: -0.4
   neckIndicator: {fileID: 6226548437691656664}
   mouseIndicator: {fileID: 0}
+  isSupposedToBeControlledByAI: 0
 --- !u!114 &9119552357703264867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,7 +229,7 @@ Transform:
   m_GameObject: {fileID: 3798161841891744140}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.203, y: 1.073, z: 0.144}
+  m_LocalPosition: {x: -0.004, y: 0.832, z: 0.144}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -245,7 +247,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f546d7e251454c4fac47b6e69443627, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myPlayerController: {fileID: 0}
+  myPlayerController: {fileID: 8055843406682671152}
+  myPlayer: {fileID: 5271725958691177362}
 --- !u!1 &4537401452706744879
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,6 +434,11 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 176e200bca4094c469deee9bcacc4b59, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 55e6a3c9544edca4f817124507298a51,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -469,7 +477,7 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: IsRunning
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: IsStriking
   m_SynchronizeLayers:
   - SynchronizeType: 2
