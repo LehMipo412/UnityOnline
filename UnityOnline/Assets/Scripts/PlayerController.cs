@@ -24,6 +24,9 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] private GameObject strikeZone;
     public Transform neckIndicator;
     public Transform mouseIndicator;
+    public bool isSupposedToBeControlledByAI = false;
+    private float AIChangeTimerTimer = 5f;
+    private float AIRandomDiraction;
 
     private Vector3 raycastPos;
    // private Camera cachedCamera;
@@ -59,6 +62,7 @@ public class PlayerController : MonoBehaviourPun
             ProjectilePrefabName = "Prefabs\\PencilProjectile";
 
         }
+        AIRandomDiraction = Random.Range(0, 4);
     }
 
     [PunRPC]
@@ -86,13 +90,14 @@ public class PlayerController : MonoBehaviourPun
                     //}
                     if (!_photonView.IsMine)
                         return;
-
-                    if (Input.GetKey(KeyCode.W))
-                    {
-                        playerAnimator.SetBool("IsRunning", true);
-                       // Debug.Log("runing");
-                        transform.Translate(Vector3.forward * (Time.deltaTime * speed));
-                    }
+                    if (!isSupposedToBeControlledByAI)
+                    { 
+                        if (Input.GetKey(KeyCode.W))
+                        {
+                            playerAnimator.SetBool("IsRunning", true);
+                            // Debug.Log("runing");
+                            transform.Translate(Vector3.forward * (Time.deltaTime * speed));
+                        }
                     if (Input.GetKey(KeyCode.A))
                     {
                         playerAnimator.SetBool("IsRunning", true);
@@ -116,15 +121,14 @@ public class PlayerController : MonoBehaviourPun
                     }
                     if (Input.GetKeyDown(KeyCode.Mouse1))
                     {
-                        Debug.Log("Strike!");
-                        photonView.RPC(nameof(StrikeFunc), RpcTarget.All);
+                        StrikeEnvelope();
                     }
 
                     if (!Input.anyKey)
                     {
-                       
+
                         playerAnimator.SetBool("IsRunning", false);
-                      //  Debug.Log("Idle");
+                        //  Debug.Log("Idle");
                     }
                     //Vector3 directionToFace = raycastPos - gameObject.transform.position;
                     //Quaternion lookAtRotation = Quaternion.LookRotation(directionToFace);
@@ -132,10 +136,53 @@ public class PlayerController : MonoBehaviourPun
                     //eulerRotation.x = 0;
                     //eulerRotation.z = 0;
                     //transform.eulerAngles = eulerRotation;
-
+                }
+                    else
+                    {
+                        AIChangeTimerTimer -= Time.deltaTime;
+                        if(AIChangeTimerTimer <=0)
+                        {
+                            StrikeEnvelope();
+                            AIChangeTimerTimer = 5f;
+                            AIRandomDiraction = Random.Range(0, 4);
+                        }
+                        else
+                        {
+                            if (AIRandomDiraction == 0)
+                            {
+                                playerAnimator.SetBool("IsRunning", true);
+                                // Debug.Log("runing");
+                                transform.Translate(Vector3.forward * (Time.deltaTime * speed));
+                            }
+                            if (AIRandomDiraction == 1)
+                            {
+                                playerAnimator.SetBool("IsRunning", true);
+                                // Debug.Log("runing");
+                                transform.Translate(Vector3.left * (Time.deltaTime * speed));
+                            }
+                            if (AIRandomDiraction == 2)
+                            {
+                                playerAnimator.SetBool("IsRunning", true);
+                                // Debug.Log("runing");
+                                transform.Translate(Vector3.back * (Time.deltaTime * speed));
+                            }
+                            if (AIRandomDiraction == 3)
+                            {
+                                playerAnimator.SetBool("IsRunning", true);
+                                // Debug.Log("runing");
+                                transform.Translate(Vector3.right * (Time.deltaTime * speed));
+                            }
+                        }
+                    }
                 }
             }
         }
+    }
+
+    public void StrikeEnvelope()
+    {
+        Debug.Log("Strike!");
+        photonView.RPC(nameof(StrikeFunc), RpcTarget.All);
     }
     [PunRPC]
     public void TakeDamage()

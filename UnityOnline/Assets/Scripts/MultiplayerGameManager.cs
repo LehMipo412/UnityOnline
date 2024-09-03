@@ -11,7 +11,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
     private const string WomanPlayerPathName = "Prefabs\\WomanPrefab";
     private const string CyborgPlayerPathName = "Prefabs\\CyborgPlayer";
     private const string PiratePlayerPathName = "Prefabs\\WomanPiratePlayer";
-    private const string BarPlayerPathName = "Prefabs\\BarWarriorPlayer"; 
+    private const string BarPlayerPathName = "Prefabs\\BarWarriorPlayer";
     public CinemachineCamera playerFollowerCamera;
 
 
@@ -28,10 +28,10 @@ public class MultiplayerGameManager : MonoBehaviourPun
 
     private void Start()
     {
-      
+
     }
 
-  public  SpawnPoint GetRandomSpawnPoint()
+    public SpawnPoint GetRandomSpawnPoint()
     {
         List<SpawnPoint> availableSpawnPoints = new List<SpawnPoint>();
 
@@ -53,7 +53,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
     }
     public void SpawnPlayer(SpawnPoint targetSpawnPoint, int index)
     {
-        
+
         if (index == 0)
         {
             targetSpawnPoint.Take();
@@ -104,6 +104,17 @@ public class MultiplayerGameManager : MonoBehaviourPun
 
         messageInfo.photonView.RPC(nameof(SetSpawnPoint), messageInfo.Sender, randomSpawnPoint);
     }
+    [PunRPC]
+    public void SwitchToAI()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if (photonView.ViewID != photonView.ViewID)
+            {
+                Debug.Log("Meep Morp, ZEET!");
+                selectedPlayer.GetComponent<PlayerController>().isSupposedToBeControlledByAI = true;
+            }
+        }
 
-
+    }
 }

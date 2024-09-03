@@ -7481,6 +7481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a453902f1d3c8f41b8a7c9e10c5369a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _multiplayerGameManager: {fileID: 1304429673}
   masterAnnouncer: {fileID: 1743066650}
   MasterChangerText: {fileID: 717443739}
 --- !u!1 &1973196154

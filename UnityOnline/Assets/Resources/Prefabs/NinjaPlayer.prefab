@@ -63,6 +63,7 @@ MonoBehaviour:
   strikeZone: {fileID: 7154444215207190756}
   neckIndicator: {fileID: 6030989786506252308}
   mouseIndicator: {fileID: 7654558989221638095}
+  isSupposedToBeControlledByAI: 0
 --- !u!114 &9119552357703264867
 MonoBehaviour:
   m_ObjectHideFlags: 0

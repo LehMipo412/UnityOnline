@@ -12,6 +12,7 @@ using Photon.Pun.UtilityScripts;
 
 public class MasterClintHandler : MonoBehaviourPunCallbacks
 {
+    [SerializeField] MultiplayerGameManager _multiplayerGameManager;
     [SerializeField] Canvas masterAnnouncer;
     [SerializeField] TMP_Text MasterChangerText;
     public Player nextMasterClient;
@@ -59,6 +60,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     {
         naughtyPlayer = otherPlayer;
         photonView.RPC(nameof(ChangeTextAndShowEveryoneToSpecificPlayer), RpcTarget.All);
+        _multiplayerGameManager.photonView.RPC(nameof(_multiplayerGameManager.SwitchToAI), RpcTarget.All);
     }
     
     public void CustomChangeMasterClient()
