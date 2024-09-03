@@ -8,7 +8,8 @@ using System.Collections.Generic;
 using ExitGames.Client.Photon;
 
 public class NewServerManager : MonoBehaviourPunCallbacks
-{[Header("Texts")]
+{
+    [Header("Texts")]
     [SerializeField] private TMP_Text _gameStatus;
     [SerializeField] private TMP_Text _playerAmmount;
     [SerializeField] private TMP_Text _roomStatus;
@@ -34,8 +35,8 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     [SerializeField] private Slider _playerAmmountSlider;
 
     [Header("Others")]
+    List<RoomInfo> MyRoomList;
     private bool _hasLeftRoom = false;
-    private int _motherfucker = 0;
     private bool isInRoom = false;
 
     #region Awake/Start
@@ -44,12 +45,20 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings();
+        MyRoomList = new List<RoomInfo>();
     }
     public void Update()
     {
         _gameStatus.text = PhotonNetwork.NetworkClientState.ToString();
-        if (isInRoom) _roomStatus.text = "Room Name : " + PhotonNetwork.CurrentRoom.Name + " - "
-                + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers + " Players";
+        if (isInRoom)
+        {
+            _roomStatus.text = "Room Name : " + PhotonNetwork.CurrentRoom.Name + " - "
+                  + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers + " Players";
+        }
+        if (_roomsDropDown.options.Count == 0)
+        {
+            _roomsDropDown.captionText.text = "";
+        }
     }
 
     #endregion
@@ -68,15 +77,18 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     public void JoinRoom()
     {
         if (_roomsDropDown.options.Count > 0)
+        {
             PhotonNetwork.JoinRoom(_roomsDropDown.options[_roomsDropDown.value].text.Substring(0, _roomsDropDown.options[_roomsDropDown.value].text.IndexOf(':')));
+        }
+       
     }
     public void CreateRoom()
     {
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = (int)_playerAmmountSlider.value;
         roomOptions.EmptyRoomTtl = 30000;
-        roomOptions.PlayerTtl = 30000;
-        PhotonNetwork.CreateRoom(_roomNameInput.text, roomOptions,TypedLobby.Default);
+        //roomOptions.PlayerTtl = 30000;
+        PhotonNetwork.CreateRoom(_roomNameInput.text, roomOptions, TypedLobby.Default);
 
     }
     public void JoinRandomRoom()
@@ -102,7 +114,6 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     public void EditNickname()
     {
         PhotonNetwork.NickName = nicknameEditorInputField.text;
-        Debug.Log("The name of this Client is:" + PhotonNetwork.NickName);
     }
 
     #endregion
@@ -112,13 +123,13 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         base.OnConnectedToMaster();
-        if(!_hasLeftRoom)
-        { 
-        Debug.Log("Connected To Master Succesfully");
+        if (!_hasLeftRoom)
+        {
+            Debug.Log("Connected To Master Succesfully");
         }
         else
-        { 
-        PhotonNetwork.JoinLobby(new TypedLobby(_lobbiesDropDown.options[(int)_lobbiesDropDown.value].text, LobbyType.Default));
+        {
+            PhotonNetwork.JoinLobby(new TypedLobby(_lobbiesDropDown.options[(int)_lobbiesDropDown.value].text, LobbyType.Default));
             _hasLeftRoom = false;
         }
     }
@@ -158,44 +169,71 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        if (_motherfucker == 0)
+
+        base.OnRoomListUpdate(roomList);
+        Debug.Log("Room list updated");
+
+
+        if (roomList.Count > 0)
         {
-            base.OnRoomListUpdate(roomList);
-            Debug.Log("Room list updated");
-
-            //roomList[index].
-
-            if (roomList.Count > 0)
-            {
-                for (int i = 0; i < roomList.Count; i++)
-                {
-                    _roomsDropDown.options.Add(new TMP_Dropdown.OptionData((roomList[i].Name + ":" + roomList[i].PlayerCount + "/" + roomList[i].MaxPlayers)));
-                }
-            }
-
             for (int i = 0; i < roomList.Count; i++)
             {
-                if (roomList[i].RemovedFromList)
+                Debug.Log(roomList[i].Name + ":" + roomList[i].PlayerCount + "/" + roomList[i].MaxPlayers);
+
+                if (roomList[i].IsOpen && roomList[i].IsVisible && !MyRoomList.Contains(roomList[i]))
                 {
-                    Debug.Log("Room is closed" + roomList[i].Name);
-                    _roomsDropDown.options.RemoveAt(i);
-                    roomList.RemoveAt(i);
+                    _roomsDropDown.options.Add(new TMP_Dropdown.OptionData((roomList[i].Name + ":" + roomList[i].PlayerCount + "/" + roomList[i].MaxPlayers)));
+                    MyRoomList.Add(roomList[i]);
+                }
+
+                for (int j = 0; j < _roomsDropDown.options.Count; j++)
+                {
+                    string st = _roomsDropDown.options[j].text.Split(':')[0];
+                    if (st == roomList[i].Name)
+                    {
+                        _roomsDropDown.options[j].text = roomList[i].Name + ":" + roomList[i].PlayerCount + "/" + roomList[i].MaxPlayers;
+                    }
                 }
             }
-
-            _motherfucker++;
         }
-        else _motherfucker = 0;
-        
+
+        for (int i = 0; i < roomList.Count; i++)
+        {
+            if (roomList[i].RemovedFromList)
+            {
+                Debug.Log("Room is closed " + roomList[i].Name);
+
+                //Remove from dropdown
+                for (int j = 0; j < _roomsDropDown.options.Count; j++)
+                {
+                    string st = _roomsDropDown.options[j].text.Split(':')[0];
+                    if (st == roomList[i].Name)
+                    {
+                        _roomsDropDown.options.RemoveAt(j);
+                    }
+                }
+               
+                //List for Duplicates
+                for (int j = 0; j < MyRoomList.Count; j++)
+                {
+                    if (MyRoomList[j].Name == roomList[i].Name)
+                    {
+                        MyRoomList.RemoveAt(j);
+                    }
+                }
+                //roomList.RemoveAt(i);
+                
+            }
+        }
     }
-    
+
 
     //Fails , not everything impelemented yet
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         base.OnJoinRandomFailed(returnCode, message);
-        Debug.Log("Error number "+returnCode + "Error Message "+ message);
+        Debug.Log("Error number " + returnCode + "Error Message " + message);
     }
 
 
