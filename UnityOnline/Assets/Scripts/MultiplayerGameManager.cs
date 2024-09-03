@@ -109,7 +109,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            if (photonView.ViewID != photonView.ViewID)
+            if (photonView.OwnerActorNr != photonView.CreatorActorNr)
             {
                 Debug.Log("Meep Morp, ZEET!");
                 selectedPlayer.GetComponent<PlayerController>().isSupposedToBeControlledByAI = true;
