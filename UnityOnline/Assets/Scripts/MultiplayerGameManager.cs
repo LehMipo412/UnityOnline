@@ -89,6 +89,8 @@ public class MultiplayerGameManager : MonoBehaviourPun
         //playerFollowerCamera.Follow = selectedPlayer.GetComponent<PlayerController>().neckIndicator;
         //playerFollowerCamera.LookAt= selectedPlayer.GetComponent<PlayerController>().mouseIndicator; ;
         //Cursor.lockState = CursorLockMode.Locked;
+
+
     }
     [PunRPC]
     private void SetSpawnPoint(SpawnPoint spawnPoint)
@@ -107,14 +109,14 @@ public class MultiplayerGameManager : MonoBehaviourPun
     [PunRPC]
     public void SwitchToAI()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            if (photonView.OwnerActorNr != photonView.CreatorActorNr)
+        Debug.Log("going to ai thingy");
+        
+            if (photonView.OwnerActorNr == photonView.CreatorActorNr)
             {
                 Debug.Log("Meep Morp, ZEET!");
                 selectedPlayer.GetComponent<PlayerController>().isSupposedToBeControlledByAI = true;
             }
-        }
+        
 
     }
 }

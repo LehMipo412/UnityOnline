@@ -58,10 +58,13 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        Debug.Log("Player Left");
         naughtyPlayer = otherPlayer;
-        photonView.RPC(nameof(ChangeTextAndShowEveryoneToSpecificPlayer), RpcTarget.All);
+        photonView.RPC(nameof(ChangeTextAndShowEveryoneToSpecificPlayer), RpcTarget.MasterClient);
         _multiplayerGameManager.photonView.RPC(nameof(_multiplayerGameManager.SwitchToAI), RpcTarget.All);
     }
+
+    
     
     public void CustomChangeMasterClient()
     {
