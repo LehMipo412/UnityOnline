@@ -247,6 +247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPlayerController: {fileID: 0}
+  myPlayer: {fileID: 0}
 --- !u!1 &4026123817233970507
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,7 +274,7 @@ Transform:
   m_GameObject: {fileID: 4026123817233970507}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.30799997, y: 1.6339998, z: 0.049999237}
+  m_LocalPosition: {x: -0.401, y: 1.489, z: 0.049999237}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -292,6 +293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPlayerController: {fileID: 8055843406682671152}
+  myPlayer: {fileID: 5271725958691177362}
 --- !u!1 &4537401452706744879
 GameObject:
   m_ObjectHideFlags: 0

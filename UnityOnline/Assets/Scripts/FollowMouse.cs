@@ -4,11 +4,14 @@ using UnityEngine;
 public class FollowMouse : MonoBehaviour
 {
    [SerializeField] PlayerController myPlayerController;
+   [SerializeField] Transform myPlayer;
    
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(new Vector3(Input.GetAxis("Mouse Y")*-1, Input.GetAxis("Mouse X") , 0) * -1 );
+        myPlayer.transform.Rotate(new Vector3(/*Input.GetAxis("Mouse Y")*-1*/0, Input.GetAxis("Mouse X") , 0));
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = false;
         //transform.localEulerAngles = Input.mousePosition;
         var horizonAngle = transform.localEulerAngles.x;
         var verticalAngle = transform.localEulerAngles.y;
