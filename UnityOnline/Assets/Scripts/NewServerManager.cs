@@ -86,7 +86,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     {
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = (int)_playerAmmountSlider.value;
-        roomOptions.EmptyRoomTtl = 3000;
+        roomOptions.EmptyRoomTtl = 30000;
         //roomOptions.PlayerTtl = 30000;
         PhotonNetwork.CreateRoom(_roomNameInput.text, roomOptions, TypedLobby.Default);
 
