@@ -109,12 +109,15 @@ public class MultiplayerGameManager : MonoBehaviourPun
     [PunRPC]
     public void TellPlayerToSwitchToAI()
     {
+        var currentPlayerController = selectedPlayer.GetComponent<PlayerController>();
         Debug.Log("going to ai thingy");
-        
-            if (photonView.OwnerActorNr != photonView.CreatorActorNr)
+        Debug.LogWarning("owner actor: "+ currentPlayerController.photonView.OwnerActorNr);
+        Debug.LogWarning("creator actor: " + currentPlayerController.photonView.CreatorActorNr);
+
+        if (currentPlayerController.photonView.OwnerActorNr != currentPlayerController.photonView.CreatorActorNr)
             {
                 Debug.Log("Meep Morp, ZEET!");
-            var currentPlayerController = selectedPlayer.GetComponent<PlayerController>();
+           
             currentPlayerController.photonView.RPC(nameof(currentPlayerController.SwitchFromPlayerToAI), RpcTarget.All);
             }
         
