@@ -55,6 +55,10 @@ public class NewServerManager : MonoBehaviourPunCallbacks
             _roomStatus.text = "Room Name : " + PhotonNetwork.CurrentRoom.Name + " - "
                   + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers + " Players";
         }
+        if (_roomsDropDown.options.Count == 0)
+        {
+            _roomsDropDown.itemText.text = "";
+        }
     }
 
     #endregion
