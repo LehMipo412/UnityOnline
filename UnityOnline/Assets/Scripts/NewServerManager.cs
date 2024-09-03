@@ -38,6 +38,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     List<RoomInfo> MyRoomList;
     private bool _hasLeftRoom = false;
     private bool isInRoom = false;
+    private bool _shouldRefresh = false;
 
     #region Awake/Start
 
@@ -64,6 +65,18 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     #endregion
 
     #region Buttons
+
+    public void LeaveLobbyButt()
+    {
+        PhotonNetwork.LeaveLobby();
+        _roomsSection.SetActive(false);
+        _lobbySection.SetActive(true);
+    }
+    public void Refresh()
+    {
+        _shouldRefresh = true;
+        PhotonNetwork.LeaveLobby();
+    }
 
     public void UpdateSlider()
     {
@@ -120,11 +133,26 @@ public class NewServerManager : MonoBehaviourPunCallbacks
 
     #region callbacks
 
+    public override void OnLeftLobby()
+    {
+        base.OnLeftLobby();
+        if (_shouldRefresh)
+        {
+            PhotonNetwork.JoinLobby(new TypedLobby(_lobbiesDropDown.options[(int)_lobbiesDropDown.value].text, LobbyType.Default));
+            _shouldRefresh = false;
+        }
+
+        _roomsDropDown.options.Clear();
+        MyRoomList.Clear();
+    }
     public override void OnConnectedToMaster()
     {
+        Debug.Log(_hasLeftRoom + " " + _shouldRefresh);
+
         base.OnConnectedToMaster();
         if (!_hasLeftRoom)
         {
+        
             Debug.Log("Connected To Master Succesfully");
         }
         else
