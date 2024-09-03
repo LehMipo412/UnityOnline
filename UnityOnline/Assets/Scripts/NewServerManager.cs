@@ -39,6 +39,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     private bool _hasLeftRoom = false;
     private bool isInRoom = false;
     private bool _shouldRefresh = false;
+    private int _roomsCount = 0;
 
     #region Awake/Start
 
@@ -106,10 +107,13 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     }
     public void JoinRandomRoom()
     {
+        if(_roomsCount <= 0)
+        { 
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.EmptyRoomTtl = 30000;
         PhotonNetwork.JoinRandomOrCreateRoom(null, 20, MatchmakingMode.FillRoom, TypedLobby.Default, null, "Default", roomOptions);
-        //PhotonNetwork.JoinRandomRoom();
+        }
+        else PhotonNetwork.JoinRandomRoom();
     }
 
     public void JoinLobby()
@@ -198,6 +202,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
 
+        _roomsCount = roomList.Count;
         base.OnRoomListUpdate(roomList);
         Debug.Log("Room list updated");
 
@@ -229,6 +234,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
         {
             if (roomList[i].RemovedFromList)
             {
+                _roomsCount = roomList.Count;
                 Debug.Log("Room is closed " + roomList[i].Name);
 
                 //Remove from dropdown
