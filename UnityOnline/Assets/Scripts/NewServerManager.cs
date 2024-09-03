@@ -57,7 +57,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
         }
         if (_roomsDropDown.options.Count == 0)
         {
-            _roomsDropDown.itemText.text = "";
+            _roomsDropDown.captionText.text = "";
         }
     }
 
