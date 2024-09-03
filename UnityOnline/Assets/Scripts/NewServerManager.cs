@@ -38,7 +38,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     List<RoomInfo> MyRoomList;
     private bool _hasLeftRoom = false;
     private bool isInRoom = false;
-    private int RoomCount = 0;
+    private bool _shouldRefresh = false;
 
     #region Awake/Start
 
@@ -65,6 +65,18 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     #endregion
 
     #region Buttons
+
+    public void LeaveLobbyButt()
+    {
+        PhotonNetwork.LeaveLobby();
+        _roomsSection.SetActive(false);
+        _lobbySection.SetActive(true);
+    }
+    public void Refresh()
+    {
+        _shouldRefresh = true;
+        PhotonNetwork.LeaveLobby();
+    }
 
     public void UpdateSlider()
     {
@@ -94,17 +106,10 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     }
     public void JoinRandomRoom()
     {
-        Debug.Log("Room count is " + RoomCount);
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.EmptyRoomTtl = 30000;
-        if (RoomCount == 0)
-        {
-            PhotonNetwork.JoinRandomOrCreateRoom(null, 20, MatchmakingMode.FillRoom, TypedLobby.Default, null, "Default", roomOptions);
-            return;
-        }
-
-        PhotonNetwork.JoinRandomRoom();
-
+        PhotonNetwork.JoinRandomOrCreateRoom(null, 20, MatchmakingMode.FillRoom, TypedLobby.Default, null, "Default", roomOptions);
+        //PhotonNetwork.JoinRandomRoom();
     }
 
     public void JoinLobby()
@@ -128,11 +133,26 @@ public class NewServerManager : MonoBehaviourPunCallbacks
 
     #region callbacks
 
+    public override void OnLeftLobby()
+    {
+        base.OnLeftLobby();
+        if (_shouldRefresh)
+        {
+            PhotonNetwork.JoinLobby(new TypedLobby(_lobbiesDropDown.options[(int)_lobbiesDropDown.value].text, LobbyType.Default));
+            _shouldRefresh = false;
+        }
+
+        _roomsDropDown.options.Clear();
+        MyRoomList.Clear();
+    }
     public override void OnConnectedToMaster()
     {
+        Debug.Log(_hasLeftRoom + " " + _shouldRefresh);
+
         base.OnConnectedToMaster();
         if (!_hasLeftRoom)
         {
+        
             Debug.Log("Connected To Master Succesfully");
         }
         else
@@ -177,9 +197,10 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        RoomCount = roomList.Count;
+
         base.OnRoomListUpdate(roomList);
         Debug.Log("Room list updated");
+
 
         if (roomList.Count > 0)
         {
@@ -208,7 +229,6 @@ public class NewServerManager : MonoBehaviourPunCallbacks
         {
             if (roomList[i].RemovedFromList)
             {
-                RoomCount = roomList.Count;
                 Debug.Log("Room is closed " + roomList[i].Name);
 
                 //Remove from dropdown
