@@ -316,5 +316,9 @@ public class PlayerController : MonoBehaviourPun
         playerAnimator.SetBool("IsStriking", false);
     }
 
-    
+    [PunRPC]
+    public void SwitchFromPlayerToAI()
+    {
+        isSupposedToBeControlledByAI = true;
+    }
 }
