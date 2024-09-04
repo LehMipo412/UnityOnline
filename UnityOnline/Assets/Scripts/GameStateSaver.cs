@@ -27,8 +27,12 @@ public class GameStateSaver : MonoBehaviour
         else
         {
             Instance = this;
+           
             Debug.Log("GameStateServer is up!");
         }
+        takenChampionIndexesList = new List<int>();
+        playersStatsInfo = new List<PlayerSaveCapsule>();
+        playersList = new List<PlayerController>();
     }
 
    public void SavePlayerHP(int playerIndex)

@@ -107,10 +107,10 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     public void ChangeNextPlayer()
     {
         int playerIndex = PhotonNetwork.PlayerList.ToListPooled().IndexOf((PhotonNetwork.LocalPlayer));
-        if (PhotonNetwork.PlayerList[playerIndex + 1] != null)
-        {
-           // nextMasterClient = PhotonNetwork.PlayerList[playerIndex + 1];
-        }
+        //if (PhotonNetwork.PlayerList[playerIndex + 1] != null)
+        //{
+        //   // nextMasterClient = PhotonNetwork.PlayerList[playerIndex + 1];
+        //}
     }
 
     public void GiveTheMasterCrown()
