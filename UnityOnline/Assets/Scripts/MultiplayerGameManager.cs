@@ -30,7 +30,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
     {
        // if (photonView.Owner.HasRejoined)
        // {
-            GameStateSaver.Instance.LoadGameState();
+            photonView.RPC(nameof(GameStateSaver.Instance.LoadGameState), RpcTarget.All);
        // }
     }
 

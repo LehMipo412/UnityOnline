@@ -4,6 +4,7 @@ using System.Collections;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using Photon.Pun;
 
 public class GameStateSaver : MonoBehaviour
 {
@@ -53,6 +54,7 @@ public class GameStateSaver : MonoBehaviour
         SaveToJson(playerIndex);
     }
 
+   [PunRPC]
     public void LoadGameState()
     {
         LoadFromJson();
