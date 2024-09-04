@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 public class ChampSelectManger : MonoBehaviourPun
 {
-    [SerializeField] Button[] champsButtons;
+    [SerializeField] public Button[] champsButtons;
     [SerializeField] Canvas champSelectCanvas;
     [SerializeField] Canvas gameOverCanvas;
     [SerializeField] MultiplayerGameManager currentMultiplayerManager;

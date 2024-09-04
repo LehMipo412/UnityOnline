@@ -60,8 +60,9 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     {
         Debug.Log("Player Left");
         naughtyPlayer = otherPlayer;
+        
         photonView.RPC(nameof(ChangeTextAndShowEveryoneToSpecificPlayer), RpcTarget.All);
-        _multiplayerGameManager.TellPlayerToSwitchToAI();
+        _multiplayerGameManager.TellPlayerToSwitchToAI(otherPlayer.ActorNumber);
     }
 
     

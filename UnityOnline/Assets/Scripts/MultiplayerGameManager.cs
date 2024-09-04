@@ -28,7 +28,10 @@ public class MultiplayerGameManager : MonoBehaviourPun
 
     private void Start()
     {
-
+       // if (photonView.Owner.HasRejoined)
+       // {
+            GameStateSaver.Instance.LoadGameState();
+       // }
     }
 
     public SpawnPoint GetRandomSpawnPoint()
@@ -84,6 +87,8 @@ public class MultiplayerGameManager : MonoBehaviourPun
             selectedPlayer = PhotonNetwork.Instantiate(BarPlayerPathName,
                 targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
         }
+        GameStateSaver.Instance.takenChampionIndexesList.Add(index);
+        GameStateSaver.Instance.SaveTakenIndexToJson();
 
         playerFollowerCamera.Target.TrackingTarget = selectedPlayer.GetComponent<PlayerController>().neckIndicator;
         //playerFollowerCamera.Follow = selectedPlayer.GetComponent<PlayerController>().neckIndicator;
@@ -107,20 +112,24 @@ public class MultiplayerGameManager : MonoBehaviourPun
         messageInfo.photonView.RPC(nameof(SetSpawnPoint), messageInfo.Sender, randomSpawnPoint);
     }
     [PunRPC]
-    public void TellPlayerToSwitchToAI()
+    public void TellPlayerToSwitchToAI(int leftPlayerId)
     {
         var currentPlayerController = selectedPlayer.GetComponent<PlayerController>();
+      //  var leftPlayerController = leftManager.selectedPlayer.GetComponent<PlayerController>();
         Debug.Log("going to ai thingy");
-        Debug.LogWarning("owner actor: "+ currentPlayerController.photonView.OwnerActorNr);
+      //  Debug.LogWarning("owner actor: "+ leftPlayerController.photonView.Owner.ActorNumber);
         Debug.LogWarning("creator actor: " + currentPlayerController.photonView.CreatorActorNr);
+        Debug.LogWarning("Mass Of Your Supposed player: "+currentPlayerController.playerRB.mass);
+       // Debug.LogWarning("Mass Of Your Supposed Leftplayer" + leftPlayerController.playerRB.mass);
 
-        if (currentPlayerController.photonView.OwnerActorNr != currentPlayerController.photonView.CreatorActorNr)
-            {
-                Debug.Log("Meep Morp, ZEET!");
-           
-            currentPlayerController.photonView.RPC(nameof(currentPlayerController.SwitchFromPlayerToAI), RpcTarget.All);
-            }
-        
+        if (currentPlayerController.photonView.Owner.IsMasterClient)
+        {
+            
+             
 
+                currentPlayerController.photonView.RPC(nameof(currentPlayerController.SwitchFromPlayerToAI), RpcTarget.All, leftPlayerId);
+            
+
+        }
     }
 }

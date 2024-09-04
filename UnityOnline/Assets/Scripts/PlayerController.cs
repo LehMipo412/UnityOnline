@@ -8,21 +8,25 @@ using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviourPun
 {
+    [Header("const strings")]
     private const string ProjectileTag = "Projectile";
     private const string BoostBoxTag = "BoostBox";
     private const string DamageBoxTag = "DamageBox";
     private string ProjectilePrefabName = "Prefabs\\Projectile";
     private const string RecievedamageRPC = "RecieveDamage";
+    [Header("Damage and movement")]
     [SerializeField] private Transform projectileSpawnTransform;
     [SerializeField] public float damage;
-    [SerializeField] private float knockbackPrecentage;
+    [SerializeField] public float knockbackPrecentage;
     [SerializeField] private float speed = 10;
-    [SerializeField] private Rigidbody playerRB;
+    [Header("Network and physics")]
+    [SerializeField] public Rigidbody playerRB;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private PhotonView _photonView;
     [SerializeField] private ChampSelectManger _champSelectManger;
     [SerializeField] private GameObject strikeZone;
     [SerializeField] private float animationOffset;
+    [Header("Camera Helpers")]
     public Transform neckIndicator;
     public Transform mouseIndicator;
     [Header("AIChange")]
@@ -30,14 +34,20 @@ public class PlayerController : MonoBehaviourPun
     private float AIChangeTimerTimer = 5f;
     private float AIRandomDiraction;
 
-    private Vector3 raycastPos;
-   // private Camera cachedCamera;
-    private int HP = 200;
+    [Header("Hp and Score")]
+    public float HP = 200;
+    public int score = 0;
+
+    public PlayerSaveCapsule gameStateHandler;
 
     private void Start()
     {
         //cachedCamera = Camera.main;
-        
+        if(PhotonNetwork.CurrentRoom.CustomProperties.ContainsValue("Begginer"))
+        {
+            damage = 1.5f;
+        }
+
         _champSelectManger = ChampSelectManger.Instance;
         if(playerRB.mass ==2f)
         {
@@ -321,8 +331,14 @@ public class PlayerController : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void SwitchFromPlayerToAI()
+    public void SwitchFromPlayerToAI(int leftplayerID, PhotonMessageInfo info)
     {
-        isSupposedToBeControlledByAI = true;
+        Debug.LogWarning("leftplayerID Player Id is: " + leftplayerID);
+        Debug.LogWarning("creator ID: " + photonView.CreatorActorNr);
+        if (leftplayerID == photonView.CreatorActorNr)
+        {
+            Debug.Log("Meep Morp, ZEET!");
+            isSupposedToBeControlledByAI = true;
+        }
     }
 }
