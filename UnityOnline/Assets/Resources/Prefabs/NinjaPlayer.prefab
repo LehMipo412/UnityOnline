@@ -64,6 +64,12 @@ MonoBehaviour:
   neckIndicator: {fileID: 6030989786506252308}
   mouseIndicator: {fileID: 7654558989221638095}
   isSupposedToBeControlledByAI: 0
+  HP: 200
+  score: 0
+  gameStateHandler:
+    <HP>k__BackingField: 0
+    <Score>k__BackingField: 0
+    <KnockBackPrecentage>k__BackingField: 0
 --- !u!114 &9119552357703264867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,7 +135,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!114 &6748785935870189712
