@@ -42,6 +42,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     private bool isInRoom = false;
     private bool _shouldRefresh = false;
     private int _roomsCount = 0;
+    private const string Diff = "D";
 
     #region Awake/Start
 
@@ -107,7 +108,8 @@ public class NewServerManager : MonoBehaviourPunCallbacks
             MaxPlayers = (int)_playerAmmountSlider.value,
             EmptyRoomTtl = 30000,
             PlayerTtl = 30000,
-            CustomRoomProperties = new Hashtable() { { "Difficulty", _createRoomMode.options[_createRoomMode.value].text } }
+            CustomRoomPropertiesForLobby = new string[] { Diff },
+            CustomRoomProperties = new Hashtable() { { Diff, _createRoomMode.options[_createRoomMode.value].text } }
         };
            
         PhotonNetwork.CreateRoom(_roomNameInput.text, roomOptions, TypedLobby.Default);
@@ -118,15 +120,14 @@ public class NewServerManager : MonoBehaviourPunCallbacks
         {
             RoomOptions roomOptions = new();
             roomOptions.EmptyRoomTtl = 30000;
+            roomOptions.PlayerTtl = 30000;
             roomOptions.MaxPlayers = 20;
-            roomOptions.IsVisible = true;
-            roomOptions.IsOpen = true;
-            roomOptions.CustomRoomProperties = new Hashtable() { { "Difficulty", _createRoomMode.options[_createRoomMode.value].text } };
-            PhotonNetwork.JoinRandomOrCreateRoom(roomOptions.CustomRoomProperties,0,MatchmakingMode.RandomMatching, TypedLobby.Default, null, "Default", roomOptions);
+            roomOptions.CustomRoomProperties = new Hashtable() { { Diff, _joinRoomProperty.options[_joinRoomProperty.value].text } };
+            roomOptions.CustomRoomPropertiesForLobby = new string[] { Diff };
+            PhotonNetwork.JoinRandomOrCreateRoom(null,0,MatchmakingMode.RandomMatching, PhotonNetwork.CurrentLobby, null, "Default", roomOptions);
             return;
         }
-
-        PhotonNetwork.JoinRandomRoom(new Hashtable() { { "Difficulty", _createRoomMode.options[_createRoomMode.value].text } }, 0);
+        PhotonNetwork.JoinRandomRoom(new Hashtable() { { Diff, _joinRoomProperty.options[_joinRoomProperty.value].text } }, 0,MatchmakingMode.RandomMatching,PhotonNetwork.CurrentLobby,null);
         
     }
 
@@ -280,6 +281,12 @@ public class NewServerManager : MonoBehaviourPunCallbacks
 
     //Fails , not everything impelemented yet
 
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        base.OnJoinRoomFailed(returnCode, message);
+        Debug.Log("Error number " + returnCode + "Error Message " + message);
+        PhotonNetwork.JoinLobby(new TypedLobby(_lobbiesDropDown.options[(int)_lobbiesDropDown.value].text, LobbyType.Default));
+    }
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         base.OnJoinRandomFailed(returnCode, message);

@@ -1619,7 +1619,7 @@ namespace Photon.Pun
         /// <returns>If the operation got queued and will be sent.</returns>
         public static bool JoinRandomRoom(Hashtable expectedCustomRoomProperties, int expectedMaxPlayers)
         {
-            return JoinRandomRoom(expectedCustomRoomProperties, expectedMaxPlayers, MatchmakingMode.FillRoom, null, null);
+            return JoinRandomRoom(expectedCustomRoomProperties, expectedMaxPlayers, MatchmakingMode.RandomMatching, null, null);
         }
 
         /// <summary>
