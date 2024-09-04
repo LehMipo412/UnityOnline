@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] private float animationOffset;
     public Transform neckIndicator;
     public Transform mouseIndicator;
+    [Header("AIChange")]
     public bool isSupposedToBeControlledByAI = false;
     private float AIChangeTimerTimer = 5f;
     private float AIRandomDiraction;
@@ -319,5 +320,9 @@ public class PlayerController : MonoBehaviourPun
         playerAnimator.SetBool("IsStriking", false);
     }
 
-    
+    [PunRPC]
+    public void SwitchFromPlayerToAI()
+    {
+        isSupposedToBeControlledByAI = true;
+    }
 }
