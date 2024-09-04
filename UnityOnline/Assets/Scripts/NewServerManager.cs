@@ -17,6 +17,8 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     [Header("DropDowns")]
     [SerializeField] private TMP_Dropdown _lobbiesDropDown;
     [SerializeField] private TMP_Dropdown _roomsDropDown;
+    [SerializeField] private TMP_Dropdown _createRoomMode;
+    [SerializeField] private TMP_Dropdown _joinRoomProperty;
 
     [Header("Inputs")]
     [SerializeField] private TMP_InputField _roomNameInput;
@@ -70,8 +72,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     public void LeaveLobbyButt()
     {
         PhotonNetwork.LeaveLobby();
-        _roomsSection.SetActive(false);
-        _lobbySection.SetActive(true);
+      
     }
     public void Refresh()
     {
@@ -87,7 +88,10 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LeaveRoom();
     }
-
+    public void RejoinRoomEvent()
+    {
+        PhotonNetwork.RejoinRoom(_roomsDropDown.options[_roomsDropDown.value].text.Split(':')[0]);
+    }
     public void JoinRoom()
     {
         if (_roomsDropDown.options.Count > 0)
@@ -98,22 +102,32 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     }
     public void CreateRoom()
     {
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = (int)_playerAmmountSlider.value;
-        roomOptions.EmptyRoomTtl = 30000;
-        //roomOptions.PlayerTtl = 30000;
+        RoomOptions roomOptions = new()
+        {
+            MaxPlayers = (int)_playerAmmountSlider.value,
+            EmptyRoomTtl = 30000,
+            PlayerTtl = 30000,
+            CustomRoomProperties = new Hashtable() { { "Difficulty", _createRoomMode.options[_createRoomMode.value].text } }
+        };
+           
         PhotonNetwork.CreateRoom(_roomNameInput.text, roomOptions, TypedLobby.Default);
-
     }
     public void JoinRandomRoom()
     {
-        if(_roomsCount <= 0)
-        { 
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.EmptyRoomTtl = 30000;
-        PhotonNetwork.JoinRandomOrCreateRoom(null, 20, MatchmakingMode.FillRoom, TypedLobby.Default, null, "Default", roomOptions);
+        if (_roomsCount <= 0)
+        {
+            RoomOptions roomOptions = new();
+            roomOptions.EmptyRoomTtl = 30000;
+            roomOptions.MaxPlayers = 20;
+            roomOptions.IsVisible = true;
+            roomOptions.IsOpen = true;
+            roomOptions.CustomRoomProperties = new Hashtable() { { "Difficulty", _createRoomMode.options[_createRoomMode.value].text } };
+            PhotonNetwork.JoinRandomOrCreateRoom(roomOptions.CustomRoomProperties,0,MatchmakingMode.RandomMatching, TypedLobby.Default, null, "Default", roomOptions);
+            return;
         }
-        else PhotonNetwork.JoinRandomRoom();
+
+        PhotonNetwork.JoinRandomRoom(new Hashtable() { { "Difficulty", _createRoomMode.options[_createRoomMode.value].text } }, 0);
+        
     }
 
     public void JoinLobby()
@@ -146,6 +160,8 @@ public class NewServerManager : MonoBehaviourPunCallbacks
             _shouldRefresh = false;
         }
 
+        _roomsSection.SetActive(false);
+        _lobbySection.SetActive(true);
         _roomsDropDown.options.Clear();
         MyRoomList.Clear();
     }
@@ -179,14 +195,14 @@ public class NewServerManager : MonoBehaviourPunCallbacks
         _leaveRoomButton.SetActive(true);
     }
     public override void OnJoinedRoom()
-    {
+    { 
         base.OnJoinedRoom();
         _leaveRoomButton.SetActive(true);
         _startButton.SetActive(true);
         _roomStatusObj.SetActive(true);
         _outsideRoom.SetActive(false);
         isInRoom = true;
-        Debug.Log("Joined room " + PhotonNetwork.CurrentRoom.Name);
+        Debug.Log("Joined room " + PhotonNetwork.CurrentRoom.Name + " " + PhotonNetwork.CurrentRoom.CustomProperties);
     }
     public override void OnLeftRoom()
     {
@@ -268,6 +284,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinRandomFailed(returnCode, message);
         Debug.Log("Error number " + returnCode + "Error Message " + message);
+        PhotonNetwork.JoinLobby(new TypedLobby(_lobbiesDropDown.options[(int)_lobbiesDropDown.value].text, LobbyType.Default));
     }
 
 
