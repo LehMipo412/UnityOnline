@@ -28,10 +28,15 @@ public class MultiplayerGameManager : MonoBehaviourPun
 
     private void Start()
     {
-       // if (photonView.Owner.HasRejoined)
-       // {
-            photonView.RPC(nameof(GameStateSaver.Instance.LoadGameState), RpcTarget.All);
+        // if (photonView.Owner.HasRejoined)
+        // {
+        EnvelopeLoadGame();
        // }
+    }
+    [PunRPC]
+    public void EnvelopeLoadGame()
+    {
+        GameStateSaver.Instance.gameObject.GetPhotonView().RPC(nameof(GameStateSaver.Instance.LoadGameState), RpcTarget.All);
     }
 
     public SpawnPoint GetRandomSpawnPoint()

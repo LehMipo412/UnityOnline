@@ -66,6 +66,9 @@ MonoBehaviour:
   - SwitchToAI
   - SwitchFromPlayerToAI
   - TellPlayerToSwitchToAI
+  - LoadGameState
+  - LoadFromJson
+  - EnvelopeLoadGame
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

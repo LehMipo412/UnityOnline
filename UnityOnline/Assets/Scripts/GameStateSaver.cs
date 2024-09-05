@@ -5,6 +5,8 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using Photon.Pun;
+using Newtonsoft.Json;
+
 
 public class GameStateSaver : MonoBehaviour
 {
@@ -75,6 +77,9 @@ public class GameStateSaver : MonoBehaviour
 
     }
 
+    
+
+
     public void SaveTakenIndexToJson()
     {
         string jsonString = JsonUtility.ToJson(takenChampionIndexesList, true);
@@ -93,12 +98,15 @@ public class GameStateSaver : MonoBehaviour
 
     }
 
+    [PunRPC]
     private void LoadFromJson()
     {
         string jsonString = File.ReadAllText(Application.persistentDataPath + SAVE_FILE_NAME);
         playersStatsInfo = JsonUtility.FromJson<List<PlayerSaveCapsule>>(jsonString);
         takenChampionIndexesList = JsonUtility.FromJson<List<int>>(jsonString);
+        //takenChampionIndexesList.Add(1);
         playersList = JsonUtility.FromJson<List<PlayerController>>(jsonString);
+       // Debug.Log("StateLoaded! your first taken index is+: " + takenChampionIndexesList[0]);
 
 
 
