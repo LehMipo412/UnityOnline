@@ -199,7 +199,7 @@ public class PlayerController : MonoBehaviourPun
     [PunRPC]
     public void TakeDamage(string hitterName)
     {
-        if(HP == 0)
+        if(HP <= 0)
         {
             
             if (photonView.IsMine)
