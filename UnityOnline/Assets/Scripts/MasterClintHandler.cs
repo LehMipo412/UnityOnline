@@ -159,5 +159,10 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
         
     }
 
-     
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+       
+        base.OnPlayerPropertiesUpdate(targetPlayer, changedProps);
+        Debug.LogWarning("Player Properties changed"+ changedProps.ToString());
+    }
 }

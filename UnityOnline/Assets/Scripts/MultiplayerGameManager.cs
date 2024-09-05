@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Unity.Cinemachine;
-using System.Collections;
+using ExitGames.Client.Photon;
+using Photon.Realtime;
+using Photon.Pun.UtilityScripts;
 
 public class MultiplayerGameManager : MonoBehaviourPun
 {
@@ -31,8 +34,37 @@ public class MultiplayerGameManager : MonoBehaviourPun
     {
         // if (photonView.Owner.HasRejoined)
         // {
-        StartCoroutine(LoadAfterSomeTime());
-       // }
+        //  StartCoroutine(LoadAfterSomeTime());
+        // }
+        if (!PhotonNetwork.LocalPlayer.HasRejoined)
+        {
+
+            PhotonNetwork.LocalPlayer.CustomProperties = (new ExitGames.Client.Photon.Hashtable() { { "Kills", "0" } }); // = new ExitGames.Client.Photon.Hashtable() { { "Kills", "0" } };
+            Debug.LogWarning(PhotonNetwork.LocalPlayer.CustomProperties.ToString());
+
+            String key;
+            string keyval = "";
+           // Console.WriteLine("Enter the key whose value is to be printed:");
+            key = "Kills";
+            if (key != "")
+            {
+                if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey(key) == true)
+                {
+                 keyval    = (string)PhotonNetwork.LocalPlayer.CustomProperties[key];
+                    Debug.LogWarning( "KeyVal: "+keyval);
+                }
+                else
+                {
+                    Debug.LogWarning("poopopp");
+                }
+            }
+            int currentkils = int.Parse(keyval);
+            currentkils++;
+            Debug.LogWarning("Current upgraded kills: "+ currentkils);
+            PhotonNetwork.LocalPlayer.SetCustomProperties( new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
+          Debug.LogWarning( "Upgraded kills is: " +(string)PhotonNetwork.LocalPlayer.CustomProperties["Kills"]);
+        }
+        
     }
     [PunRPC]
     public void RequestCurrentJson()
@@ -105,7 +137,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
     [PunRPC]
     public void SaveIndexesOFChampSelectInMasterClientJson(int index, PhotonMessageInfo info)
     {
-         GameStateSaver.Instance.takenChampionIndexesList.Add(index); 
+        GameStateSaver.Instance.takenChampionIndexesList.Add(index); 
         GameStateSaver.Instance.SaveTakenIndexToJson();
         Debug.LogWarning("saved Indexes in master client");
     }

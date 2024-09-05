@@ -57,7 +57,11 @@ public class ChampSelectManger : MonoBehaviourPun
             //alivePlayersList.Sort();
             GameObject winnerPV = GameObject.FindGameObjectWithTag("Player");
             alivePlayersList.Add(winnerPV.GetComponent<PhotonView>()) ;
-            winnerText.text = $"The winner is: {alivePlayersList[0].Owner.NickName}!";
+            winnerText.text = $"The winner is: {alivePlayersList[0].Owner.NickName}! \n Scores: \n" ;
+            foreach(var player in PhotonNetwork.PlayerList)
+            {
+                winnerText.text += player.NickName +": " + (string)player.CustomProperties["Kills"] +"\n" ;
+            }
             isPaused = true;
         }
     }
@@ -77,6 +81,21 @@ public class ChampSelectManger : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.LoadLevel("MainMenu");
+        }
+    }
+    public void LeaveCurrentRoomAfterGame()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.LeaveRoom();
+        }
+    }
+    public void LeaveCurrentLobbyAfterGame()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LeaveLobby();
         }
     }
     [PunRPC]    

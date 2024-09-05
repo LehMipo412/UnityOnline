@@ -267,7 +267,7 @@ Transform:
   m_GameObject: {fileID: 90335751}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.9184585, y: 5.51, z: 5}
+  m_LocalPosition: {x: 0.77, y: 7.68, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1004,7 +1004,7 @@ Transform:
   m_GameObject: {fileID: 220191075}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.9184585, y: 5.51, z: -25}
+  m_LocalPosition: {x: 0.77, y: 7.68, z: -22.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3080,7 +3080,7 @@ Transform:
   m_GameObject: {fileID: 534131161}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.9, y: 5.51, z: 15}
+  m_LocalPosition: {x: -6.0484586, y: 7.68, z: 15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3668,6 +3668,30 @@ MonoBehaviour:
       - m_Target: {fileID: 1945103492}
         m_TargetAssemblyTypeName: ChampSelectManger, Assembly-CSharp
         m_MethodName: ReturnToMainMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1945103492}
+        m_TargetAssemblyTypeName: ChampSelectManger, Assembly-CSharp
+        m_MethodName: LeaveCurrentRoomAfterGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1945103492}
+        m_TargetAssemblyTypeName: ChampSelectManger, Assembly-CSharp
+        m_MethodName: LeaveCurrentLobbyAfterGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4302,7 +4326,7 @@ Transform:
   m_GameObject: {fileID: 722783115}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.9184585, y: 5.51, z: -15}
+  m_LocalPosition: {x: 0.77, y: 7.68, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6458,7 +6482,7 @@ Transform:
   m_GameObject: {fileID: 1071857919}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25, y: 5.51, z: -25}
+  m_LocalPosition: {x: -0.9, y: 7.68, z: -0.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6489,7 +6513,7 @@ Transform:
   m_GameObject: {fileID: 1097230754}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25, y: 5.51, z: 5}
+  m_LocalPosition: {x: -17.5, y: 7.68, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8830,7 +8854,7 @@ Transform:
   m_GameObject: {fileID: 1653282306}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.123434, y: 16.621841, z: -37.55066}
+  m_LocalPosition: {x: -12.123434, y: 13.27, z: -6.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9071,7 +9095,7 @@ Transform:
   m_GameObject: {fileID: 1680289225}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25, y: 5.51, z: -15}
+  m_LocalPosition: {x: -13.6, y: 7.68, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10731,7 +10755,7 @@ Transform:
   m_GameObject: {fileID: 1912815896}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.9184585, y: 5.51, z: 15}
+  m_LocalPosition: {x: 0.77, y: 7.68, z: 15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11044,7 +11068,7 @@ Transform:
   m_GameObject: {fileID: 1986240372}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25, y: 5.51, z: -5}
+  m_LocalPosition: {x: -17.6, y: 7.68, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11083,6 +11107,7 @@ MonoBehaviour:
   takenChampionIndexesList: 
   playersStatsInfo: []
   playersList: []
+  currentJsonString: 
 --- !u!4 &1987651761
 Transform:
   m_ObjectHideFlags: 0
@@ -12079,7 +12104,7 @@ Transform:
   m_GameObject: {fileID: 2143720512}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.9184585, y: 5.51, z: -5}
+  m_LocalPosition: {x: 0.77, y: 7.68, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

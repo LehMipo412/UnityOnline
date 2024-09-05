@@ -197,13 +197,20 @@ public class PlayerController : MonoBehaviourPun
         photonView.RPC(nameof(StrikeFunc), RpcTarget.All);
     }
     [PunRPC]
-    public void TakeDamage()
+    public void TakeDamage(string hitterName)
     {
         if(HP == 0)
         {
             
             if (photonView.IsMine)
             {
+                foreach(var player in PhotonNetwork.PlayerList)
+                {
+                    if(player.NickName == hitterName)
+                    {
+                        Debug.LogWarning(hitterName);
+                    }
+                }
                 _champSelectManger.photonView.RPC(nameof(_champSelectManger.RemoveLivingPkayer), RpcTarget.All);
                 Debug.Log("Players Remaining: " + _champSelectManger.livingPlayersCounter);
                 StartCoroutine(DestroyDelay(2f, gameObject));
@@ -244,7 +251,7 @@ public class PlayerController : MonoBehaviourPun
 
             if (otherProjectile.photonView.IsMine)
             {
-                photonView.RPC(RecievedamageRPC, RpcTarget.All, 10);
+                photonView.RPC(RecievedamageRPC, RpcTarget.All, 10, otherProjectile.photonView.Owner.NickName);
 
                 photonView.RPC(nameof(DisableProjectileMesh), RpcTarget.All, otherProjectile);
                 
@@ -288,11 +295,11 @@ public class PlayerController : MonoBehaviourPun
         }
     }
     [PunRPC]
-    private void RecieveDamage(int damageAmount)
+    private void RecieveDamage(int damageAmount, string hitterNickName)
     {
         HP -= damageAmount;
         Debug.Log("Hp left is " + HP);
-        TakeDamage();
+        TakeDamage(hitterNickName);
     }
     IEnumerator DestroyDelay(float delay, GameObject otherObject)
     {
