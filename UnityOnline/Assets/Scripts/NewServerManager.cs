@@ -13,6 +13,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_Text _gameStatus;
     [SerializeField] private TMP_Text _playerAmmount;
     [SerializeField] private TMP_Text _roomStatus;
+    [SerializeField] private TMP_Text _errorOutput;
 
     [Header("DropDowns")]
     [SerializeField] private TMP_Dropdown _lobbiesDropDown;
@@ -52,6 +53,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings();
+        UpdateSlider();
         MyRoomList = new List<RoomInfo>();
     }
     public void Update()
@@ -101,7 +103,9 @@ public class NewServerManager : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.JoinRoom(_roomsDropDown.options[_roomsDropDown.value].text.Substring(0, _roomsDropDown.options[_roomsDropDown.value].text.IndexOf(':')));
         }
-       
+        else _errorOutput.text = "Error Output: There are no rooms to join";
+
+
     }
     public void CreateRoom()
     {
@@ -144,6 +148,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
         else
         {
             Debug.Log("You need to have a nick name");
+            _errorOutput.text = "Error Output: You need to have a nick name ";
             StartCoroutine("NotifyPlayerAboutNickname");
         }
         
@@ -151,10 +156,15 @@ public class NewServerManager : MonoBehaviourPunCallbacks
 
     public void StartGame()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 3)
         {
             PhotonNetwork.LoadLevel("CurrentMainGameScene");
         }
+        else
+        {
+            Debug.Log("Not Enough players: Minimum 3");
+            _errorOutput.text = "Error Output: Not Enough players: Minimum 3 ";
+        } 
 
     }
     public void EditNickname()
@@ -300,6 +310,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinRoomFailed(returnCode, message);
         Debug.Log("Error number " + returnCode + "Error Message " + message);
+        _errorOutput.text = "Error Output : " + message;
         PhotonNetwork.JoinLobby(new TypedLobby(_lobbiesDropDown.options[(int)_lobbiesDropDown.value].text, LobbyType.Default));
         if (returnCode ==32749)
         {
@@ -310,6 +321,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinRandomFailed(returnCode, message);
         Debug.Log("Error number " + returnCode + "Error Message " + message);
+        _errorOutput.text = "Error Output :" + message + ". Maybe try  rejoining";
         PhotonNetwork.JoinLobby(new TypedLobby(_lobbiesDropDown.options[(int)_lobbiesDropDown.value].text, LobbyType.Default));
         if (returnCode == 32760 && _roomsCount > 0)
         {
