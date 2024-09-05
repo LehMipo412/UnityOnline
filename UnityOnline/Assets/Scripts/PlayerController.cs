@@ -208,7 +208,7 @@ public class PlayerController : MonoBehaviourPun
                 {
                     if(player.NickName == hitterName)
                     {
-                        Debug.LogWarning(hitterName);
+                        Debug.LogWarning( "The Player Who Hitted You: "+hitterName);
                     }
                 }
                 _champSelectManger.photonView.RPC(nameof(_champSelectManger.RemoveLivingPkayer), RpcTarget.All);
