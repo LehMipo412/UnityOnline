@@ -27,13 +27,15 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     [Header("GameObjects")]
     [SerializeField] private GameObject _lobbySection;
     [SerializeField] private GameObject _roomsSection;
-    [SerializeField] private GameObject _leaveRoomButton;
     [SerializeField] private GameObject _outsideRoom;
-    [SerializeField] private GameObject _startButton;
     [SerializeField] private GameObject _roomStatusObj;
 
+    [Header("Buttons")]
+    [SerializeField] private Button _rejoinButton;
+    [SerializeField] private GameObject _leaveRoomButton;
+    [SerializeField] private GameObject _startButton;
 
-    [Header("Text")]
+    [Header("Sliders")]
     [SerializeField] private Slider _playerAmmountSlider;
 
     [Header("Others")]
@@ -121,20 +123,32 @@ public class NewServerManager : MonoBehaviourPunCallbacks
             RoomOptions roomOptions = new();
             roomOptions.EmptyRoomTtl = 30000;
             roomOptions.PlayerTtl = 30000;
-            roomOptions.MaxPlayers = 20;
+            roomOptions.MaxPlayers = 3;
             roomOptions.CustomRoomProperties = new Hashtable() { { Diff, _joinRoomProperty.options[_joinRoomProperty.value].text } };
             roomOptions.CustomRoomPropertiesForLobby = new string[] { Diff };
             PhotonNetwork.JoinRandomOrCreateRoom(null,0,MatchmakingMode.RandomMatching, PhotonNetwork.CurrentLobby, null, "Default", roomOptions);
             return;
         }
+
         PhotonNetwork.JoinRandomRoom(new Hashtable() { { Diff, _joinRoomProperty.options[_joinRoomProperty.value].text } }, 0,MatchmakingMode.RandomMatching,PhotonNetwork.CurrentLobby,null);
         
     }
 
+   
     public void JoinLobby()
     {
-        PhotonNetwork.JoinLobby(new TypedLobby(_lobbiesDropDown.options[(int)_lobbiesDropDown.value].text, LobbyType.Default));
+        if (nicknameEditorInputField.text.Length > 0)
+        {
+            PhotonNetwork.JoinLobby(new TypedLobby(_lobbiesDropDown.options[(int)_lobbiesDropDown.value].text, LobbyType.Default));
+        }
+        else
+        {
+            Debug.Log("You need to have a nick name");
+            StartCoroutine("NotifyPlayerAboutNickname");
+        }
+        
     }
+
     public void StartGame()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -281,19 +295,45 @@ public class NewServerManager : MonoBehaviourPunCallbacks
 
     //Fails , not everything impelemented yet
 
+   
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         base.OnJoinRoomFailed(returnCode, message);
         Debug.Log("Error number " + returnCode + "Error Message " + message);
         PhotonNetwork.JoinLobby(new TypedLobby(_lobbiesDropDown.options[(int)_lobbiesDropDown.value].text, LobbyType.Default));
+        if (returnCode ==32749)
+        {
+            StartCoroutine("NotifyPlayerAboutRejoin");
+        }
     }
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         base.OnJoinRandomFailed(returnCode, message);
         Debug.Log("Error number " + returnCode + "Error Message " + message);
         PhotonNetwork.JoinLobby(new TypedLobby(_lobbiesDropDown.options[(int)_lobbiesDropDown.value].text, LobbyType.Default));
+        if (returnCode == 32760 && _roomsCount > 0)
+        {
+            StartCoroutine("NotifyPlayerAboutRejoin");
+            return;
+        }
     }
 
+
+    #endregion
+
+    #region Misc
+    System.Collections.IEnumerator NotifyPlayerAboutRejoin()
+    {
+        _rejoinButton.image.color = Color.cyan;
+        yield return new WaitForSeconds(0.5f);
+        _rejoinButton.image.color = Color.white;
+    }
+    System.Collections.IEnumerator NotifyPlayerAboutNickname()
+    {
+        nicknameEditorInputField.image.color = Color.grey;
+        yield return new WaitForSeconds(0.5f);
+        nicknameEditorInputField.image.color = Color.white;
+    }
 
     #endregion
 }
