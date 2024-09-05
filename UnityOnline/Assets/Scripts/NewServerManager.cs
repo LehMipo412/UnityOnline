@@ -17,6 +17,8 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     [Header("DropDowns")]
     [SerializeField] private TMP_Dropdown _lobbiesDropDown;
     [SerializeField] private TMP_Dropdown _roomsDropDown;
+    [SerializeField] private TMP_Dropdown _createRoomMode;
+    [SerializeField] private TMP_Dropdown _joinRoomProperty;
 
     [Header("Inputs")]
     [SerializeField] private TMP_InputField _roomNameInput;
@@ -40,6 +42,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     private bool isInRoom = false;
     private bool _shouldRefresh = false;
     private int _roomsCount = 0;
+    private const string Diff = "D";
 
     #region Awake/Start
 
@@ -70,8 +73,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     public void LeaveLobbyButt()
     {
         PhotonNetwork.LeaveLobby();
-        _roomsSection.SetActive(false);
-        _lobbySection.SetActive(true);
+      
     }
     public void Refresh()
     {
@@ -87,7 +89,10 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LeaveRoom();
     }
-
+    public void RejoinRoomEvent()
+    {
+        PhotonNetwork.RejoinRoom(_roomsDropDown.options[_roomsDropDown.value].text.Split(':')[0]);
+    }
     public void JoinRoom()
     {
         if (_roomsDropDown.options.Count > 0)
@@ -98,22 +103,32 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     }
     public void CreateRoom()
     {
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = (int)_playerAmmountSlider.value;
-        roomOptions.EmptyRoomTtl = 30000;
-        roomOptions.PlayerTtl = 30000;
+        RoomOptions roomOptions = new()
+        {
+            MaxPlayers = (int)_playerAmmountSlider.value,
+            EmptyRoomTtl = 30000,
+            PlayerTtl = 30000,
+            CustomRoomPropertiesForLobby = new string[] { Diff },
+            CustomRoomProperties = new Hashtable() { { Diff, _createRoomMode.options[_createRoomMode.value].text } }
+        };
+           
         PhotonNetwork.CreateRoom(_roomNameInput.text, roomOptions, TypedLobby.Default);
-
     }
     public void JoinRandomRoom()
     {
-        if(_roomsCount <= 0)
-        { 
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.EmptyRoomTtl = 30000;
-        PhotonNetwork.JoinRandomOrCreateRoom(null, 20, MatchmakingMode.FillRoom, TypedLobby.Default, null, "Default", roomOptions);
+        if (_roomsCount <= 0)
+        {
+            RoomOptions roomOptions = new();
+            roomOptions.EmptyRoomTtl = 30000;
+            roomOptions.PlayerTtl = 30000;
+            roomOptions.MaxPlayers = 20;
+            roomOptions.CustomRoomProperties = new Hashtable() { { Diff, _joinRoomProperty.options[_joinRoomProperty.value].text } };
+            roomOptions.CustomRoomPropertiesForLobby = new string[] { Diff };
+            PhotonNetwork.JoinRandomOrCreateRoom(null,0,MatchmakingMode.RandomMatching, PhotonNetwork.CurrentLobby, null, "Default", roomOptions);
+            return;
         }
-        else PhotonNetwork.JoinRandomRoom();
+        PhotonNetwork.JoinRandomRoom(new Hashtable() { { Diff, _joinRoomProperty.options[_joinRoomProperty.value].text } }, 0,MatchmakingMode.RandomMatching,PhotonNetwork.CurrentLobby,null);
+        
     }
 
     public void JoinLobby()
@@ -146,6 +161,8 @@ public class NewServerManager : MonoBehaviourPunCallbacks
             _shouldRefresh = false;
         }
 
+        _roomsSection.SetActive(false);
+        _lobbySection.SetActive(true);
         _roomsDropDown.options.Clear();
         MyRoomList.Clear();
     }
@@ -179,14 +196,14 @@ public class NewServerManager : MonoBehaviourPunCallbacks
         _leaveRoomButton.SetActive(true);
     }
     public override void OnJoinedRoom()
-    {
+    { 
         base.OnJoinedRoom();
         _leaveRoomButton.SetActive(true);
         _startButton.SetActive(true);
         _roomStatusObj.SetActive(true);
         _outsideRoom.SetActive(false);
         isInRoom = true;
-        Debug.Log("Joined room " + PhotonNetwork.CurrentRoom.Name);
+        Debug.Log("Joined room " + PhotonNetwork.CurrentRoom.Name + " " + PhotonNetwork.CurrentRoom.CustomProperties);
     }
     public override void OnLeftRoom()
     {
@@ -264,10 +281,17 @@ public class NewServerManager : MonoBehaviourPunCallbacks
 
     //Fails , not everything impelemented yet
 
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        base.OnJoinRoomFailed(returnCode, message);
+        Debug.Log("Error number " + returnCode + "Error Message " + message);
+        PhotonNetwork.JoinLobby(new TypedLobby(_lobbiesDropDown.options[(int)_lobbiesDropDown.value].text, LobbyType.Default));
+    }
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         base.OnJoinRandomFailed(returnCode, message);
         Debug.Log("Error number " + returnCode + "Error Message " + message);
+        PhotonNetwork.JoinLobby(new TypedLobby(_lobbiesDropDown.options[(int)_lobbiesDropDown.value].text, LobbyType.Default));
     }
 
 
