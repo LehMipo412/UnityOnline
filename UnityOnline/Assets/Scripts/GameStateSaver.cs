@@ -14,6 +14,7 @@ public class GameStateSaver : MonoBehaviour
     public List<int> takenChampionIndexesList;
     public List<PlayerSaveCapsule> playersStatsInfo;
     public List<PlayerController> playersList;
+    public string currentJsonString;
 
 
    public static GameStateSaver Instance { get; private set; }
@@ -57,9 +58,9 @@ public class GameStateSaver : MonoBehaviour
     }
 
    [PunRPC]
-    public void LoadGameState()
+    public void LoadGameState(string masterJson, PhotonMessageInfo info)
     {
-        LoadFromJson();
+        LoadFromJson(masterJson, info);
         for (int i = 0; i < playersList.Count; i++)
         {
             playersList[i].HP = playersStatsInfo[i].HP;
@@ -95,13 +96,14 @@ public class GameStateSaver : MonoBehaviour
 
         jsonString = JsonUtility.ToJson(playersList[index], true);
         File.WriteAllText(Application.persistentDataPath + SAVE_FILE_NAME, jsonString);
+        currentJsonString = jsonString;
 
     }
 
     [PunRPC]
-    private void LoadFromJson()
+    public void LoadFromJson(string MasterJson, PhotonMessageInfo info)
     {
-        string jsonString = File.ReadAllText(Application.persistentDataPath + SAVE_FILE_NAME);
+        string jsonString = MasterJson;
         playersStatsInfo = JsonUtility.FromJson<List<PlayerSaveCapsule>>(jsonString);
         takenChampionIndexesList = JsonUtility.FromJson<List<int>>(jsonString);
         //takenChampionIndexesList.Add(1);
@@ -110,6 +112,16 @@ public class GameStateSaver : MonoBehaviour
 
 
 
+    }
+    public void LoadForMaster()
+    {
+         string jsonString = File.ReadAllText(Application.persistentDataPath + SAVE_FILE_NAME);
+    }
+    
+    [PunRPC]
+    public void giveInfoToPeasents(PhotonMessageInfo info)
+    {
+        gameObject.GetPhotonView().RPC(nameof(LoadGameState), info.Sender, currentJsonString);
     }
 
 
