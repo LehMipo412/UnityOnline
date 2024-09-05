@@ -61,8 +61,8 @@ public class MultiplayerGameManager : MonoBehaviourPun
             int currentkils = int.Parse((string)PhotonNetwork.LocalPlayer.CustomProperties["Kills"]);
             currentkils++;
            // Debug.LogWarning("Current upgraded kills: "+ currentkils);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(PhotonNetwork.LocalPlayer.CustomProperties, new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
-          //Debug.LogWarning( "Upgraded kills is: " +(string)PhotonNetwork.LocalPlayer.CustomProperties[key]);
+            PhotonNetwork.LocalPlayer.SetCustomProperties( new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
+          Debug.LogWarning( "Upgraded kills is: " +(string)PhotonNetwork.LocalPlayer.CustomProperties[key]);
         }
         
     }
