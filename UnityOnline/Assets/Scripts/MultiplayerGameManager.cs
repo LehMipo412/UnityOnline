@@ -50,7 +50,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
             {
                 if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey(key) == true)
                 {
-                 keyval    = (string)PhotonNetwork.LocalPlayer.CustomProperties[key];
+                // keyval    = ;
                     Debug.LogWarning( "KeyVal: "+keyval);
                 }
                 else
@@ -58,11 +58,11 @@ public class MultiplayerGameManager : MonoBehaviourPun
                     Debug.LogWarning("poopopp");
                 }
             }
-            int currentkils = int.Parse(keyval);
+            int currentkils = int.Parse((string)PhotonNetwork.LocalPlayer.CustomProperties["Kills"]);
             currentkils++;
-            Debug.LogWarning("Current upgraded kills: "+ currentkils);
-            PhotonNetwork.LocalPlayer.SetCustomProperties( new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
-          Debug.LogWarning( "Upgraded kills is: " +(string)PhotonNetwork.LocalPlayer.CustomProperties["Kills"]);
+           // Debug.LogWarning("Current upgraded kills: "+ currentkils);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(PhotonNetwork.LocalPlayer.CustomProperties, new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
+          //Debug.LogWarning( "Upgraded kills is: " +(string)PhotonNetwork.LocalPlayer.CustomProperties[key]);
         }
         
     }
@@ -181,4 +181,6 @@ public class MultiplayerGameManager : MonoBehaviourPun
         yield return new WaitForSeconds(0.4f);
         RequestCurrentJson();
     }
+
+    
 }
