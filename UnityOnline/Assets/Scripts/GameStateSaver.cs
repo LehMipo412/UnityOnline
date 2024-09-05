@@ -31,15 +31,21 @@ public class GameStateSaver : MonoBehaviour
         else
         {
             Instance = this;
-           
             Debug.Log("GameStateServer is up!");
         }
         takenChampionIndexesList = new List<int>();
         playersStatsInfo = new List<PlayerSaveCapsule>();
         playersList = new List<PlayerController>();
     }
+    //private void Start()
+    //{
+    //    takenChampionIndexesList = new List<int>();
+    //    playersStatsInfo = new List<PlayerSaveCapsule>();
+    //    playersList = new List<PlayerController>();
+    //    
+    //}
 
-   public void SavePlayerHP(int playerIndex)
+    public void SavePlayerHP(int playerIndex)
     {
         playersStatsInfo[playerIndex].HP = playersList[playerIndex].HP;
         SaveToJson(playerIndex);
@@ -60,25 +66,30 @@ public class GameStateSaver : MonoBehaviour
    [PunRPC]
     public void LoadGameState(string masterJson, PhotonMessageInfo info)
     {
+        Debug.LogWarning("player info?" + info);
+        Debug.LogWarning("current sting " + currentJsonString);
         LoadFromJson(masterJson, info);
-        for (int i = 0; i < playersList.Count; i++)
+        if (playersList.Count > 0)
         {
-            playersList[i].HP = playersStatsInfo[i].HP;
-            playersList[i].knockbackPrecentage = playersStatsInfo[i].KnockBackPrecentage;
-            playersList[i].score = playersStatsInfo[i].Score;
+            for (int i = 0; i < playersList.Count; i++)
+            {
+                playersList[i].HP = playersStatsInfo[i].HP;
+                playersList[i].knockbackPrecentage = playersStatsInfo[i].KnockBackPrecentage;
+                playersList[i].score = playersStatsInfo[i].Score;
+            }
         }
 
         for (int i = 0; i < takenChampionIndexesList.Count; i++)
         {
             ChampSelectManger.Instance.champsButtons[takenChampionIndexesList[i]].interactable = false;
         }
-        
 
-        
+
+
 
     }
 
-    
+
 
 
     public void SaveTakenIndexToJson()
@@ -108,6 +119,7 @@ public class GameStateSaver : MonoBehaviour
         takenChampionIndexesList = JsonUtility.FromJson<List<int>>(jsonString);
         //takenChampionIndexesList.Add(1);
         playersList = JsonUtility.FromJson<List<PlayerController>>(jsonString);
+        Debug.LogWarning("loading data worked");
        // Debug.Log("StateLoaded! your first taken index is+: " + takenChampionIndexesList[0]);
 
 
@@ -121,7 +133,7 @@ public class GameStateSaver : MonoBehaviour
     [PunRPC]
     public void giveInfoToPeasents(PhotonMessageInfo info)
     {
-        gameObject.GetPhotonView().RPC(nameof(LoadGameState), info.Sender, currentJsonString);
+        gameObject.GetPhotonView().RPC(nameof(LoadGameState), info.Sender, currentJsonString, info);
     }
 
 

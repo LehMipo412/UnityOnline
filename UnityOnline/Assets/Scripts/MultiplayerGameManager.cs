@@ -4,6 +4,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Unity.Cinemachine;
+using System.Collections;
 
 public class MultiplayerGameManager : MonoBehaviourPun
 {
@@ -30,7 +31,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
     {
         // if (photonView.Owner.HasRejoined)
         // {
-        RequestCurrentJson();
+        StartCoroutine(LoadAfterSomeTime());
        // }
     }
     [PunRPC]
@@ -92,8 +93,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
             selectedPlayer = PhotonNetwork.Instantiate(BarPlayerPathName,
                 targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
         }
-        GameStateSaver.Instance.takenChampionIndexesList.Add(index);
-        GameStateSaver.Instance.SaveTakenIndexToJson();
+        photonView.RPC(nameof(SaveIndexesOFChampSelectInMasterClientJson), RpcTarget.MasterClient, index);
 
         playerFollowerCamera.Target.TrackingTarget = selectedPlayer.GetComponent<PlayerController>().neckIndicator;
         //playerFollowerCamera.Follow = selectedPlayer.GetComponent<PlayerController>().neckIndicator;
@@ -101,6 +101,13 @@ public class MultiplayerGameManager : MonoBehaviourPun
         //Cursor.lockState = CursorLockMode.Locked;
 
 
+    }
+    [PunRPC]
+    public void SaveIndexesOFChampSelectInMasterClientJson(int index, PhotonMessageInfo info)
+    {
+         GameStateSaver.Instance.takenChampionIndexesList.Add(index); 
+        GameStateSaver.Instance.SaveTakenIndexToJson();
+        Debug.LogWarning("saved Indexes in master client");
     }
     [PunRPC]
     private void SetSpawnPoint(SpawnPoint spawnPoint)
@@ -136,5 +143,10 @@ public class MultiplayerGameManager : MonoBehaviourPun
             
 
         }
+    }
+    IEnumerator LoadAfterSomeTime()
+    {
+        yield return new WaitForSeconds(0.4f);
+        RequestCurrentJson();
     }
 }
