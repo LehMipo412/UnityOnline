@@ -209,11 +209,11 @@ public class PlayerController : MonoBehaviourPun
                     if(player.NickName == hitterName)
                     {
                         Debug.LogWarning( "The Player Who Hitted You: "+hitterName);
-                        int currentkils = int.Parse((string)player.CustomProperties["Kills"]);
-                        currentkils++;
-                        // Debug.LogWarning("Current upgraded kills: "+ currentkils);
-                        player.SetCustomProperties(player.CustomProperties, new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
-                        //Debug.LogWarning( "Upgraded kills is: " +(string)PhotonNetwork.LocalPlayer.CustomProperties[key]);
+                        //int currentkils = int.Parse((string)player.CustomProperties["Kills"]);
+                        //currentkils++;
+                        //// Debug.LogWarning("Current upgraded kills: "+ currentkils);
+                        //player.SetCustomProperties(player.CustomProperties, new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
+                        ////Debug.LogWarning( "Upgraded kills is: " +(string)PhotonNetwork.LocalPlayer.CustomProperties[key]);
                     }
                 }
                 _champSelectManger.photonView.RPC(nameof(_champSelectManger.RemoveLivingPkayer), RpcTarget.All);
