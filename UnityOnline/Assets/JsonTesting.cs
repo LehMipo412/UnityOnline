@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class JsonTesting : MonoBehaviour
 {
+    //Stats instance;
     public Stats stick = new();
 
 
@@ -20,19 +21,21 @@ public class JsonTesting : MonoBehaviour
     }
 
     
-
+    //Use this to find your name and value with the format json is using. Use Contains like i used in the SaveToJson.
     public string JsonFormat(string name, string value)
     {
         return $"\"{name}\": {value},";
     }
 
-
+    //Saves only if not duplicated
     public void SaveToJson()
     {
         string stats = JsonUtility.ToJson(stick, true);
         string filepath = Application.persistentDataPath + "/Stats.json";
+
         Debug.Log(filepath);
 
+        //This checks for duplicates
         if (System.IO.File.ReadAllText(filepath).Contains((stats)))
         {
             return;
@@ -46,8 +49,10 @@ public class JsonTesting : MonoBehaviour
     {
         string filepath = Application.persistentDataPath + "/Stats.json";
         string[] stats2;
+        //ReadAllLines returns a string array.
         stats2 = System.IO.File.ReadAllLines(filepath);
 
+        //Shows how "ReadAllLines" works opposed to "ReadAllText" which print the whole json.
         for (int i = 0; i < stats2.Length; i++)
         {
             Debug.Log(stats2[i]);
@@ -60,6 +65,7 @@ public class JsonTesting : MonoBehaviour
 
 }
 
+//Example of stat stick like you're using.
 [System.Serializable]
 public class Stats
 {
