@@ -5,6 +5,8 @@ public class JsonTesting : MonoBehaviour
 {
     public Stats stick = new();
 
+
+    //Check this changes with the json file open to understand how it works. Use "Testing" gameobject and change the values inside. Press Spacebar to save and "V" to load. 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -17,6 +19,7 @@ public class JsonTesting : MonoBehaviour
         }
     }
 
+    
 
     public string JsonFormat(string name, string value)
     {
@@ -28,7 +31,7 @@ public class JsonTesting : MonoBehaviour
     {
         string stats = JsonUtility.ToJson(stick, true);
         string filepath = Application.persistentDataPath + "/Stats.json";
-
+        Debug.Log(filepath);
 
         if (System.IO.File.ReadAllText(filepath).Contains((stats)))
         {
@@ -38,6 +41,7 @@ public class JsonTesting : MonoBehaviour
         System.IO.File.AppendAllText(filepath, stats);
 
     }
+    //To Open the Json - Copy the debug log line with the file path name and paste it into your explorer path. You can then open the json and see the changes in real time. 
     public void LoadFromJson()
     {
         string filepath = Application.persistentDataPath + "/Stats.json";
