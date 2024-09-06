@@ -34,35 +34,35 @@ public class MultiplayerGameManager : MonoBehaviourPun
     {
         // if (photonView.Owner.HasRejoined)
         // {
-        //  StartCoroutine(LoadAfterSomeTime());
+             StartCoroutine(LoadAfterSomeTime());
         // }
         if (!PhotonNetwork.LocalPlayer.HasRejoined)
         {
 
-            PhotonNetwork.LocalPlayer.CustomProperties = (new ExitGames.Client.Photon.Hashtable() { { "Kills", "0" } }); // = new ExitGames.Client.Photon.Hashtable() { { "Kills", "0" } };
-            Debug.LogWarning(PhotonNetwork.LocalPlayer.CustomProperties.ToString());
+          //  PhotonNetwork.LocalPlayer.CustomProperties = (new ExitGames.Client.Photon.Hashtable() { { "Kills", "0" } }); // = new ExitGames.Client.Photon.Hashtable() { { "Kills", "0" } };
+          //  Debug.LogWarning(PhotonNetwork.LocalPlayer.CustomProperties.ToString());
 
-            String key;
-            string keyval = "";
-           // Console.WriteLine("Enter the key whose value is to be printed:");
-            key = "Kills";
-            if (key != "")
-            {
-                if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey(key) == true)
-                {
-                // keyval    = ;
-                    Debug.LogWarning( "KeyVal: "+keyval);
-                }
-                else
-                {
-                    Debug.LogWarning("poopopp");
-                }
-            }
-            int currentkils = int.Parse((string)PhotonNetwork.LocalPlayer.CustomProperties["Kills"]);
-            currentkils++;
-           // Debug.LogWarning("Current upgraded kills: "+ currentkils);
-            PhotonNetwork.LocalPlayer.SetCustomProperties( new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
-          Debug.LogWarning( "Upgraded kills is: " +(string)PhotonNetwork.LocalPlayer.CustomProperties[key]);
+          //  String key;
+          //  string keyval = "";
+          // // Console.WriteLine("Enter the key whose value is to be printed:");
+          //  key = "Kills";
+          //  if (key != "")
+          //  {
+          //      if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey(key) == true)
+          //      {
+          //      // keyval    = ;
+          //          Debug.LogWarning( "KeyVal: "+keyval);
+          //      }
+          //      else
+          //      {
+          //          Debug.LogWarning("poopopp");
+          //      }
+          //  }
+          //  int currentkils = int.Parse((string)PhotonNetwork.LocalPlayer.CustomProperties["Kills"]);
+          //  currentkils++;
+          // // Debug.LogWarning("Current upgraded kills: "+ currentkils);
+          //  PhotonNetwork.LocalPlayer.SetCustomProperties( new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
+          //Debug.LogWarning( "Upgraded kills is: " +(string)PhotonNetwork.LocalPlayer.CustomProperties[key]);
         }
         
     }
@@ -137,8 +137,8 @@ public class MultiplayerGameManager : MonoBehaviourPun
     [PunRPC]
     public void SaveIndexesOFChampSelectInMasterClientJson(int index, PhotonMessageInfo info)
     {
-        GameStateSaver.Instance.takenChampionIndexesList.Add(index); 
-        GameStateSaver.Instance.SaveTakenIndexToJson();
+       // GameStateSaver.Instance.takenChampionIndexesList.Add(index); 
+        GameStateSaver.Instance.SaveTakenIndexToJson(photonView.Owner.NickName);
         Debug.LogWarning("saved Indexes in master client");
     }
     [PunRPC]

@@ -12,9 +12,11 @@ public class GameStateSaver : MonoBehaviour
 {
     private const string SAVE_FILE_NAME = "/MCSave.dat";
     public List<int> takenChampionIndexesList = new List<int>();
-    public List<PlayerSaveCapsule> playersStatsInfo = new List<PlayerSaveCapsule>();
-    public List<PlayerController> playersList = new List<PlayerController>();
-    public string currentJsonString ;
+    //public List<PlayerSaveCapsule> playersStatsInfo = new List<PlayerSaveCapsule>();
+    //public List<PlayerController> playersList = new List<PlayerController>();
+    public string currentJsonString ="";
+    public NickNameSaver currentNick = new NickNameSaver("Poopoo");
+    public int saves = -1;
 
 
    public static GameStateSaver Instance { get; private set; }
@@ -41,19 +43,19 @@ public class GameStateSaver : MonoBehaviour
 
    public void SavePlayerHP(int playerIndex)
     {
-        playersStatsInfo[playerIndex].HP = playersList[playerIndex].HP;
+       // playersStatsInfo[playerIndex].HP = playersList[playerIndex].HP;
         SaveToJson(playerIndex);
     }
 
     public void SavePlayerScore(int playerIndex)
     {
-        playersStatsInfo[playerIndex].Score = playersList[playerIndex].score;
+        //playersStatsInfo[playerIndex].Score = playersList[playerIndex].score;
         SaveToJson(playerIndex);
     }
 
     public void SavePlayerKnockBackPrecentage(int playerIndex)
     {
-        playersStatsInfo[playerIndex].KnockBackPrecentage = playersList[playerIndex].knockbackPrecentage;
+       // playersStatsInfo[playerIndex].KnockBackPrecentage = playersList[playerIndex].knockbackPrecentage;
         SaveToJson(playerIndex);
     }
 
@@ -61,17 +63,17 @@ public class GameStateSaver : MonoBehaviour
     public void LoadGameState(string masterJson, PhotonMessageInfo info)
     {
         LoadFromJson(masterJson, info);
-        for (int i = 0; i < playersList.Count; i++)
-        {
-            playersList[i].HP = playersStatsInfo[i].HP;
-            playersList[i].knockbackPrecentage = playersStatsInfo[i].KnockBackPrecentage;
-            playersList[i].score = playersStatsInfo[i].Score;
-        }
+        //for (int i = 0; i < playersList.Count; i++)
+        //{
+        //    playersList[i].HP = playersStatsInfo[i].HP;
+        //    playersList[i].knockbackPrecentage = playersStatsInfo[i].KnockBackPrecentage;
+        //    playersList[i].score = playersStatsInfo[i].Score;
+        //}
 
-        for (int i = 0; i < takenChampionIndexesList.Count; i++)
-        {
-            ChampSelectManger.Instance.champsButtons[takenChampionIndexesList[i]].interactable = false;
-        }
+        //for (int i = 0; i < takenChampionIndexesList.Count; i++)
+        //{
+        //    ChampSelectManger.Instance.champsButtons[takenChampionIndexesList[i]].interactable = false;
+        //}
         
 
         
@@ -80,23 +82,25 @@ public class GameStateSaver : MonoBehaviour
 
     
 
-
-    public void SaveTakenIndexToJson()
+    [PunRPC]
+    public void SaveTakenIndexToJson(string playerName)
     {
-        string jsonString = JsonUtility.ToJson(takenChampionIndexesList, true);
+        NickNameSaver nameToSave = new NickNameSaver( playerName);
+        currentJsonString += JsonUtility.ToJson(nameToSave, true);
 
-        File.WriteAllText(Application.persistentDataPath + SAVE_FILE_NAME, jsonString);
+        File.WriteAllText(Application.persistentDataPath + SAVE_FILE_NAME, currentJsonString);
+        Debug.LogWarning("saved Player " + nameToSave.Name);
+        saves++;
     }
     public void SaveToJson(int index)
     {
-        string jsonString = JsonUtility.ToJson(playersStatsInfo[index], true);
+        //string jsonString = JsonUtility.ToJson(playersStatsInfo[index], true);
+      //  File.WriteAllText(Application.persistentDataPath + SAVE_FILE_NAME, jsonString);
 
-        File.WriteAllText(Application.persistentDataPath + SAVE_FILE_NAME, jsonString);
 
-
-        jsonString = JsonUtility.ToJson(playersList[index], true);
-        File.WriteAllText(Application.persistentDataPath + SAVE_FILE_NAME, jsonString);
-        currentJsonString = jsonString;
+        //jsonString = JsonUtility.ToJson(playersList[index], true);
+        //File.WriteAllText(Application.persistentDataPath + SAVE_FILE_NAME, jsonString);
+        //currentJsonString = jsonString;
 
     }
 
@@ -104,13 +108,13 @@ public class GameStateSaver : MonoBehaviour
     public void LoadFromJson(string MasterJson, PhotonMessageInfo info)
     {
         string jsonString = MasterJson;
-        playersStatsInfo = JsonUtility.FromJson<List<PlayerSaveCapsule>>(jsonString);
-        takenChampionIndexesList = JsonUtility.FromJson<List<int>>(jsonString);
+        //playersStatsInfo = JsonUtility.FromJson<List<PlayerSaveCapsule>>(jsonString);
+        currentNick = JsonUtility.FromJson<NickNameSaver>(jsonString);
         //takenChampionIndexesList.Add(1);
-        playersList = JsonUtility.FromJson<List<PlayerController>>(jsonString);
-       // Debug.Log("StateLoaded! your first taken index is+: " + takenChampionIndexesList[0]);
-
-
+        // playersList = JsonUtility.FromJson<List<PlayerController>>(jsonString);
+        // Debug.Log("StateLoaded! your first taken index is+: " + takenChampionIndexesList[0]);
+        Debug.LogWarning("current Loaded Name = " + currentNick.Name);
+        Debug.LogWarning("current Json: "+MasterJson);
 
     }
     public void LoadForMaster()
