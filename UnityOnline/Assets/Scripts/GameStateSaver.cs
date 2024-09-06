@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 public class GameStateSaver : MonoBehaviour
 {
     private const string SAVE_FILE_NAME = "/MCSave.dat";
-    public List<int> takenChampionIndexesList = new List<int>();
+    public int[] takenChampionIndexesList = new int[6];
     //public List<PlayerSaveCapsule> playersStatsInfo = new List<PlayerSaveCapsule>();
     //public List<PlayerController> playersList = new List<PlayerController>();
     public string currentJsonString ="";
@@ -24,7 +24,8 @@ public class GameStateSaver : MonoBehaviour
 
     private void Awake()
     {
-
+        takenChampionIndexesList = new int[6];
+        // takenChampionIndexesList = new List<int>();
 
         if (Instance != null && Instance != this)
         {
@@ -70,26 +71,29 @@ public class GameStateSaver : MonoBehaviour
         //    playersList[i].score = playersStatsInfo[i].Score;
         //}
 
-        //for (int i = 0; i < takenChampionIndexesList.Count; i++)
-        //{
-        //    ChampSelectManger.Instance.champsButtons[takenChampionIndexesList[i]].interactable = false;
-        //}
-        
+        for (int i = 0; i < takenChampionIndexesList.Length; i++)
+        {
+            if (i < PhotonNetwork.PlayerList.Length)
+            {
+                ChampSelectManger.Instance.champsButtons[takenChampionIndexesList[i]].interactable = false;
+            }
+        }
 
-        
+
+
 
     }
 
     
 
     [PunRPC]
-    public void SaveTakenIndexToJson(string playerName)
+    public void SaveTakenIndexToJson(int takenIndex)
     {
-        NickNameSaver nameToSave = new NickNameSaver( playerName);
-        currentJsonString += JsonUtility.ToJson(nameToSave, true);
+        takenChampionIndexesList[saves] = (takenIndex);
+        currentJsonString += JsonUtility.ToJson(takenChampionIndexesList, true);
 
         File.WriteAllText(Application.persistentDataPath + SAVE_FILE_NAME, currentJsonString);
-        Debug.LogWarning("saved Player " + nameToSave.Name);
+        Debug.LogWarning("saved Player " + takenIndex);
         saves++;
     }
     public void SaveToJson(int index)
@@ -109,7 +113,7 @@ public class GameStateSaver : MonoBehaviour
     {
         string jsonString = MasterJson;
         //playersStatsInfo = JsonUtility.FromJson<List<PlayerSaveCapsule>>(jsonString);
-        currentNick = JsonUtility.FromJson<NickNameSaver>(jsonString);
+        takenChampionIndexesList = JsonUtility.FromJson<int[]>(jsonString);
         //takenChampionIndexesList.Add(1);
         // playersList = JsonUtility.FromJson<List<PlayerController>>(jsonString);
         // Debug.Log("StateLoaded! your first taken index is+: " + takenChampionIndexesList[0]);

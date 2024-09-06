@@ -138,7 +138,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
     public void SaveIndexesOFChampSelectInMasterClientJson(int index, PhotonMessageInfo info)
     {
        // GameStateSaver.Instance.takenChampionIndexesList.Add(index); 
-        GameStateSaver.Instance.SaveTakenIndexToJson(photonView.Owner.NickName);
+        GameStateSaver.Instance.SaveTakenIndexToJson(index);
         Debug.LogWarning("saved Indexes in master client");
     }
     [PunRPC]
