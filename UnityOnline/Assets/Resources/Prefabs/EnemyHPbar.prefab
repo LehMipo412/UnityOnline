@@ -392,5 +392,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hpBar: {fileID: 4845990695435275341}
   _maxHP: 100
-  hpCanvas: {fileID: 0}
-  currentHP: 0
+  HpCanvas: {fileID: 4839944175912667442}

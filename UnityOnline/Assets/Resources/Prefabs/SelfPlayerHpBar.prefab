@@ -117,8 +117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hpBar: {fileID: 3669923129540455888}
   _maxHP: 200
-  hpCanvas: {fileID: 1642100429802471366}
-  currentHP: 0
+  HpCanvas: {fileID: 3640222334016940207}
 --- !u!1 &5726776885315553951
 GameObject:
   m_ObjectHideFlags: 0

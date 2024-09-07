@@ -56,12 +56,12 @@ public class PlayerController : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            playerHpBar.hpCanvas.gameObject.SetActive(false);
+            playerHpBar.HpCanvas.SetActive(false);
             playerHpBar = SelfHPBar;
         }
         else
         {
-            SelfHPBar.hpCanvas.gameObject.SetActive(false);
+            SelfHPBar.HpCanvas.SetActive(false);
         }
        
         

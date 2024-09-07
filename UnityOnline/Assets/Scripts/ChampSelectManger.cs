@@ -63,7 +63,7 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
         GameObject winnerPV = GameObject.FindGameObjectWithTag("Player");
         alivePlayersList.Add(winnerPV.GetComponent<PhotonView>());
         var winnerPlayerController = winnerPV.GetComponent<PlayerController>();
-        winnerPlayerController.SelfHPBar.hpCanvas.gameObject.SetActive(false);
+        winnerPlayerController.SelfHPBar.HpCanvas.SetActive(false);
        
         winnerText.text = $"The winner is: {alivePlayersList[0].Owner.NickName}! \n Scores: \n";
         foreach (var player in PhotonNetwork.PlayerList)
