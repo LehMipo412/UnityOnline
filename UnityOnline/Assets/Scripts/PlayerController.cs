@@ -295,7 +295,7 @@ public class PlayerController : MonoBehaviourPun
                 }
                 
                 Debug.Log("Players Remaining: " + _champSelectManger.livingPlayersCounter);
-                StartCoroutine(DestroyDelay(2f, gameObject));
+                StartCoroutine(DestroyDelay(0.2f, gameObject));
             }
             else
             {

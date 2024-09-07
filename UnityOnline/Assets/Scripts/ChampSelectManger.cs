@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using ExitGames.Client.Photon;
 
 
-
 public class ChampSelectManger : MonoBehaviourPunCallbacks
 {
     [SerializeField] public Button[] champsButtons;
@@ -49,9 +48,16 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
     [PunRPC]
     public void FinishGame()
     {
+        StartCoroutine(WaitAndFinishGame());
+    }
+
+    [PunRPC]
+    System.Collections.IEnumerator WaitAndFinishGame()
+    {
+        yield return new WaitForSeconds(1);
         Debug.LogWarning("Game Is Supposed to finish");
         gameOverCanvas.gameObject.SetActive(true);
-    
+
         GameObject winnerPV = GameObject.FindGameObjectWithTag("Player");
         alivePlayersList.Add(winnerPV.GetComponent<PhotonView>());
         winnerText.text = $"The winner is: {alivePlayersList[0].Owner.NickName}! \n Scores: \n";
@@ -61,6 +67,7 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
         }
         isPaused = true;
     }
+
 
     [PunRPC]
     public void RemoveLivingPkayer()
