@@ -48,8 +48,8 @@ public class SpawnRoomBoxes : MonoBehaviourPun
 
                     PhotonNetwork.InstantiateRoomObject(pickupToSpawn, currentSpawnPoint.position, currentSpawnPoint.rotation);
                     
-                    Debug.Log($"{spawnPointsArray.Length}, {takenIndex}");
-                    Debug.Log("Pickup Spawned");
+                    //Debug.Log($"{spawnPointsArray.Length}, {takenIndex}");
+                    //Debug.Log("Pickup Spawned");
                     timer = 3f;
                     photonView.RPC(nameof(SetNextSpawnPoint), RpcTarget.All);
 
@@ -99,7 +99,7 @@ public class SpawnRoomBoxes : MonoBehaviourPun
         loopTimes = 1;
         if (takenIndex == spawnPointsArray.Length)
         {
-            Debug.Log("No Available Spawn Points");
+            //Debug.Log("No Available Spawn Points");
             currentSpawnPoint = default;
             return;
         }
@@ -113,7 +113,7 @@ public class SpawnRoomBoxes : MonoBehaviourPun
         {
             ApplyNewLocation();
         }
-        Debug.Log($"It Found New Location After {loopTimes} Times");
+        //Debug.Log($"It Found New Location After {loopTimes} Times");
 
 
 
@@ -128,7 +128,7 @@ public class SpawnRoomBoxes : MonoBehaviourPun
 
         //}
         takenPlacesList[takenIndex] = spawnPointsArray[randomIndex];
-        Debug.Log("Spawn Point Added");
+        //Debug.Log("Spawn Point Added");
         takenIndex++;
     }
 

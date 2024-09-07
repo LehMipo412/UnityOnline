@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviourPun
     public bool isSupposedToBeControlledByAI = false;
     private float AIChangeTimerTimer = 5f;
     private float AIRandomDiraction;
+    JsonTesting myJson;
 
     [Header("Hp and Score")]
     public float HP = 200;
@@ -42,6 +43,11 @@ public class PlayerController : MonoBehaviourPun
 
     private void Start()
     {
+        myJson = new JsonTesting();
+        myJson.stick.hp = HP;
+        myJson.stick.id = PhotonNetwork.LocalPlayer.ActorNumber;
+        myJson.stick.name = PhotonNetwork.LocalPlayer.NickName;
+
         //cachedCamera = Camera.main;
         if(PhotonNetwork.CurrentRoom.CustomProperties.ContainsValue("Begginer"))
         {
@@ -87,6 +93,15 @@ public class PlayerController : MonoBehaviourPun
     }
     private void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            myJson.SaveToJson();
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            myJson.LoadFromJson();
+        }
         if (photonView.IsMine)
         {
             if (!ChampSelectManger.isPaused)
@@ -306,6 +321,14 @@ public class PlayerController : MonoBehaviourPun
         HP -= damageAmount;
         Debug.Log("Hp left is " + HP);
         TakeDamage(hitterNickName);
+        myJson.stick.hp = HP;
+        Debug.Log(photonView.IsMine);
+        if (photonView.IsMine)
+        {
+            Debug.LogWarning("No");
+            myJson.SaveToJson();
+        }
+     
     }
     IEnumerator DestroyDelay(float delay, GameObject otherObject)
     {

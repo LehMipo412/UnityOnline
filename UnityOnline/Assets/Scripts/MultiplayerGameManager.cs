@@ -34,7 +34,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
     {
         // if (photonView.Owner.HasRejoined)
         // {
-             StartCoroutine(LoadAfterSomeTime());
+             //StartCoroutine(LoadAfterSomeTime());
         // }
         if (!PhotonNetwork.LocalPlayer.HasRejoined)
         {
@@ -67,10 +67,10 @@ public class MultiplayerGameManager : MonoBehaviourPun
         
     }
     [PunRPC]
-    public void RequestCurrentJson()
-    {
-        GameStateSaver.Instance.gameObject.GetPhotonView().RPC(nameof(GameStateSaver.Instance.giveInfoToPeasents), RpcTarget.MasterClient);
-    }
+    //public void RequestCurrentJson()
+    //{
+    //    GameStateSaver.Instance.gameObject.GetPhotonView().RPC(nameof(GameStateSaver.Instance.giveInfoToPeasents), RpcTarget.MasterClient);
+    //}
 
     public SpawnPoint GetRandomSpawnPoint()
     {
@@ -125,7 +125,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
             selectedPlayer = PhotonNetwork.Instantiate(BarPlayerPathName,
                 targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
         }
-        photonView.RPC(nameof(SaveIndexesOFChampSelectInMasterClientJson), RpcTarget.MasterClient, index);
+        //photonView.RPC(nameof(SaveIndexesOFChampSelectInMasterClientJson), RpcTarget.MasterClient, index);
 
         playerFollowerCamera.Target.TrackingTarget = selectedPlayer.GetComponent<PlayerController>().neckIndicator;
         //playerFollowerCamera.Follow = selectedPlayer.GetComponent<PlayerController>().neckIndicator;
@@ -134,13 +134,13 @@ public class MultiplayerGameManager : MonoBehaviourPun
 
 
     }
-    [PunRPC]
-    public void SaveIndexesOFChampSelectInMasterClientJson(int index, PhotonMessageInfo info)
-    {
-       // GameStateSaver.Instance.takenChampionIndexesList.Add(index); 
-        GameStateSaver.Instance.SaveTakenIndexToJson(index);
-        Debug.LogWarning("saved Indexes in master client");
-    }
+    //[PunRPC]
+    //public void SaveIndexesOFChampSelectInMasterClientJson(int index, PhotonMessageInfo info)
+    //{
+    //   // GameStateSaver.Instance.takenChampionIndexesList.Add(index); 
+    //    GameStateSaver.Instance.SaveTakenIndexToJson(index);
+    //    Debug.LogWarning("saved Indexes in master client");
+    //}
     [PunRPC]
     private void SetSpawnPoint(SpawnPoint spawnPoint)
     {
@@ -176,11 +176,11 @@ public class MultiplayerGameManager : MonoBehaviourPun
 
         }
     }
-    IEnumerator LoadAfterSomeTime()
-    {
-        yield return new WaitForSeconds(0.4f);
-        RequestCurrentJson();
-    }
+    //IEnumerator LoadAfterSomeTime()
+    //{
+    //    yield return new WaitForSeconds(0.4f);
+    //    RequestCurrentJson();
+    //}
 
     
 }

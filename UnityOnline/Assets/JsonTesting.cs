@@ -8,19 +8,7 @@ public class JsonTesting : MonoBehaviour
 
 
     //Check this changes with the json file open to understand how it works. Use "Testing" gameobject and change the values inside. Press Spacebar to save and "V" to load. 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SaveToJson();
-        }
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            LoadFromJson();
-        }
-    }
 
-    
     //Use this to find your name and value with the format json is using. Use Contains like i used in the SaveToJson.
     public string JsonFormat(string name, string value)
     {
@@ -40,9 +28,16 @@ public class JsonTesting : MonoBehaviour
         {
             return;
         }
+        if (!System.IO.File.ReadAllText(filepath).Contains((JsonFormat("id", $"{stick.id}"))))
+        {
+            System.IO.File.AppendAllText(filepath, stats);
+        }
+        else
+        {
+           
+        }
 
-        System.IO.File.AppendAllText(filepath, stats);
-
+       
     }
     //To Open the Json - Copy the debug log line with the file path name and paste it into your explorer path. You can then open the json and see the changes in real time. 
     public void LoadFromJson()
@@ -70,6 +65,6 @@ public class JsonTesting : MonoBehaviour
 public class Stats
 {
     public int id;
-    public int hp;
-    public int name;
+    public float hp;
+    public string name;
 }

@@ -156,7 +156,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
 
     public void StartGame()
     {
-        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 3)
+        if (PhotonNetwork.IsMasterClient /*&& PhotonNetwork.CurrentRoom.PlayerCount >= 3*/)
         {
             PhotonNetwork.LoadLevel("CurrentMainGameScene");
         }
