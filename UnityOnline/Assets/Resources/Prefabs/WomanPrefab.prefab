@@ -60,6 +60,7 @@ MonoBehaviour:
   speed: 10
   jumpModifier: 0
   isOnLAva: 0
+  canJump: 1
   lavatimer: 1
   playerRB: {fileID: 1266242792862040560}
   playerAnimator: {fileID: 7934794586953182158}
@@ -68,17 +69,12 @@ MonoBehaviour:
   strikeZone: {fileID: 8078255535204110426}
   animationOffset: 0.25
   neckIndicator: {fileID: 6278493769418419671}
-  mouseIndicator: {fileID: 0}
   isSupposedToBeControlledByAI: 0
   maxHP: 200
   HP: 200
   score: 0
   playerHpBar: {fileID: 5994029901538499684}
   SelfHPBar: {fileID: 5493363905706040631}
-  gameStateHandler:
-    <HP>k__BackingField: 0
-    <Score>k__BackingField: 0
-    <KnockBackPrecentage>k__BackingField: 0
 --- !u!114 &9119552357703264867
 MonoBehaviour:
   m_ObjectHideFlags: 0

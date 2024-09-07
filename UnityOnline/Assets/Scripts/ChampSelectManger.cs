@@ -106,25 +106,24 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
    
     public void ReturnToMainMenu()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            
-            PhotonNetwork.LoadLevel("MainMenu");
-        }
+       PhotonNetwork.LoadLevel("MainMenu");
     }
+
     [PunRPC]
     public void DefenetlyLeaveRoom()
     {
-
         PhotonNetwork.LeaveRoom();
+        PhotonNetwork.AutomaticallySyncScene = false;
         Debug.LogWarning("Player LeftRoom");
+        ReturnToMainMenu();
+        Debug.Log(PhotonNetwork.NetworkClientState.ToString());
     }
     public void LeaveCurrentRoomAfterGame()
     {
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
-
+         
             photonView.RPC(nameof(DefenetlyLeaveRoom), RpcTarget.Others);
             StartCoroutine(WaitAndLeaveRooomMaster());
         }
@@ -134,6 +133,7 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
     {
        
         yield return new WaitForSeconds(2f);
+        PhotonNetwork.AutomaticallySyncScene = false;
         PhotonNetwork.LeaveRoom();
         ReturnToMainMenu();
     }

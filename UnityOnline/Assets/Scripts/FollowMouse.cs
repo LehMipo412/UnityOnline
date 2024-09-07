@@ -1,18 +1,18 @@
-
 using UnityEngine;
 
 public class FollowMouse : MonoBehaviour
 {
    [SerializeField] PlayerController myPlayerController;
    [SerializeField] Transform myPlayer;
-   
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        myPlayer.transform.Rotate(new Vector3(/*Input.GetAxis("Mouse Y")*-1*/0, Input.GetAxis("Mouse X") , 0));
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
-        //transform.localEulerAngles = Input.mousePosition;
+    }
+    void Update()
+    {
+        myPlayer.transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X") , 0));
+
         var horizonAngle = transform.localEulerAngles.x;
         var verticalAngle = transform.localEulerAngles.y;
 
@@ -36,23 +36,5 @@ public class FollowMouse : MonoBehaviour
         }
 
         transform.localEulerAngles = new Vector3(horizonAngle, verticalAngle, 0);
-
-
-        //if (transform.eulerAngles.x > 180)
-        //{
-        //    transform.eulerAngles = new Vector3(180f, transform.eulerAngles.y, 0);
-        //}
-        //if (transform.eulerAngles.y > 180)
-        //{
-        //    transform.eulerAngles = new Vector3(transform.eulerAngles.x, 180f, 0);
-        //}
-        //if (transform.eulerAngles.x < 0)
-        //{
-        //    transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-        //}
-        //if (transform.eulerAngles.y < 0)
-        //{
-        //    transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, 0);
-        //}
     }
 }

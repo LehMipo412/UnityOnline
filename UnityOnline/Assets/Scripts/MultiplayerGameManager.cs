@@ -11,41 +11,34 @@ using Photon.Pun.UtilityScripts;
 
 public class MultiplayerGameManager : MonoBehaviourPun
 {
+    [Header("Const Strings")]
     private const string NinjaPlayerPathName = "Prefabs\\NinjaPlayer";
     private const string WomanPlayerPathName = "Prefabs\\WomanPrefab";
     private const string CyborgPlayerPathName = "Prefabs\\CyborgPlayer";
     private const string PiratePlayerPathName = "Prefabs\\WomanPiratePlayer";
     private const string BarPlayerPathName = "Prefabs\\BarWarriorPlayer";
-    public CinemachineCamera playerFollowerCamera;
 
+    [Header ("CinemaMachine")]
+    public CinemachineCamera playerFollowerCamera;
 
     [Header("Spawn Points")]
     [SerializeField] private bool randomizeSpawnPoint;
-
     [SerializeField] private SpawnPoint[] randomSpawnPoints;
-
     [SerializeField] private SpawnPoint defaultSpawnPoint;
 
+    [Header ("GameObjects")]
     private GameObject selectedPlayer;
-
-
 
     private void Start()
     {
-        
         if (!PhotonNetwork.LocalPlayer.HasRejoined)
         {
-
             PhotonNetwork.LocalPlayer.CustomProperties = (new ExitGames.Client.Photon.Hashtable() { { "Kills", "0" } }); 
             Debug.LogWarning(PhotonNetwork.LocalPlayer.CustomProperties.ToString());
-
-          
-        }
-        
+        }   
     }
-    [PunRPC]
-    
 
+    [PunRPC]
     public SpawnPoint GetRandomSpawnPoint()
     {
         List<SpawnPoint> availableSpawnPoints = new List<SpawnPoint>();
@@ -68,43 +61,38 @@ public class MultiplayerGameManager : MonoBehaviourPun
     }
     public void SpawnPlayer(SpawnPoint targetSpawnPoint, int index)
     {
-
-        if (index == 0)
+        switch (index)
         {
-            targetSpawnPoint.Take();
-            selectedPlayer = PhotonNetwork.Instantiate(NinjaPlayerPathName,
-                targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
+            case 0:
+                targetSpawnPoint.Take();
+                selectedPlayer = PhotonNetwork.Instantiate(NinjaPlayerPathName,
+                    targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
+                break;
+            case 1:
+                targetSpawnPoint.Take();
+                selectedPlayer = PhotonNetwork.Instantiate(WomanPlayerPathName,
+                    targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
+                break;
+            case 2:
+                targetSpawnPoint.Take();
+                selectedPlayer = PhotonNetwork.Instantiate(CyborgPlayerPathName,
+                    targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
+                break;
+            case 3:
+                targetSpawnPoint.Take();
+                selectedPlayer = PhotonNetwork.Instantiate(PiratePlayerPathName,
+                    targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
+                break;
+            case 4:
+                targetSpawnPoint.Take();
+                selectedPlayer = PhotonNetwork.Instantiate(BarPlayerPathName,
+                    targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
+                break;
+            default:
+                break;
         }
-        if (index == 1)
-        {
-            targetSpawnPoint.Take();
-            selectedPlayer = PhotonNetwork.Instantiate(WomanPlayerPathName,
-                targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
-        }
-        if (index == 2)
-        {
-            targetSpawnPoint.Take();
-            selectedPlayer = PhotonNetwork.Instantiate(CyborgPlayerPathName,
-                targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
-        }
-        if (index == 3)
-        {
-            targetSpawnPoint.Take();
-            selectedPlayer = PhotonNetwork.Instantiate(PiratePlayerPathName,
-                targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
-        }
-        if (index == 4)
-        {
-            targetSpawnPoint.Take();
-            selectedPlayer = PhotonNetwork.Instantiate(BarPlayerPathName,
-                targetSpawnPoint.transform.position, targetSpawnPoint.transform.rotation);
-        }
-        
 
         playerFollowerCamera.Target.TrackingTarget = selectedPlayer.GetComponent<PlayerController>().neckIndicator;
-        
-
-
     }
    
     [PunRPC]
@@ -134,15 +122,7 @@ public class MultiplayerGameManager : MonoBehaviourPun
 
         if (currentPlayerController.photonView.Owner.IsMasterClient)
         {
-            
-             
-
-                currentPlayerController.photonView.RPC(nameof(currentPlayerController.SwitchFromPlayerToAI), RpcTarget.All, leftPlayerId);
-            
-
+           currentPlayerController.photonView.RPC(nameof(currentPlayerController.SwitchFromPlayerToAI), RpcTarget.All, leftPlayerId);
         }
     }
-    
-
-    
 }

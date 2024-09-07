@@ -74,17 +74,15 @@ public class NewServerManager : MonoBehaviourPunCallbacks
 
     #region Buttons
 
-    public void LeaveLobbyButt()
+    public void LeaveLobby()
     {
-        PhotonNetwork.LeaveLobby();
-      
+        PhotonNetwork.LeaveLobby();  
     }
     public void Refresh()
     {
         _shouldRefresh = true;
         PhotonNetwork.LeaveLobby();
     }
-
     public void UpdateSlider()
     {
         _playerAmmount.text = _playerAmmountSlider.value.ToString();
@@ -104,8 +102,6 @@ public class NewServerManager : MonoBehaviourPunCallbacks
             PhotonNetwork.JoinRoom(_roomsDropDown.options[_roomsDropDown.value].text.Substring(0, _roomsDropDown.options[_roomsDropDown.value].text.IndexOf(':')));
         }
         else _errorOutput.text = "Error Output: There are no rooms to join";
-
-
     }
     public void CreateRoom()
     {
@@ -137,8 +133,6 @@ public class NewServerManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRandomRoom(new Hashtable() { { Diff, _joinRoomProperty.options[_joinRoomProperty.value].text } }, 0,MatchmakingMode.RandomMatching,PhotonNetwork.CurrentLobby,null);
         
     }
-
-   
     public void JoinLobby()
     {
         if (nicknameEditorInputField.text.Length > 0)
@@ -153,17 +147,16 @@ public class NewServerManager : MonoBehaviourPunCallbacks
         }
         
     }
-
     public void StartGame()
     {
-        if (PhotonNetwork.IsMasterClient /*&& PhotonNetwork.CurrentRoom.PlayerCount >= 3*/)
+        if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.LoadLevel("CurrentMainGameScene");
         }
         else
         {
-            Debug.Log("Not Enough players: Minimum 3");
-            _errorOutput.text = "Error Output: Not Enough players: Minimum 3 ";
+            Debug.Log("Wait for master to start");
+            _errorOutput.text = "Error Output: Wait for master to start ";
         } 
 
     }
@@ -192,12 +185,9 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     }
     public override void OnConnectedToMaster()
     {
-        Debug.Log(_hasLeftRoom + " " + _shouldRefresh);
-
         base.OnConnectedToMaster();
         if (!_hasLeftRoom)
-        {
-        
+        {   
             Debug.Log("Connected To Master Succesfully");
         }
         else
@@ -246,7 +236,6 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-
         _roomsCount = roomList.Count;
         base.OnRoomListUpdate(roomList);
         Debug.Log("Room list updated");
@@ -299,9 +288,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
                     {
                         MyRoomList.RemoveAt(j);
                     }
-                }
-                //roomList.RemoveAt(i);
-                
+                }   
             }
         }
     }

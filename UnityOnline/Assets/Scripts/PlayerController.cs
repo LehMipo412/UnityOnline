@@ -2,19 +2,21 @@ using System;
 using System.Collections;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 
 public class PlayerController : MonoBehaviourPun
 {
-    [Header("const strings")]
+    [Header("Const Strings")]
     private const string ProjectileTag = "Projectile";
     private const string BoostBoxTag = "BoostBox";
     private const string DamageBoxTag = "DamageBox";
-    private string ProjectilePrefabName = "Prefabs\\Projectile";
     private const string RecievedamageRPC = "RecieveDamage";
-    [Header("Damage and movement")]
+
+    [Header("Strings")]
+    private string ProjectilePrefabName = "Prefabs\\Projectile";
+
+    [Header("Damage And Movement")]
     [SerializeField] private Transform projectileSpawnTransform;
     [SerializeField] public float damage;
     [SerializeField] public float knockbackPrecentage;
@@ -23,23 +25,25 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] private bool isOnLAva = false;
     [SerializeField] private bool canJump = true;
     [SerializeField] private float lavatimer = 1f;
-    [Header("Network and physics")]
+
+    [Header("Network And Physics")]
     [SerializeField] public Rigidbody playerRB;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private PhotonView _photonView;
     [SerializeField] private ChampSelectManger _champSelectManger;
     [SerializeField] private GameObject strikeZone;
     [SerializeField] private float animationOffset;
+
     [Header("Camera Helpers")]
     public Transform neckIndicator;
-   
+
     [Header("AIChange")]
     public bool isSupposedToBeControlledByAI = false;
     private float AIChangeTimerTimer = 5f;
     private float AIRandomDiraction;
     
 
-    [Header("Hp and Score")]
+    [Header("HP And Score")]
     public float maxHP = 200;
     public float HP = 200;
     public int score = 0;
@@ -60,9 +64,6 @@ public class PlayerController : MonoBehaviourPun
             SelfHPBar.hpCanvas.gameObject.SetActive(false);
         }
        
-       
-
-
         
         if(PhotonNetwork.CurrentRoom.CustomProperties.ContainsValue("Begginer"))
         {
@@ -113,8 +114,6 @@ public class PlayerController : MonoBehaviourPun
     }
     private void Update()
     {
-
-      
         if (photonView.IsMine)
         {
             if (!ChampSelectManger.isPaused)
@@ -440,7 +439,6 @@ public class PlayerController : MonoBehaviourPun
 
     public void Shoot()
     {
-        Debug.Log("fire in the hole");
         GameObject projectile = PhotonNetwork.Instantiate(ProjectilePrefabName,
             projectileSpawnTransform.position, projectileSpawnTransform.rotation, 0,
             new object[] {});

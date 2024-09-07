@@ -12,14 +12,17 @@ using Random = UnityEngine.Random;
 
 public class SpawnRoomBoxes : MonoBehaviourPun
 {
-    public Transform[] spawnPointsArray;
+    [Header ("Const Strings")]
     private const string HealthPickUpName = "Prefabs\\HealthPickUp";
     private const string SpeedBoostPickupName = "Prefabs\\SpeedPickUp";
+    [Header("Transforms")]
+    public Transform[] spawnPointsArray;
     public Transform[] takenPlacesList;
-    int takenIndex = 0;
-    private float timer = 3f;
-    private int loopTimes = 0;
     private Transform currentSpawnPoint;
+    [Header("Others")]
+    private int takenIndex = 0;
+    private int loopTimes = 0;
+    private float timer = 3f;
 
 
     void Start()
