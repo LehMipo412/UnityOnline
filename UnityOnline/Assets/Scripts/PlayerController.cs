@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviourPun
         {
             if (!ChampSelectManger.isPaused)
             {
-                if (!ChatManagerScript.isChatting)
+                if (!ChatManagerScript.IsChatting)
                 {
                    
                     if (!_photonView.IsMine)

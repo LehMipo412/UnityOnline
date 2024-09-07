@@ -12148,10 +12148,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59ce11ffec3bd6c4c9cb86652e59fe49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerView: {fileID: 2070282228}
-  playerInputField: {fileID: 2067060491}
-  textShower: {fileID: 1778183317}
-  chatCanvas: {fileID: 326347453}
+  _playerInputField: {fileID: 2067060491}
+  _textShower: {fileID: 1778183317}
+  _playerView: {fileID: 2070282228}
+  _chatCanvas: {fileID: 326347453}
 --- !u!114 &2070282228
 MonoBehaviour:
   m_ObjectHideFlags: 0

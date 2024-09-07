@@ -6,20 +6,16 @@ using UnityEngine.UIElements;
 
 public class ChatManagerScript : MonoBehaviourPun
 {
-    public PhotonView playerView;
-    public TMP_InputField playerInputField;
-    public TMP_InputField textShower;
-    public Canvas chatCanvas;
-    private int chatColorIndex;
-    public static bool isChatting;
-    
-
-
-   
+    [SerializeField] private TMP_InputField _playerInputField;
+    [SerializeField] private TMP_InputField _textShower;
+    [SerializeField] private PhotonView _playerView;
+    [SerializeField] private Canvas _chatCanvas;
+    public static bool IsChatting;
+    private int _chatColorIndex;
     public void ButtonChatUpdate()
     {
-        playerView.RPC(nameof(UpdateChat),RpcTarget.All, playerInputField.text, chatColorIndex);
-        playerInputField.text = "";
+        _playerView.RPC(nameof(UpdateChat),RpcTarget.All, _playerInputField.text, _chatColorIndex);
+        _playerInputField.text = "";
     }
   
     [PunRPC]
@@ -43,7 +39,7 @@ public class ChatManagerScript : MonoBehaviourPun
             wantedColor = "red";
             
         }
-        textShower.text +=($"<color={wantedColor}>{info.Sender.NickName}: {msg}</color> \n");
+        _textShower.text +=($"<color={wantedColor}>{info.Sender.NickName}: {msg}</color> \n");
         
     }
 
@@ -51,18 +47,18 @@ public class ChatManagerScript : MonoBehaviourPun
     {
         if(index == 0)
         {
-            playerInputField.textComponent.color = Color.black ;
-            chatColorIndex = 0;
+            _playerInputField.textComponent.color = Color.black ;
+            _chatColorIndex = 0;
         }
         if (index == 1)
         {
-            playerInputField.textComponent.color = Color.yellow;
-            chatColorIndex = 1;
+            _playerInputField.textComponent.color = Color.yellow;
+            _chatColorIndex = 1;
         }
         if (index == 2)
         {
-            playerInputField.textComponent.color = Color.red;
-            chatColorIndex = 2;
+            _playerInputField.textComponent.color = Color.red;
+            _chatColorIndex = 2;
         }
     }
 
@@ -70,16 +66,16 @@ public class ChatManagerScript : MonoBehaviourPun
     {
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            if (chatCanvas.gameObject.activeSelf)
+            if (_chatCanvas.gameObject.activeSelf)
             {
-                chatCanvas.gameObject.SetActive(false);
-                isChatting = false;
+                _chatCanvas.gameObject.SetActive(false);
+                IsChatting = false;
                 UnityEngine.Cursor.lockState = CursorLockMode.Locked;
             }
             else
             {
-                chatCanvas.gameObject.SetActive(true);
-                isChatting = true;
+                _chatCanvas.gameObject.SetActive(true);
+                IsChatting = true;
                 UnityEngine.Cursor.lockState = CursorLockMode.None;
             }
         }
