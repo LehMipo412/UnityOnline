@@ -50,8 +50,6 @@ public class PlayerController : MonoBehaviourPun
     public EnemyHPbar playerHpBar;
     public EnemyHPbar SelfHPBar;
 
-    
-
     private void Start()
     {
         if (photonView.IsMine)
@@ -71,42 +69,38 @@ public class PlayerController : MonoBehaviourPun
         }
 
         _champSelectManger = ChampSelectManger.Instance;
-        if(playerRB.mass ==2f)
+
+        switch (playerRB.mass)
         {
-            ProjectilePrefabName = "Prefabs\\KunaiPrefab";
-            jumpModifier = 4f;
-        }
-        if (playerRB.mass == 1f)
-        {
-            ProjectilePrefabName = "Prefabs\\NewArrowPrefab";
-            jumpModifier = 2f;
+            case 2f:
+                ProjectilePrefabName = "Prefabs\\KunaiPrefab";
+                jumpModifier = 4f;
+                break;
+            case 1f:
+                ProjectilePrefabName = "Prefabs\\NewArrowPrefab";
+                jumpModifier = 2f;
+                break;
+            case 1.2f:
+                ProjectilePrefabName = "Prefabs\\FistPrefab";
+                jumpModifier = 2.4f;
+                break;
+            case 1.5f:
+                ProjectilePrefabName = "Prefabs\\SlashPrefab";
+                jumpModifier = 3f;
+                break;
+            case 1.7f:
+                ProjectilePrefabName = "Prefabs\\PencilProjectile";
+                jumpModifier = 3.4f;
+                break;
 
         }
-        if (playerRB.mass == 1.2f)
-        {
-            ProjectilePrefabName = "Prefabs\\FistPrefab";
-            jumpModifier = 2.4f;
 
-        }
-        if (playerRB.mass == 1.5f)
-        {
-            ProjectilePrefabName = "Prefabs\\SlashPrefab";
-            jumpModifier = 3f;
-
-        }
-        if (playerRB.mass == 1.7f)
-        {
-            ProjectilePrefabName = "Prefabs\\PencilProjectile";
-            jumpModifier = 3.4f;
-
-        }
         AIRandomDiraction = Random.Range(0, 4);
     }
 
     [PunRPC]
     public void GetKnockedBack(Vector3 hitDitraction,float additionalKBPrec)
     {
-     
         playerRB.AddForce(hitDitraction * (3 * knockbackPrecentage*0.8f) * -1*2*1.2f, ForceMode.Impulse);
         knockbackPrecentage += additionalKBPrec;
         playerRB.AddForce(Vector3.up * (1 * knockbackPrecentage/3) * 2, ForceMode.Impulse);
