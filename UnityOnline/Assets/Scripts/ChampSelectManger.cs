@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using ExitGames.Client.Photon;
 
 
-//using UnityEngine.UIElements;
 
 public class ChampSelectManger : MonoBehaviourPunCallbacks
 {
@@ -38,7 +37,7 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
             Instance = this;
         }
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
 
     [PunRPC]
     public void AddLivingPkayer()
@@ -52,8 +51,7 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
     {
         Debug.LogWarning("Game Is Supposed to finish");
         gameOverCanvas.gameObject.SetActive(true);
-        //alivePlayersList.Remove(playerPhotonView);
-        //alivePlayersList.Sort();
+    
         GameObject winnerPV = GameObject.FindGameObjectWithTag("Player");
         alivePlayersList.Add(winnerPV.GetComponent<PhotonView>());
         winnerText.text = $"The winner is: {alivePlayersList[0].Owner.NickName}! \n Scores: \n";
@@ -86,10 +84,7 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
         }
           
     }
-    void Start()
-    {
-        
-    }
+   
 
     public void ExitGame()
     {
@@ -144,7 +139,7 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
         currentMultiplayerManager.SpawnPlayer(currentMultiplayerManager.GetRandomSpawnPoint(), index);
         Debug.Log("MovedScene");
     }
-    // Update is called once per frame
+   
 
    
 }

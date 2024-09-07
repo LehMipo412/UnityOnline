@@ -19,7 +19,7 @@ public class EnemyHPbar : MonoBehaviour
         currentHP = _hpBar.value;
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.L))

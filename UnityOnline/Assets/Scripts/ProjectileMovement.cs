@@ -25,25 +25,10 @@ public class ProjectileMovement : MonoBehaviourPun, IPunInstantiateMagicCallback
 
     }
 
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     if (other.CompareTag(PlayerTag))
-    //     {
-    //         PlayerController playerController = other.GetComponent<PlayerController>();
-    //         if (playerController.photonView.Owner.ActorNumber == photonView.Owner.ActorNumber)
-    //             return;
-    //         
-    //         if (photonView.IsMine)
-    //         {
-    //             //run login that affect other players! only the projectile owner should do that
-    //             PhotonNetwork.Destroy(gameObject);
-    //         }
-    //     }
-    // }
+   
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
-      /*  object[] instantiationData = info.photonView.InstantiationData;
-        meshRenderer.material = projectileColors[(int)instantiationData[0]];*/
+        Debug.Log("Projectile indeed spawned");
     }
 
     [PunRPC]

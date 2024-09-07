@@ -38,22 +38,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
-    public override void OnLeftRoom()
-    {
-       // Debug.LogWarning("MasterLeft");
-        
-        //if (isReallyMasterClient)
-        //{
-        //    Debug.LogWarning("MasterLeft");
-        //    CustomChangeMasterClient();
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("This Player Is Not Master");
-        //}
-
-        base.OnLeftRoom();
-    }
+   
    
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -69,14 +54,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     
     public void CustomChangeMasterClient()
     {
-        //foreach (var player in PhotonNetwork.PlayerList)
-        //{
-        //    if (PhotonNetwork.PlayerList.ToListPooled().IndexOf(player) != PhotonNetwork.PlayerList.ToListPooled().IndexOf(PhotonNetwork.MasterClient))
-        //    {
-        //        PhotonNetwork.SetMasterClient(player);
-        //        break;
-        //    }
-        //}
+        
         photonView.RPC(nameof(TellEveryOneThatMasteClientChanged), RpcTarget.All);
        
         
@@ -95,7 +73,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     {
         MasterChangerText.text = $"The New Master Client IS: {PhotonNetwork.MasterClient.NickName}";
         Debug.LogWarning("Master Client Changed");
-       // ChangeNextPlayer();
+       
     }
     [PunRPC]
     public void ShowEveryoneMasterChanged()
@@ -107,10 +85,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     public void ChangeNextPlayer()
     {
         int playerIndex = PhotonNetwork.PlayerList.ToListPooled().IndexOf((PhotonNetwork.LocalPlayer));
-        //if (PhotonNetwork.PlayerList[playerIndex + 1] != null)
-        //{
-        //   // nextMasterClient = PhotonNetwork.PlayerList[playerIndex + 1];
-        //}
+        
     }
 
     public void GiveTheMasterCrown()
@@ -137,7 +112,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     }
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        //newMasterClient = nextMasterClient;
+        
         Debug.Log("new Master here");
         base.OnMasterClientSwitched(newMasterClient);
         if (isReallyMasterClient)

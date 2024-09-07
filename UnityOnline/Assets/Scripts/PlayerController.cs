@@ -32,12 +32,12 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] private float animationOffset;
     [Header("Camera Helpers")]
     public Transform neckIndicator;
-    public Transform mouseIndicator;
+   
     [Header("AIChange")]
     public bool isSupposedToBeControlledByAI = false;
     private float AIChangeTimerTimer = 5f;
     private float AIRandomDiraction;
-    JsonTesting myJson;
+    
 
     [Header("Hp and Score")]
     public float maxHP = 200;
@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviourPun
     public EnemyHPbar playerHpBar;
     public EnemyHPbar SelfHPBar;
 
-    public PlayerSaveCapsule gameStateHandler;
+    
 
     private void Start()
     {
@@ -55,13 +55,11 @@ public class PlayerController : MonoBehaviourPun
             playerHpBar.hpCanvas.gameObject.SetActive(false);
             playerHpBar = SelfHPBar;
         }
-        myJson = new JsonTesting();
-        myJson.stick.hp = HP;
-        myJson.stick.id = PhotonNetwork.LocalPlayer.ActorNumber;
-        myJson.stick.name = PhotonNetwork.LocalPlayer.NickName;
+       
+       
 
 
-        //cachedCamera = Camera.main;
+        
         if(PhotonNetwork.CurrentRoom.CustomProperties.ContainsValue("Begginer"))
         {
             damage = 1.5f;
@@ -119,13 +117,7 @@ public class PlayerController : MonoBehaviourPun
             {
                 if (!ChatManagerScript.isChatting)
                 {
-                    //Ray ray = cachedCamera.ScreenPointToRay(Input.mousePosition);
-                    //RaycastHit hit;
-                    //if (Physics.Raycast(ray, out hit))
-                    //{
-                    //    // hit.point contains the world position where the ray hit.
-                    //    raycastPos = hit.point;
-                    //}
+                   
                     if (!_photonView.IsMine)
                         return;
                     if (!isSupposedToBeControlledByAI)
@@ -133,7 +125,7 @@ public class PlayerController : MonoBehaviourPun
                         if (Input.GetKey(KeyCode.W))
                         {
                             playerAnimator.SetBool("IsRunning", true);
-                            // Debug.Log("runing");
+                            
                             transform.Translate(Vector3.forward * (Time.deltaTime * speed));
                         }
                     if (Input.GetKey(KeyCode.A))
@@ -190,19 +182,19 @@ public class PlayerController : MonoBehaviourPun
                             if (AIRandomDiraction == 0)
                             {
                                 playerAnimator.SetBool("IsRunning", true);
-                                // Debug.Log("runing");
+                                
                                 transform.Translate(Vector3.forward * (Time.deltaTime * speed));
                             }
                             if (AIRandomDiraction == 1)
                             {
                                 playerAnimator.SetBool("IsRunning", true);
-                                // Debug.Log("runing");
+                                
                                 transform.Translate(Vector3.left * (Time.deltaTime * speed));
                             }
                             if (AIRandomDiraction == 2)
                             {
                                 playerAnimator.SetBool("IsRunning", true);
-                                // Debug.Log("runing");
+                               
                                 transform.Translate(Vector3.back * (Time.deltaTime * speed));
                             }
                             if (AIRandomDiraction == 3)
@@ -275,10 +267,6 @@ public class PlayerController : MonoBehaviourPun
                             else
                             {
 
-                                //if (currentkils == -1)
-                                //{
-                                //    currentkils = 0;
-                                //}
                                 int currentkils = int.Parse((string)player.CustomProperties["Kills"]);
                                 currentkils--;
                                 player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
@@ -296,18 +284,13 @@ public class PlayerController : MonoBehaviourPun
                         else
                         {
                             
-                            //if (currentkils == -1)
-                            //{
-                            //    currentkils = 0;
-                            //}
+                           
                            int  currentkils = int.Parse((string)player.CustomProperties["Kills"]);
                             currentkils++;
                             player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
                             Debug.LogWarning("Hey hey! you got a kill! current kills:" + currentkils);
                         }
-                        // Debug.LogWarning("Current upgraded kills: "+ currentkils);
                        
-                        //Debug.LogWarning( "Upgraded kills is: " +(string)PhotonNetwork.LocalPlayer.CustomProperties[key]);
                     }
                 }
                 
@@ -330,6 +313,7 @@ public class PlayerController : MonoBehaviourPun
     }
 
     [PunRPC]
+    //this is not working, annoying :(
     public void DisableProjectileMesh(ProjectileMovement otherProjectile)
     {
         if (photonView.IsMine)
@@ -344,6 +328,29 @@ public class PlayerController : MonoBehaviourPun
     public void StrikeFunc()
     {
         StartCoroutine(Strike());
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Lava"))
+        {
+            isOnLAva = true;
+            Debug.LogWarning("The Floor Is Lava!");
+            canJump = true;
+        }
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            canJump = true;
+        }
+    }
+
+    
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Lava")) ;
+        {
+            isOnLAva = false;
+        }
     }
 
     [PunRPC]
@@ -364,9 +371,7 @@ public class PlayerController : MonoBehaviourPun
                 photonView.RPC(RecievedamageRPC, RpcTarget.All, 10, otherProjectile.gameObject.GetPhotonView().Owner.NickName);
                 Debug.LogWarning("hitting player: " + otherProjectile.gameObject.GetPhotonView().Owner.NickName);
 
-               // photonView.RPC(nameof(DisableProjectileMesh), RpcTarget.All, otherProjectile);
-                
-                //run login that affect other players! only the projectile owner should do that
+               
                 StartCoroutine(DestroyDelay(1f, otherProjectile.gameObject));
                
                 
@@ -375,7 +380,7 @@ public class PlayerController : MonoBehaviourPun
             
 
             otherProjectile.visualPanel.SetActive(false);
-            //add bool for projectile hit
+            
         }
         if (other.CompareTag("Strike"))
         {
@@ -386,16 +391,7 @@ public class PlayerController : MonoBehaviourPun
                 photonView.RPC(nameof(GetKnockedBack), RpcTarget.All, other.transform.localPosition, strikingActor.damage);
             }
         }
-        if(other.CompareTag("Lava"))
-        {
-            isOnLAva = true;
-            Debug.LogWarning("The Floor Is Lava!");
-            canJump = true;
-        }
-        if (other.CompareTag("Floor"))
-        {
-            canJump = true;
-        }
+        
         if (other.CompareTag(BoostBoxTag))
         {
             playerRB.AddForce(Vector3.up * 20, ForceMode.Impulse);
