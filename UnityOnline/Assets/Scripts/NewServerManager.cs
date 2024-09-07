@@ -209,6 +209,8 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         base.OnJoinedLobby();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         Debug.Log("Joined Lobby : " + PhotonNetwork.CurrentLobby.Name);
         _lobbySection.SetActive(false);
         _roomsSection.SetActive(true);
@@ -220,7 +222,9 @@ public class NewServerManager : MonoBehaviourPunCallbacks
         _leaveRoomButton.SetActive(true);
     }
     public override void OnJoinedRoom()
-    { 
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         base.OnJoinedRoom();
         _leaveRoomButton.SetActive(true);
         _startButton.SetActive(true);

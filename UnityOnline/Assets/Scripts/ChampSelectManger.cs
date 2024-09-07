@@ -54,6 +54,8 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
     [PunRPC]
     System.Collections.IEnumerator WaitAndFinishGame()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         yield return new WaitForSeconds(1);
         Debug.LogWarning("Game Is Supposed to finish");
         gameOverCanvas.gameObject.SetActive(true);
@@ -62,6 +64,7 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
         alivePlayersList.Add(winnerPV.GetComponent<PhotonView>());
         var winnerPlayerController = winnerPV.GetComponent<PlayerController>();
         winnerPlayerController.SelfHPBar.hpCanvas.gameObject.SetActive(false);
+       
         winnerText.text = $"The winner is: {alivePlayersList[0].Owner.NickName}! \n Scores: \n";
         foreach (var player in PhotonNetwork.PlayerList)
         {
@@ -105,22 +108,49 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
+            
             PhotonNetwork.LoadLevel("MainMenu");
         }
+    }
+    [PunRPC]
+    public void DefenetlyLeaveRoom()
+    {
+
+        PhotonNetwork.LeaveRoom();
+        Debug.LogWarning("Player LeftRoom");
     }
     public void LeaveCurrentRoomAfterGame()
     {
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonNetwork.LeaveRoom();
+
+            photonView.RPC(nameof(DefenetlyLeaveRoom), RpcTarget.Others);
+            StartCoroutine(WaitAndLeaveRooomMaster());
         }
+    }
+
+    System.Collections.IEnumerator WaitAndLeaveRooomMaster()
+    {
+       
+        yield return new WaitForSeconds(2f);
+        PhotonNetwork.LeaveRoom();
+        ReturnToMainMenu();
+    }
+
+
+    [PunRPC]
+    public void DefenetlyLeaveLobby()
+    {
+        PhotonNetwork.LeaveLobby();
     }
     public void LeaveCurrentLobbyAfterGame()
     {
         if (PhotonNetwork.IsMasterClient)
         {
+            photonView.RPC(nameof(DefenetlyLeaveLobby), RpcTarget.Others);
             PhotonNetwork.LeaveLobby();
+            ReturnToMainMenu();
         }
     }
     [PunRPC]    

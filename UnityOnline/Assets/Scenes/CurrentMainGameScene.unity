@@ -3703,31 +3703,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1945103492}
         m_TargetAssemblyTypeName: ChampSelectManger, Assembly-CSharp
-        m_MethodName: ReturnToMainMenu
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1945103492}
-        m_TargetAssemblyTypeName: ChampSelectManger, Assembly-CSharp
         m_MethodName: LeaveCurrentRoomAfterGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1945103492}
-        m_TargetAssemblyTypeName: ChampSelectManger, Assembly-CSharp
-        m_MethodName: LeaveCurrentLobbyAfterGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
