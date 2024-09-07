@@ -12,7 +12,6 @@ public class ProjectileMovement : MonoBehaviourPun, IPunInstantiateMagicCallback
     [SerializeField] private float speed = 20;
     private float timer = 3;
 
-    // Update is called once per frame
     void Update()
     {
         if (photonView.IsMine)

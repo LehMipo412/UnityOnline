@@ -96,18 +96,11 @@ public class MultiplayerGameManager : MonoBehaviourPun
     }
    
     [PunRPC]
-    private void SetSpawnPoint(SpawnPoint spawnPoint)
-    {
-        Debug.Log("Recieved spawn point is " + spawnPoint);
-    }
-    [PunRPC]
     private void ClientIsReady(PhotonMessageInfo messageInfo)
     {
         Debug.Log(messageInfo.Sender + " Is ready");
         SpawnPoint randomSpawnPoint = GetRandomSpawnPoint();
         randomSpawnPoint.Take();
-
-        messageInfo.photonView.RPC(nameof(SetSpawnPoint), messageInfo.Sender, randomSpawnPoint);
     }
     [PunRPC]
     public void TellPlayerToSwitchToAI(int leftPlayerId)

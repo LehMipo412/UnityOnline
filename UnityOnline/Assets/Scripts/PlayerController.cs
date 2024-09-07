@@ -74,7 +74,6 @@ public class PlayerController : MonoBehaviourPun
         if(playerRB.mass ==2f)
         {
             ProjectilePrefabName = "Prefabs\\KunaiPrefab";
-            Debug.Log("Ninja It IS");
             jumpModifier = 4f;
         }
         if (playerRB.mass == 1f)
