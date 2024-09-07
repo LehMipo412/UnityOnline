@@ -8,21 +8,25 @@ using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviourPun
 {
+    [Header("const strings")]
     private const string ProjectileTag = "Projectile";
     private const string BoostBoxTag = "BoostBox";
     private const string DamageBoxTag = "DamageBox";
     private string ProjectilePrefabName = "Prefabs\\Projectile";
     private const string RecievedamageRPC = "RecieveDamage";
+    [Header("Damage and movement")]
     [SerializeField] private Transform projectileSpawnTransform;
     [SerializeField] public float damage;
-    [SerializeField] private float knockbackPrecentage;
+    [SerializeField] public float knockbackPrecentage;
     [SerializeField] private float speed = 10;
-    [SerializeField] private Rigidbody playerRB;
+    [Header("Network and physics")]
+    [SerializeField] public Rigidbody playerRB;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private PhotonView _photonView;
     [SerializeField] private ChampSelectManger _champSelectManger;
     [SerializeField] private GameObject strikeZone;
     [SerializeField] private float animationOffset;
+    [Header("Camera Helpers")]
     public Transform neckIndicator;
     public Transform mouseIndicator;
     [Header("AIChange")]
@@ -30,14 +34,20 @@ public class PlayerController : MonoBehaviourPun
     private float AIChangeTimerTimer = 5f;
     private float AIRandomDiraction;
 
-    private Vector3 raycastPos;
-   // private Camera cachedCamera;
-    private int HP = 200;
+    [Header("Hp and Score")]
+    public float HP = 200;
+    public int score = 0;
+
+    public PlayerSaveCapsule gameStateHandler;
 
     private void Start()
     {
         //cachedCamera = Camera.main;
-        
+        if(PhotonNetwork.CurrentRoom.CustomProperties.ContainsValue("Begginer"))
+        {
+            damage = 1.5f;
+        }
+
         _champSelectManger = ChampSelectManger.Instance;
         if(playerRB.mass ==2f)
         {
@@ -187,14 +197,27 @@ public class PlayerController : MonoBehaviourPun
         photonView.RPC(nameof(StrikeFunc), RpcTarget.All);
     }
     [PunRPC]
-    public void TakeDamage()
+    public void TakeDamage(string hitterName)
     {
-        if(HP == 0)
+        if(HP <= 0)
         {
             
             if (photonView.IsMine)
             {
                 _champSelectManger.photonView.RPC(nameof(_champSelectManger.RemoveLivingPkayer), RpcTarget.All);
+                foreach (var player in PhotonNetwork.PlayerList)
+                {
+                    if(player.NickName == hitterName)
+                    {
+                        Debug.LogWarning( "The Player Who Hitted You: "+hitterName);
+                        int currentkils = int.Parse((string)player.CustomProperties["Kills"]);
+                        currentkils++;
+                        // Debug.LogWarning("Current upgraded kills: "+ currentkils);
+                        player.SetCustomProperties( new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
+                        //Debug.LogWarning( "Upgraded kills is: " +(string)PhotonNetwork.LocalPlayer.CustomProperties[key]);
+                    }
+                }
+                
                 Debug.Log("Players Remaining: " + _champSelectManger.livingPlayersCounter);
                 StartCoroutine(DestroyDelay(2f, gameObject));
             }
@@ -234,7 +257,7 @@ public class PlayerController : MonoBehaviourPun
 
             if (otherProjectile.photonView.IsMine)
             {
-                photonView.RPC(RecievedamageRPC, RpcTarget.All, 10);
+                photonView.RPC(RecievedamageRPC, RpcTarget.All, 10, otherProjectile.photonView.Owner.NickName);
 
                 photonView.RPC(nameof(DisableProjectileMesh), RpcTarget.All, otherProjectile);
                 
@@ -278,11 +301,11 @@ public class PlayerController : MonoBehaviourPun
         }
     }
     [PunRPC]
-    private void RecieveDamage(int damageAmount)
+    private void RecieveDamage(int damageAmount, string hitterNickName)
     {
         HP -= damageAmount;
         Debug.Log("Hp left is " + HP);
-        TakeDamage();
+        TakeDamage(hitterNickName);
     }
     IEnumerator DestroyDelay(float delay, GameObject otherObject)
     {
@@ -321,8 +344,14 @@ public class PlayerController : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void SwitchFromPlayerToAI()
+    public void SwitchFromPlayerToAI(int leftplayerID, PhotonMessageInfo info)
     {
-        isSupposedToBeControlledByAI = true;
+        Debug.LogWarning("leftplayerID Player Id is: " + leftplayerID);
+        Debug.LogWarning("creator ID: " + photonView.CreatorActorNr);
+        if (leftplayerID == photonView.CreatorActorNr)
+        {
+            Debug.Log("Meep Morp, ZEET!");
+            isSupposedToBeControlledByAI = true;
+        }
     }
 }

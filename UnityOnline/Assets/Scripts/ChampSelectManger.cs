@@ -3,13 +3,14 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using ExitGames.Client.Photon;
 
 
 //using UnityEngine.UIElements;
 
-public class ChampSelectManger : MonoBehaviourPun
+public class ChampSelectManger : MonoBehaviourPunCallbacks
 {
-    [SerializeField] Button[] champsButtons;
+    [SerializeField] public Button[] champsButtons;
     [SerializeField] Canvas champSelectCanvas;
     [SerializeField] Canvas gameOverCanvas;
     [SerializeField] MultiplayerGameManager currentMultiplayerManager;
@@ -45,21 +46,45 @@ public class ChampSelectManger : MonoBehaviourPun
         
         livingPlayersCounter++;
     }
+
+    [PunRPC]
+    public void FinishGame()
+    {
+        Debug.LogWarning("Game Is Supposed to finish");
+        gameOverCanvas.gameObject.SetActive(true);
+        //alivePlayersList.Remove(playerPhotonView);
+        //alivePlayersList.Sort();
+        GameObject winnerPV = GameObject.FindGameObjectWithTag("Player");
+        alivePlayersList.Add(winnerPV.GetComponent<PhotonView>());
+        winnerText.text = $"The winner is: {alivePlayersList[0].Owner.NickName}! \n Scores: \n";
+        foreach (var player in PhotonNetwork.PlayerList)
+        {
+            winnerText.text += player.NickName + ": " + (string)player.CustomProperties["Kills"] + "\n";
+        }
+        isPaused = true;
+    }
+
     [PunRPC]
     public void RemoveLivingPkayer()
     {
         livingPlayersCounter--;
+        Debug.LogWarning("A player died");
+        
+    }
 
-        if(livingPlayersCounter == 1)
+    public override void OnPlayerPropertiesUpdate(Photon.Realtime.Player targetPlayer, Hashtable changedProps)
+    {
+
+        base.OnPlayerPropertiesUpdate(targetPlayer, changedProps);
+        Debug.LogWarning("A Player Got Score");
+        
+      
+        if (livingPlayersCounter == 1)
         {
-            gameOverCanvas.gameObject.SetActive(true);
-            //alivePlayersList.Remove(playerPhotonView);
-            //alivePlayersList.Sort();
-            GameObject winnerPV = GameObject.FindGameObjectWithTag("Player");
-            alivePlayersList.Add(winnerPV.GetComponent<PhotonView>()) ;
-            winnerText.text = $"The winner is: {alivePlayersList[0].Owner.NickName}!";
-            isPaused = true;
+            Debug.LogWarning("OI! finish game!");
+            photonView.RPC(nameof(FinishGame), RpcTarget.All);
         }
+          
     }
     void Start()
     {
@@ -77,6 +102,21 @@ public class ChampSelectManger : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.LoadLevel("MainMenu");
+        }
+    }
+    public void LeaveCurrentRoomAfterGame()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.LeaveRoom();
+        }
+    }
+    public void LeaveCurrentLobbyAfterGame()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LeaveLobby();
         }
     }
     [PunRPC]    

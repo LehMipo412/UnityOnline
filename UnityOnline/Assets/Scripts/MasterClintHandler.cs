@@ -60,8 +60,9 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     {
         Debug.Log("Player Left");
         naughtyPlayer = otherPlayer;
+        
         photonView.RPC(nameof(ChangeTextAndShowEveryoneToSpecificPlayer), RpcTarget.All);
-        _multiplayerGameManager.TellPlayerToSwitchToAI();
+        _multiplayerGameManager.TellPlayerToSwitchToAI(otherPlayer.ActorNumber);
     }
 
     
@@ -106,10 +107,10 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     public void ChangeNextPlayer()
     {
         int playerIndex = PhotonNetwork.PlayerList.ToListPooled().IndexOf((PhotonNetwork.LocalPlayer));
-        if (PhotonNetwork.PlayerList[playerIndex + 1] != null)
-        {
-           // nextMasterClient = PhotonNetwork.PlayerList[playerIndex + 1];
-        }
+        //if (PhotonNetwork.PlayerList[playerIndex + 1] != null)
+        //{
+        //   // nextMasterClient = PhotonNetwork.PlayerList[playerIndex + 1];
+        //}
     }
 
     public void GiveTheMasterCrown()
@@ -158,5 +159,10 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
         
     }
 
-     
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+       
+        base.OnPlayerPropertiesUpdate(targetPlayer, changedProps);
+        Debug.LogWarning("Player Properties changed"+ changedProps.ToString());
+    }
 }
