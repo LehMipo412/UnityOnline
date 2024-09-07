@@ -76,7 +76,7 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
     {
 
         base.OnPlayerPropertiesUpdate(targetPlayer, changedProps);
-        Debug.LogWarning("A Player Got Score");
+        Debug.LogWarning("A Player killed a man");
         
       
         if (livingPlayersCounter == 1)

@@ -164,14 +164,17 @@ public class SpawnRoomBoxes : MonoBehaviourPun
     }
     public int GetIndexOfTransformInArray(Transform transformInArray)
     {
+        int placeindex = 0;
         for (int i = 0; i < takenPlacesList.Length; i++)
         {
             if (transformInArray.position == takenPlacesList[i].position)
             {
                 return i;
             }
+            placeindex++;
         }
-        return -1;
+        Debug.LogError("You did not find the pick up location: i= " +placeindex);
+        return 0;
     }
     [PunRPC]
     public void TellEveryoneYouPickedUpBoost()

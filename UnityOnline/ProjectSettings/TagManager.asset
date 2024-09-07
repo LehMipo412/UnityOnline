@@ -11,6 +11,8 @@ TagManager:
   - Strike
   - HealthPickup
   - SpeedPickUp
+  - Lava
+  - Floor
   layers:
   - Default
   - TransparentFX

@@ -19,6 +19,10 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] public float damage;
     [SerializeField] public float knockbackPrecentage;
     [SerializeField] private float speed = 10;
+    [SerializeField] private float jumpModifier;
+    [SerializeField] private bool isOnLAva = false;
+    [SerializeField] private bool canJump = true;
+    [SerializeField] private float lavatimer = 1f;
     [Header("Network and physics")]
     [SerializeField] public Rigidbody playerRB;
     [SerializeField] private Animator playerAnimator;
@@ -36,17 +40,26 @@ public class PlayerController : MonoBehaviourPun
     JsonTesting myJson;
 
     [Header("Hp and Score")]
+    public float maxHP = 200;
     public float HP = 200;
     public int score = 0;
+    public EnemyHPbar playerHpBar;
+    public EnemyHPbar SelfHPBar;
 
     public PlayerSaveCapsule gameStateHandler;
 
     private void Start()
     {
+        if (photonView.IsMine)
+        {
+            playerHpBar.hpCanvas.gameObject.SetActive(false);
+            playerHpBar = SelfHPBar;
+        }
         myJson = new JsonTesting();
         myJson.stick.hp = HP;
         myJson.stick.id = PhotonNetwork.LocalPlayer.ActorNumber;
         myJson.stick.name = PhotonNetwork.LocalPlayer.NickName;
+
 
         //cachedCamera = Camera.main;
         if(PhotonNetwork.CurrentRoom.CustomProperties.ContainsValue("Begginer"))
@@ -58,26 +71,31 @@ public class PlayerController : MonoBehaviourPun
         if(playerRB.mass ==2f)
         {
             ProjectilePrefabName = "Prefabs\\KunaiPrefab";
-        
+            Debug.Log("Ninja It IS");
+            jumpModifier = 4f;
         }
         if (playerRB.mass == 1f)
         {
             ProjectilePrefabName = "Prefabs\\NewArrowPrefab";
+            jumpModifier = 2f;
 
         }
         if (playerRB.mass == 1.2f)
         {
             ProjectilePrefabName = "Prefabs\\FistPrefab";
+            jumpModifier = 2.4f;
 
         }
         if (playerRB.mass == 1.5f)
         {
             ProjectilePrefabName = "Prefabs\\SlashPrefab";
+            jumpModifier = 3f;
 
         }
         if (playerRB.mass == 1.7f)
         {
             ProjectilePrefabName = "Prefabs\\PencilProjectile";
+            jumpModifier = 3.4f;
 
         }
         AIRandomDiraction = Random.Range(0, 4);
@@ -87,21 +105,14 @@ public class PlayerController : MonoBehaviourPun
     public void GetKnockedBack(Vector3 hitDitraction,float additionalKBPrec)
     {
      
-        playerRB.AddForce(hitDitraction * (1 * knockbackPrecentage*0.8f) * -1*2*1.2f, ForceMode.Impulse);
+        playerRB.AddForce(hitDitraction * (3 * knockbackPrecentage*0.8f) * -1*2*1.2f, ForceMode.Impulse);
         knockbackPrecentage += additionalKBPrec;
         playerRB.AddForce(Vector3.up * (1 * knockbackPrecentage/3) * 2, ForceMode.Impulse);
     }
     private void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            myJson.SaveToJson();
-        }
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            myJson.LoadFromJson();
-        }
+      
         if (photonView.IsMine)
         {
             if (!ChampSelectManger.isPaused)
@@ -150,19 +161,20 @@ public class PlayerController : MonoBehaviourPun
                     {
                         StrikeEnvelope();
                     }
+                        if (Input.GetKeyDown(KeyCode.Space))
+                        {
+                            if (canJump)
+                            {
+                                Jump();
+                            }
+                        }
 
-                    if (!Input.anyKey)
+                        if (!Input.anyKey)
                     {
 
                         playerAnimator.SetBool("IsRunning", false);
-                        //  Debug.Log("Idle");
+                        
                     }
-                    //Vector3 directionToFace = raycastPos - gameObject.transform.position;
-                    //Quaternion lookAtRotation = Quaternion.LookRotation(directionToFace);
-                    //Vector3 eulerRotation = lookAtRotation.eulerAngles;
-                    //eulerRotation.x = 0;
-                    //eulerRotation.z = 0;
-                    //transform.eulerAngles = eulerRotation;
                 }
                     else
                     {
@@ -196,14 +208,41 @@ public class PlayerController : MonoBehaviourPun
                             if (AIRandomDiraction == 3)
                             {
                                 playerAnimator.SetBool("IsRunning", true);
-                                // Debug.Log("runing");
+                               
                                 transform.Translate(Vector3.right * (Time.deltaTime * speed));
                             }
+                        }
+                    }
+                    if(isOnLAva)
+                    {
+                        lavatimer -= Time.deltaTime; 
+
+                        if(lavatimer <= 0)
+                        {
+                            photonView.RPC(RecievedamageRPC, RpcTarget.All, 10, PhotonNetwork.LocalPlayer.NickName);
+                            lavatimer = 1f;
                         }
                     }
                 }
             }
         }
+    }
+
+
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Lava")) ;
+        {
+            isOnLAva = false;
+        }
+    }
+
+    public void Jump()
+    {
+        playerRB.AddForce(Vector3.up * jumpModifier *4, ForceMode.Impulse  ) ;
+        canJump = false;
+        Debug.LogWarning("JUMP!");
     }
 
     public void StrikeEnvelope()
@@ -219,22 +258,72 @@ public class PlayerController : MonoBehaviourPun
             
             if (photonView.IsMine)
             {
+               
                 _champSelectManger.photonView.RPC(nameof(_champSelectManger.RemoveLivingPkayer), RpcTarget.All);
                 foreach (var player in PhotonNetwork.PlayerList)
                 {
                     if(player.NickName == hitterName)
                     {
+                        if(hitterName == PhotonNetwork.LocalPlayer.NickName)
+                        {
+                            if ((string)player.CustomProperties["Kills"] == null)
+                            {
+                                int currentkils = -1;
+                                player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
+                                Debug.LogWarning("The player got null as the property kills");
+                            }
+                            else
+                            {
+
+                                //if (currentkils == -1)
+                                //{
+                                //    currentkils = 0;
+                                //}
+                                int currentkils = int.Parse((string)player.CustomProperties["Kills"]);
+                                currentkils--;
+                                player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
+                                Debug.LogWarning("Hey hey! you got a kill! current kills:" + currentkils);
+                            }
+                        }
                         Debug.LogWarning( "The Player Who Hitted You: "+hitterName);
-                        int currentkils = int.Parse((string)player.CustomProperties["Kills"]);
-                        currentkils++;
+                        Debug.LogWarning("The killing player current score: " + (string)player.CustomProperties["Kills"]);
+                        if ((string)player.CustomProperties["Kills"] == null)
+                        {
+                           int currentkils = -1;
+                            player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
+                            Debug.LogWarning("The player got null as the property kills");
+                        }
+                        else
+                        {
+                            
+                            //if (currentkils == -1)
+                            //{
+                            //    currentkils = 0;
+                            //}
+                           int  currentkils = int.Parse((string)player.CustomProperties["Kills"]);
+                            currentkils++;
+                            player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
+                            Debug.LogWarning("Hey hey! you got a kill! current kills:" + currentkils);
+                        }
                         // Debug.LogWarning("Current upgraded kills: "+ currentkils);
-                        player.SetCustomProperties( new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
+                       
                         //Debug.LogWarning( "Upgraded kills is: " +(string)PhotonNetwork.LocalPlayer.CustomProperties[key]);
                     }
                 }
                 
                 Debug.Log("Players Remaining: " + _champSelectManger.livingPlayersCounter);
                 StartCoroutine(DestroyDelay(2f, gameObject));
+            }
+            else
+            {
+                SelfHPBar.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            if (HP >0)
+            {
+                playerHpBar.ChangeHPbarPercent(HP);
             }
         }
     
@@ -264,7 +353,7 @@ public class PlayerController : MonoBehaviourPun
     {
         if (other.CompareTag(ProjectileTag))
         {
-            ProjectileMovement otherProjectile = other.GetComponent<ProjectileMovement>();
+            ProjectileMovement otherProjectile = other.gameObject.GetComponent<ProjectileMovement>();
             Debug.Log("player Got hurt!");
 
             if (otherProjectile.photonView.Owner.ActorNumber == photonView.Owner.ActorNumber)
@@ -272,9 +361,10 @@ public class PlayerController : MonoBehaviourPun
 
             if (otherProjectile.photonView.IsMine)
             {
-                photonView.RPC(RecievedamageRPC, RpcTarget.All, 10, otherProjectile.photonView.Owner.NickName);
+                photonView.RPC(RecievedamageRPC, RpcTarget.All, 10, otherProjectile.gameObject.GetPhotonView().Owner.NickName);
+                Debug.LogWarning("hitting player: " + otherProjectile.gameObject.GetPhotonView().Owner.NickName);
 
-                photonView.RPC(nameof(DisableProjectileMesh), RpcTarget.All, otherProjectile);
+               // photonView.RPC(nameof(DisableProjectileMesh), RpcTarget.All, otherProjectile);
                 
                 //run login that affect other players! only the projectile owner should do that
                 StartCoroutine(DestroyDelay(1f, otherProjectile.gameObject));
@@ -296,7 +386,17 @@ public class PlayerController : MonoBehaviourPun
                 photonView.RPC(nameof(GetKnockedBack), RpcTarget.All, other.transform.localPosition, strikingActor.damage);
             }
         }
-            if (other.CompareTag(BoostBoxTag))
+        if(other.CompareTag("Lava"))
+        {
+            isOnLAva = true;
+            Debug.LogWarning("The Floor Is Lava!");
+            canJump = true;
+        }
+        if (other.CompareTag("Floor"))
+        {
+            canJump = true;
+        }
+        if (other.CompareTag(BoostBoxTag))
         {
             playerRB.AddForce(Vector3.up * 20, ForceMode.Impulse);
         }
@@ -321,13 +421,7 @@ public class PlayerController : MonoBehaviourPun
         HP -= damageAmount;
         Debug.Log("Hp left is " + HP);
         TakeDamage(hitterNickName);
-        myJson.stick.hp = HP;
-        Debug.Log(photonView.IsMine);
-        if (photonView.IsMine)
-        {
-            Debug.LogWarning("No");
-            myJson.SaveToJson();
-        }
+     
      
     }
     IEnumerator DestroyDelay(float delay, GameObject otherObject)

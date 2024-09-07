@@ -39,8 +39,8 @@ public class MultiplayerGameManager : MonoBehaviourPun
         if (!PhotonNetwork.LocalPlayer.HasRejoined)
         {
 
-          //  PhotonNetwork.LocalPlayer.CustomProperties = (new ExitGames.Client.Photon.Hashtable() { { "Kills", "0" } }); // = new ExitGames.Client.Photon.Hashtable() { { "Kills", "0" } };
-          //  Debug.LogWarning(PhotonNetwork.LocalPlayer.CustomProperties.ToString());
+            PhotonNetwork.LocalPlayer.CustomProperties = (new ExitGames.Client.Photon.Hashtable() { { "Kills", "0" } }); // = new ExitGames.Client.Photon.Hashtable() { { "Kills", "0" } };
+            Debug.LogWarning(PhotonNetwork.LocalPlayer.CustomProperties.ToString());
 
           //  String key;
           //  string keyval = "";
