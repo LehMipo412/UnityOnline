@@ -55,6 +55,10 @@ public class PlayerController : MonoBehaviourPun
             playerHpBar.hpCanvas.gameObject.SetActive(false);
             playerHpBar = SelfHPBar;
         }
+        else
+        {
+            SelfHPBar.hpCanvas.gameObject.SetActive(false);
+        }
        
        
 
