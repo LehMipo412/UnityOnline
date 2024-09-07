@@ -5,6 +5,7 @@ public class JsonTesting : MonoBehaviour
 {
     //Stats instance;
     public Stats stick = new();
+    public bool isInsideStatblock = false;
 
 
     //Check this changes with the json file open to understand how it works. Use "Testing" gameobject and change the values inside. Press Spacebar to save and "V" to load. 
@@ -21,6 +22,13 @@ public class JsonTesting : MonoBehaviour
         string stats = JsonUtility.ToJson(stick, true);
         string filepath = Application.persistentDataPath + "/Stats.json";
 
+        string[] stats2;
+        //ReadAllLines returns a string array.
+        stats2 = System.IO.File.ReadAllLines(filepath);
+
+        //Shows how "ReadAllLines" works opposed to "ReadAllText" which print the whole json.
+       
+
         Debug.Log(filepath);
 
         //This checks for duplicates
@@ -34,7 +42,27 @@ public class JsonTesting : MonoBehaviour
         }
         else
         {
-           
+            for (int i = 0; i < stats2.Length; i++)
+            {
+                Debug.Log(stats2[i]);
+                if (stats2[i].Contains(JsonFormat("id", "1")))
+                {
+                    if(stats2[i].Contains((JsonFormat("id", $"{stick.id}"))))
+                    {
+                        isInsideStatblock = true;
+                    }
+                    if (isInsideStatblock)
+                    {
+                        if (stats2[i].Contains("hp"))
+                        {
+                            if(stats2[i].Length == 9)
+                            {
+
+                            }
+                        }
+                    }
+                }
+            }
         }
 
        
