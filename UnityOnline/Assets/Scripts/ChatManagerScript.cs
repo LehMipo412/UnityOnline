@@ -1,8 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
+
 
 public class ChatManagerScript : MonoBehaviourPun
 {
@@ -10,8 +9,12 @@ public class ChatManagerScript : MonoBehaviourPun
     [SerializeField] private TMP_InputField _textShower;
     [SerializeField] private PhotonView _playerView;
     [SerializeField] private Canvas _chatCanvas;
-    public static bool IsChatting;
+
     private int _chatColorIndex;
+
+    public static bool IsChatting;
+    
+
     public void ButtonChatUpdate()
     {
         _playerView.RPC(nameof(UpdateChat),RpcTarget.All, _playerInputField.text, _chatColorIndex);
@@ -23,42 +26,43 @@ public class ChatManagerScript : MonoBehaviourPun
     {
 
         string wantedColor = "";
-        
-        if (colorIndex == 0)
+
+        switch (colorIndex)
         {
-            wantedColor = "black";
-           
+            case 0:
+                wantedColor = "black";
+                break;
+            case 1:
+                wantedColor = "yellow";
+                break;
+            case 2:
+                wantedColor = "red";
+                break;
+            default:
+                break;
         }
-        if (colorIndex == 1)
-        {
-            wantedColor = "yellow";
-            
-        }
-        if (colorIndex == 2)
-        {
-            wantedColor = "red";
-            
-        }
-        _textShower.text +=($"<color={wantedColor}>{info.Sender.NickName}: {msg}</color> \n");
-        
+
+        _textShower.text +=($"<color={wantedColor}>{info.Sender.NickName}: {msg}</color> \n");  
     }
 
     public void UpdateColor(int index)
     {
-        if(index == 0)
+        switch (index)
         {
-            _playerInputField.textComponent.color = Color.black ;
-            _chatColorIndex = 0;
-        }
-        if (index == 1)
-        {
-            _playerInputField.textComponent.color = Color.yellow;
-            _chatColorIndex = 1;
-        }
-        if (index == 2)
-        {
-            _playerInputField.textComponent.color = Color.red;
-            _chatColorIndex = 2;
+            case 0:
+                _playerInputField.textComponent.color = Color.black;
+                _chatColorIndex = 0;
+                break;
+            case 1:
+                _playerInputField.textComponent.color = Color.yellow;
+                _chatColorIndex = 1;
+                break;
+            case 2:
+                _playerInputField.textComponent.color = Color.red;
+                _chatColorIndex = 2;
+                break;
+            default:
+                break;
         }
     }
 
@@ -70,13 +74,15 @@ public class ChatManagerScript : MonoBehaviourPun
             {
                 _chatCanvas.gameObject.SetActive(false);
                 IsChatting = false;
-                UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
             else
             {
                 _chatCanvas.gameObject.SetActive(true);
                 IsChatting = true;
-                UnityEngine.Cursor.lockState = CursorLockMode.None;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }
         }
     }
