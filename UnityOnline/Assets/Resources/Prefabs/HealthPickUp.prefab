@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2256803576249800299}
   - component: {fileID: 7446523130688933846}
   - component: {fileID: 3642066857638812362}
+  - component: {fileID: 4432946195039354148}
   m_Layer: 0
   m_Name: HealthPickUp
   m_TagString: HealthPickup
@@ -124,6 +125,27 @@ MeshRenderer:
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &3642066857638812362
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717405581246060652}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.009512135
+  m_Center: {x: 0, y: -0.000003314577, z: -0.0000068750232}
+--- !u!135 &4432946195039354148
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

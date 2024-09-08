@@ -60,6 +60,7 @@ MonoBehaviour:
   speed: 10
   jumpModifier: 0
   isOnLAva: 0
+  canJump: 1
   lavatimer: 1
   playerRB: {fileID: 1266242792862040560}
   playerAnimator: {fileID: 3188141001297796892}
@@ -68,17 +69,12 @@ MonoBehaviour:
   strikeZone: {fileID: 3473974448797558478}
   animationOffset: 0.25
   neckIndicator: {fileID: 8731715892381326925}
-  mouseIndicator: {fileID: 0}
   isSupposedToBeControlledByAI: 0
   maxHP: 200
   HP: 200
   score: 0
   playerHpBar: {fileID: 1360816849041654315}
   SelfHPBar: {fileID: 6702738760916505301}
-  gameStateHandler:
-    <HP>k__BackingField: 0
-    <Score>k__BackingField: 0
-    <KnockBackPrecentage>k__BackingField: 0
 --- !u!114 &9119552357703264867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,7 +225,7 @@ GameObject:
   - component: {fileID: 2723884830254824961}
   m_Layer: 0
   m_Name: StrikeZone
-  m_TagString: Untagged
+  m_TagString: Strike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -264,7 +260,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

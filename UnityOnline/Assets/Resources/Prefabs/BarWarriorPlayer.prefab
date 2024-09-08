@@ -60,6 +60,7 @@ MonoBehaviour:
   speed: 10
   jumpModifier: 0
   isOnLAva: 0
+  canJump: 1
   lavatimer: 1
   playerRB: {fileID: 1266242792862040560}
   playerAnimator: {fileID: 7532253654444983088}
@@ -68,17 +69,12 @@ MonoBehaviour:
   strikeZone: {fileID: 4389095616869173216}
   animationOffset: 0.25
   neckIndicator: {fileID: 6030989786506252308}
-  mouseIndicator: {fileID: 0}
   isSupposedToBeControlledByAI: 0
   maxHP: 200
   HP: 200
   score: 0
   playerHpBar: {fileID: 1743069627285323250}
   SelfHPBar: {fileID: 2285894818112883674}
-  gameStateHandler:
-    <HP>k__BackingField: 0
-    <Score>k__BackingField: 0
-    <KnockBackPrecentage>k__BackingField: 0
 --- !u!114 &9119552357703264867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,7 +270,7 @@ GameObject:
   - component: {fileID: 7402765067591070865}
   m_Layer: 0
   m_Name: StrikeZone
-  m_TagString: Untagged
+  m_TagString: Strike
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -309,7 +305,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -401,6 +397,11 @@ PrefabInstance:
     - target: {fileID: 4066041957660446954, guid: 2e07a28548b80804cb28363bd5d20828,
         type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4066041957660446954, guid: 2e07a28548b80804cb28363bd5d20828,
+        type: 3}
+      propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8846810437063181047, guid: 2e07a28548b80804cb28363bd5d20828,
@@ -739,6 +740,11 @@ PrefabInstance:
     - target: {fileID: 5315161145128284535, guid: 97b96a96acdd5e1429968b256cb01803,
         type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315161145128284535, guid: 97b96a96acdd5e1429968b256cb01803,
+        type: 3}
+      propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6948239911020255990, guid: 97b96a96acdd5e1429968b256cb01803,

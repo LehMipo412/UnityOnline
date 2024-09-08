@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviourPun
     [Header("Damage And Movement")]
     [SerializeField] private Transform projectileSpawnTransform;
     [SerializeField] public float damage;
-    [SerializeField] public float knockbackPrecentage;
+    [SerializeField] public float knockbackPrecentage = 150;
     [SerializeField] private float speed = 10;
     [SerializeField] private float jumpModifier;
     [SerializeField] private bool isOnLAva = false;
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviourPun
     public bool isSupposedToBeControlledByAI = false;
     private float AIChangeTimerTimer = 5f;
     private float AIRandomDiraction;
-    
+
 
     [Header("HP And Score")]
     public float maxHP = 200;
@@ -61,9 +61,9 @@ public class PlayerController : MonoBehaviourPun
         {
             SelfHPBar.HpCanvas.SetActive(false);
         }
-       
-        
-        if(PhotonNetwork.CurrentRoom.CustomProperties.ContainsValue("Begginer"))
+
+
+        if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsValue("Begginer"))
         {
             damage = 1.5f;
         }
@@ -99,11 +99,11 @@ public class PlayerController : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void GetKnockedBack(Vector3 hitDitraction,float additionalKBPrec)
+    public void GetKnockedBack(Vector3 hitDitraction, float additionalKBPrec)
     {
-        playerRB.AddForce(hitDitraction * (3 * knockbackPrecentage*0.8f) * -1*2*1.2f, ForceMode.Impulse);
+        playerRB.AddForce(hitDitraction * (3 * knockbackPrecentage * 0.8f) * -1 * 2 * 1.2f, ForceMode.Impulse);
         knockbackPrecentage += additionalKBPrec;
-        playerRB.AddForce(Vector3.up * (1 * knockbackPrecentage/3) * 2, ForceMode.Impulse);
+        playerRB.AddForce(Vector3.up * (1 * knockbackPrecentage / 3) * 2, ForceMode.Impulse);
     }
     private void Update()
     {
@@ -113,42 +113,42 @@ public class PlayerController : MonoBehaviourPun
             {
                 if (!ChatManagerScript.IsChatting)
                 {
-                   
+
                     if (!_photonView.IsMine)
                         return;
                     if (!isSupposedToBeControlledByAI)
-                    { 
+                    {
                         if (Input.GetKey(KeyCode.W))
                         {
                             playerAnimator.SetBool("IsRunning", true);
-                            
+
                             transform.Translate(Vector3.forward * (Time.deltaTime * speed));
                         }
-                    if (Input.GetKey(KeyCode.A))
-                    {
-                        playerAnimator.SetBool("IsRunning", true);
-                        transform.Translate(Vector3.left * (Time.deltaTime * speed));
-                    }
+                        if (Input.GetKey(KeyCode.A))
+                        {
+                            playerAnimator.SetBool("IsRunning", true);
+                            transform.Translate(Vector3.left * (Time.deltaTime * speed));
+                        }
 
-                    if (Input.GetKey(KeyCode.S))
-                    {
-                        playerAnimator.SetBool("IsRunning", true);
-                        transform.Translate(Vector3.back * (Time.deltaTime * speed));
-                    }
+                        if (Input.GetKey(KeyCode.S))
+                        {
+                            playerAnimator.SetBool("IsRunning", true);
+                            transform.Translate(Vector3.back * (Time.deltaTime * speed));
+                        }
 
-                    if (Input.GetKey(KeyCode.D))
-                    {
-                        playerAnimator.SetBool("IsRunning", true);
-                        transform.Translate(Vector3.right * (Time.deltaTime * speed));
-                    }
-                    if (Input.GetKeyDown(KeyCode.Mouse0))
-                    {
-                        Shoot();
-                    }
-                    if (Input.GetKeyDown(KeyCode.Mouse1))
-                    {
-                        StrikeEnvelope();
-                    }
+                        if (Input.GetKey(KeyCode.D))
+                        {
+                            playerAnimator.SetBool("IsRunning", true);
+                            transform.Translate(Vector3.right * (Time.deltaTime * speed));
+                        }
+                        if (Input.GetKeyDown(KeyCode.Mouse0))
+                        {
+                            Shoot();
+                        }
+                        if (Input.GetKeyDown(KeyCode.Mouse1))
+                        {
+                            StrikeEnvelope();
+                        }
                         if (Input.GetKeyDown(KeyCode.Space))
                         {
                             if (canJump)
@@ -158,16 +158,16 @@ public class PlayerController : MonoBehaviourPun
                         }
 
                         if (!Input.anyKey)
-                    {
+                        {
 
-                        playerAnimator.SetBool("IsRunning", false);
-                        
+                            playerAnimator.SetBool("IsRunning", false);
+
+                        }
                     }
-                }
                     else
                     {
                         AIChangeTimerTimer -= Time.deltaTime;
-                        if(AIChangeTimerTimer <=0)
+                        if (AIChangeTimerTimer <= 0)
                         {
                             StrikeEnvelope();
                             AIChangeTimerTimer = 5f;
@@ -178,34 +178,34 @@ public class PlayerController : MonoBehaviourPun
                             if (AIRandomDiraction == 0)
                             {
                                 playerAnimator.SetBool("IsRunning", true);
-                                
+
                                 transform.Translate(Vector3.forward * (Time.deltaTime * speed));
                             }
                             if (AIRandomDiraction == 1)
                             {
                                 playerAnimator.SetBool("IsRunning", true);
-                                
+
                                 transform.Translate(Vector3.left * (Time.deltaTime * speed));
                             }
                             if (AIRandomDiraction == 2)
                             {
                                 playerAnimator.SetBool("IsRunning", true);
-                               
+
                                 transform.Translate(Vector3.back * (Time.deltaTime * speed));
                             }
                             if (AIRandomDiraction == 3)
                             {
                                 playerAnimator.SetBool("IsRunning", true);
-                               
+
                                 transform.Translate(Vector3.right * (Time.deltaTime * speed));
                             }
                         }
                     }
-                    if(isOnLAva)
+                    if (isOnLAva)
                     {
-                        lavatimer -= Time.deltaTime; 
+                        lavatimer -= Time.deltaTime;
 
-                        if(lavatimer <= 0)
+                        if (lavatimer <= 0)
                         {
                             photonView.RPC(RecievedamageRPC, RpcTarget.All, 10, PhotonNetwork.LocalPlayer.NickName);
                             lavatimer = 1f;
@@ -218,7 +218,7 @@ public class PlayerController : MonoBehaviourPun
 
     public void Jump()
     {
-        playerRB.AddForce(Vector3.up * jumpModifier *4, ForceMode.Impulse  ) ;
+        playerRB.AddForce(Vector3.up * jumpModifier * 4, ForceMode.Impulse);
         canJump = false;
         Debug.LogWarning("JUMP!");
     }
@@ -231,16 +231,16 @@ public class PlayerController : MonoBehaviourPun
     [PunRPC]
     public void TakeDamage(string hitterName)
     {
-        if(HP <= 0)
+        if (HP <= 0)
         {
-            
+
             if (photonView.IsMine)
             {
-               
+
                 _champSelectManger.photonView.RPC(nameof(_champSelectManger.RemoveLivingPkayer), RpcTarget.All);
                 foreach (var player in PhotonNetwork.PlayerList)
                 {
-                   
+
                     if (player.NickName == hitterName)
                     {
                         int val;
@@ -260,12 +260,12 @@ public class PlayerController : MonoBehaviourPun
         }
         else
         {
-            if (HP >0)
+            if (HP > 0)
             {
                 playerHpBar.ChangeHPbarPercent(HP);
             }
         }
-    
+
     }
 
     [PunRPC]
@@ -298,39 +298,39 @@ public class PlayerController : MonoBehaviourPun
     {
         switch (other.tag)
         {
-          case ProjectileTag:
+            case ProjectileTag:
 
-            ProjectileMovement otherProjectile = other.gameObject.GetComponent<ProjectileMovement>();
+                ProjectileMovement otherProjectile = other.gameObject.GetComponent<ProjectileMovement>();
 
-            if (otherProjectile.photonView.Owner.ActorNumber == photonView.Owner.ActorNumber)
-            {
-                return;
-            }
-            if (otherProjectile.photonView.IsMine)
-            {
-                photonView.RPC(RecievedamageRPC, RpcTarget.All, 10, otherProjectile.gameObject.GetPhotonView().Owner.NickName);
-                StartCoroutine(DestroyDelay(1f, otherProjectile.gameObject));
-            }
-            otherProjectile.visualPanel.SetActive(false);
-                 break;
+                if (otherProjectile.photonView.Owner.ActorNumber == photonView.Owner.ActorNumber)
+                {
+                    return;
+                }
+                if (otherProjectile.photonView.IsMine)
+                {
+                    photonView.RPC(RecievedamageRPC, RpcTarget.All, 10, otherProjectile.gameObject.GetPhotonView().Owner.NickName);
+                    StartCoroutine(DestroyDelay(1f, otherProjectile.gameObject));
+                }
+                otherProjectile.visualPanel.SetActive(false);
+                break;
 
-          case "Strike":
+            case "Strike":
+                if (photonView.AmOwner)
+                {
+                    Debug.Log("A Player got knocked away!");
+                    PlayerController strikingActor = other.GetComponentInParent<PlayerController>();
+                    photonView.RPC(nameof(GetKnockedBack), RpcTarget.All, other.transform.localPosition, strikingActor.damage);
+                }
+                break;
 
-            if (photonView.IsMine)
-            {
-                Debug.Log("A Player got knocked away!");
-                PlayerController strikingActor = other.GetComponentInParent<PlayerController>();
-                photonView.RPC(nameof(GetKnockedBack), RpcTarget.All, other.transform.localPosition, strikingActor.damage);
-            }
-                  break;
+            case "HealthPickup":
+                Debug.Log("Health picked");
+                photonView.RPC(nameof(TryUpdateMyHP), RpcTarget.All);
+                break;
 
-          case "HealthPickup":
-                knockbackPrecentage -= 2;
-                  break;
-
-          case "SpeedPickUp":
+            case "SpeedPickUp":
                 StartCoroutine(GetSpeedBoost());
-                  break;
+                break;
 
             default:
                 break;
@@ -346,6 +346,14 @@ public class PlayerController : MonoBehaviourPun
 
     #endregion
 
+    [PunRPC]
+    public void TryUpdateMyHP()
+    {
+        Debug.Log("RPC HP");
+        HP = Math.Clamp(HP += 25, 0, maxHP);
+        playerHpBar.ChangeHPbarPercent(HP);
+        SelfHPBar.ChangeHPbarPercent(HP);
+    }
     [PunRPC]
     private void RecieveDamage(int damageAmount, string hitterNickName)
     {
