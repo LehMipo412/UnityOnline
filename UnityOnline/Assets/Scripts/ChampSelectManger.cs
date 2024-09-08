@@ -22,13 +22,7 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
     private List<PhotonView> alivePlayersList = new List<PhotonView>();
 
     public static ChampSelectManger Instance { get; private set; }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Debug.Log(PhotonNetwork.IsMasterClient);
-        }
-    }
+
     private void Awake()
     {
         

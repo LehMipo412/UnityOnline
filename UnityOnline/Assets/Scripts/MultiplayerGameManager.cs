@@ -33,9 +33,10 @@ public class MultiplayerGameManager : MonoBehaviourPun
     {
         if (!PhotonNetwork.LocalPlayer.HasRejoined)
         {
-            PhotonNetwork.LocalPlayer.CustomProperties = (new ExitGames.Client.Photon.Hashtable() { { "Kills", "0" } }); 
-            Debug.LogWarning(PhotonNetwork.LocalPlayer.CustomProperties.ToString());
-        }   
+           PhotonNetwork.LocalPlayer.SetCustomProperties (new ExitGames.Client.Photon.Hashtable() { { "Kills", "0" } });
+            Debug.LogWarning(photonView.Owner.CustomProperties);
+        }
+        else Debug.Log("Hasnt entered");
     }
 
     [PunRPC]

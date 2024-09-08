@@ -250,46 +250,16 @@ public class PlayerController : MonoBehaviourPun
                 _champSelectManger.photonView.RPC(nameof(_champSelectManger.RemoveLivingPkayer), RpcTarget.All);
                 foreach (var player in PhotonNetwork.PlayerList)
                 {
-                    if(player.NickName == hitterName)
+                   
+                    if (player.NickName == hitterName)
                     {
-                        if(hitterName == PhotonNetwork.LocalPlayer.NickName)
-                        {
-                            if ((string)player.CustomProperties["Kills"] == null)
-                            {
-                                int currentkils = -1;
-                                player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
-                                Debug.LogWarning("The player got null as the property kills");
-                            }
-                            else
-                            {
-
-                                int currentkils = int.Parse((string)player.CustomProperties["Kills"]);
-                                currentkils--;
-                                player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
-                                Debug.LogWarning("Hey hey! you got a kill! current kills:" + currentkils);
-                            }
-                        }
-                        Debug.LogWarning( "The Player Who Hitted You: "+hitterName);
-                        Debug.LogWarning("The killing player current score: " + (string)player.CustomProperties["Kills"]);
-                        if ((string)player.CustomProperties["Kills"] == null)
-                        {
-                           int currentkils = -1;
-                            player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
-                            Debug.LogWarning("The player got null as the property kills");
-                        }
-                        else
-                        {
-                            
-                           
-                           int  currentkils = int.Parse((string)player.CustomProperties["Kills"]);
-                            currentkils++;
-                            player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "Kills", currentkils.ToString() } });
-                            Debug.LogWarning("Hey hey! you got a kill! current kills:" + currentkils);
-                        }
-                       
+                        int val;
+                        val = int.Parse((string)player.CustomProperties["Kills"]);
+                        val++;
+                        player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable() { { "Kills", val.ToString() } });
                     }
                 }
-                
+
                 Debug.Log("Players Remaining: " + _champSelectManger.livingPlayersCounter);
                 StartCoroutine(DestroyDelay(0.2f, gameObject));
             }
