@@ -22,7 +22,13 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
     private List<PhotonView> alivePlayersList = new List<PhotonView>();
 
     public static ChampSelectManger Instance { get; private set; }
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Debug.Log(PhotonNetwork.IsMasterClient);
+        }
+    }
     private void Awake()
     {
         
@@ -103,56 +109,12 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
         Application.Quit();
     }
 
-   
-    public void ReturnToMainMenu()
-    {
-       PhotonNetwork.LoadLevel("MainMenu");
-    }
-
-    [PunRPC]
-    public void DefenetlyLeaveRoom()
-    {
-        PhotonNetwork.LeaveRoom();
-        PhotonNetwork.AutomaticallySyncScene = false;
-        Debug.LogWarning("Player LeftRoom");
-        ReturnToMainMenu();
-        Debug.Log(PhotonNetwork.NetworkClientState.ToString());
-    }
     public void LeaveCurrentRoomAfterGame()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-         
-            photonView.RPC(nameof(DefenetlyLeaveRoom), RpcTarget.Others);
-            StartCoroutine(WaitAndLeaveRooomMaster());
-        }
-    }
-
-    System.Collections.IEnumerator WaitAndLeaveRooomMaster()
-    {
-       
-        yield return new WaitForSeconds(2f);
-        PhotonNetwork.AutomaticallySyncScene = false;
         PhotonNetwork.LeaveRoom();
-        ReturnToMainMenu();
+        PhotonNetwork.LoadLevel("MainMenu");
     }
 
-
-    [PunRPC]
-    public void DefenetlyLeaveLobby()
-    {
-        PhotonNetwork.LeaveLobby();
-    }
-    public void LeaveCurrentLobbyAfterGame()
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            photonView.RPC(nameof(DefenetlyLeaveLobby), RpcTarget.Others);
-            PhotonNetwork.LeaveLobby();
-            ReturnToMainMenu();
-        }
-    }
     [PunRPC]    
     public void ChampSelectedForEveryone(int index)
     {

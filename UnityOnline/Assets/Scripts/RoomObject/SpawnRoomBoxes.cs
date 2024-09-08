@@ -1,14 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
-
-
 
 public class SpawnRoomBoxes : MonoBehaviourPun
 {
@@ -27,11 +19,9 @@ public class SpawnRoomBoxes : MonoBehaviourPun
 
     void Start()
     {
-
         ChampSelectManger.Instance._pickupCollectedEventScript.pickupedEvent.AddListener(TellEveryoneYouPickedUpBoost);
 
-       
-        if ((photonView.Owner == PhotonNetwork.MasterClient))
+        if ((photonView.Owner.IsMasterClient))
          {
             photonView.RPC(nameof(SetNextSpawnPoint), RpcTarget.All);
         }
@@ -39,7 +29,7 @@ public class SpawnRoomBoxes : MonoBehaviourPun
 
     void Update()
     {
-        if (photonView.Owner == PhotonNetwork.MasterClient)
+        if (photonView.Owner.IsMasterClient)
         {
             timer -= Time.deltaTime;
 
@@ -74,11 +64,7 @@ public class SpawnRoomBoxes : MonoBehaviourPun
             return "";
         }
 
-
-
         int randomPickup = Random.Range(0, 2);
-
-
 
         if (randomPickup == 0)
         {
