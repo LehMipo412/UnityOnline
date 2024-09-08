@@ -1,8 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
 
-
-public class PickUpBehaviour : MonoBehaviour
+public class PickUpBehaviour : MonoBehaviourPun
 {
     private void OnCollisionEnter(Collision collision)
     {
@@ -10,13 +9,12 @@ public class PickUpBehaviour : MonoBehaviour
         {
             transform.localScale = new Vector3(1,1,1);
             transform.eulerAngles = new Vector3(0, 0, 0);
-            Debug.LogWarning(transform.localScale);
             ChampSelectManger.Instance.currentPickupTransform = transform;
             ChampSelectManger.Instance._pickupCollectedEventScript.pickupedEvent.Invoke();
-
-
-
-            PhotonNetwork.Destroy(gameObject);
+            if (photonView.IsMine)
+            {
+                PhotonNetwork.Destroy(gameObject);
+            }
         }
 
     }

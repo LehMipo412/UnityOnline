@@ -27,8 +27,6 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
             isReallyMasterClient = true;
             ChangeNextPlayer();
         }
-       
-       
     }
 
     [ContextMenu("Get The Hell Out Of It")]
