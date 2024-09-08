@@ -178,10 +178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af0116d377ca9be42b2c3ae368f55ebd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileColors: []
-  meshRenderer: {fileID: 6921475762033150357}
-  visualPanel: {fileID: 1717405581246060652}
   speed: 20
+  visualPanel: {fileID: 1717405581246060652}
 --- !u!114 &-2835418282172807835
 MonoBehaviour:
   m_ObjectHideFlags: 0

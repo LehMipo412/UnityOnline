@@ -12,6 +12,7 @@ using Photon.Pun.UtilityScripts;
 public class MasterClintHandler : MonoBehaviourPunCallbacks
 {
     [SerializeField] MultiplayerGameManager _multiplayerGameManager;
+    [SerializeField] GameObject chosingPanel;
     [SerializeField] Canvas masterAnnouncer;
     [SerializeField] TMP_Text MasterChangerText;
     public Player nextMasterClient;
@@ -26,8 +27,15 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
             Debug.Log("youAreMaster");
             isReallyMasterClient = true;
             ChangeNextPlayer();
-            PhotonNetwork.CurrentRoom.IsVisible = false;
-            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.CurrentRoom.IsVisible = true;
+            PhotonNetwork.CurrentRoom.IsOpen = true;
+        }
+    }
+    public void Start()
+    {
+        if (!PhotonNetwork.LocalPlayer.HasRejoined)
+        {
+            chosingPanel.SetActive(true);
         }
     }
 

@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviourPun
 
     private void Start()
     {
+
         if (photonView.IsMine)
         {
             playerHpBar.HpCanvas.SetActive(false);

@@ -256,7 +256,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
             {
                 Debug.Log(roomList[i].Name + ":" + roomList[i].PlayerCount + "/" + roomList[i].MaxPlayers);
 
-                if (/*roomList[i].IsOpen && */roomList[i].IsVisible && !MyRoomList.Contains(roomList[i]))
+                if (!MyRoomList.Contains(roomList[i]))
                 {
                     _roomsDropDown.options.Add(new TMP_Dropdown.OptionData((roomList[i].Name + ":" + roomList[i].PlayerCount + "/" + roomList[i].MaxPlayers)));
                     MyRoomList.Add(roomList[i]);
