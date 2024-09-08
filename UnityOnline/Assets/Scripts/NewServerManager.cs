@@ -150,6 +150,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers)
         {
+            MyRoomList.Clear();
             PhotonNetwork.LoadLevel("CurrentMainGameScene");
         }
         else
