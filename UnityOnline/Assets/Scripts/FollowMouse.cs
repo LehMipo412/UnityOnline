@@ -4,11 +4,6 @@ public class FollowMouse : MonoBehaviour
 {
    [SerializeField] PlayerController myPlayerController;
    [SerializeField] Transform myPlayer;
-    private void Start()
-    {
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = false;
-    }
     void Update()
     {
         myPlayer.transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X") , 0));

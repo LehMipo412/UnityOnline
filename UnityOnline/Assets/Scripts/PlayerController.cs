@@ -56,6 +56,8 @@ public class PlayerController : MonoBehaviourPun
         {
             playerHpBar.HpCanvas.SetActive(false);
             playerHpBar = SelfHPBar;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = false;
         }
         else
         {
