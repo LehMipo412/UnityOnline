@@ -26,6 +26,8 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
             Debug.Log("youAreMaster");
             isReallyMasterClient = true;
             ChangeNextPlayer();
+            PhotonNetwork.CurrentRoom.IsVisible = false;
+            PhotonNetwork.CurrentRoom.IsOpen = false;
         }
     }
 
@@ -34,10 +36,7 @@ public class MasterClintHandler : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LeaveRoom();
     }
-
-   
-   
-
+    
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         Debug.Log("Player Left");

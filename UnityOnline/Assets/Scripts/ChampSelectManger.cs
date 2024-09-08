@@ -89,7 +89,7 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
         Debug.LogWarning("A Player killed a man");
         
       
-        if (livingPlayersCounter == 1)
+        if (livingPlayersCounter == 1 && PhotonNetwork.CurrentRoom.PlayerCount > 1)
         {
             Debug.LogWarning("OI! finish game!");
             photonView.RPC(nameof(FinishGame), RpcTarget.All);
@@ -128,12 +128,8 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
     [PunRPC]
     public void ChampSelectedForMe(int index)
     {
-            photonView.RPC(nameof(ChampSelectedForEveryone), RpcTarget.All, index);
-           
-        
+        photonView.RPC(nameof(ChampSelectedForEveryone), RpcTarget.All, index);
         champSelectCanvas.gameObject.SetActive(false);
-
-
         currentMultiplayerManager.SpawnPlayer(currentMultiplayerManager.GetRandomSpawnPoint(), index);
         Debug.Log("MovedScene");
     }

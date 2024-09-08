@@ -148,14 +148,23 @@ public class NewServerManager : MonoBehaviourPunCallbacks
     }
     public void StartGame()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers)
         {
             PhotonNetwork.LoadLevel("CurrentMainGameScene");
         }
         else
         {
-            Debug.Log("Wait for master to start");
-            _errorOutput.text = "Error Output: Wait for master to start ";
+            if (PhotonNetwork.IsMasterClient)
+            {
+                Debug.Log("Not Enough player! Fill the room First");
+                _errorOutput.text = "Not Enough player! Fill the room First ";
+            }
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                Debug.Log("Wait for master to start");
+                _errorOutput.text = "Error Output: Wait for master to start ";
+            }
+           
         } 
 
     }
