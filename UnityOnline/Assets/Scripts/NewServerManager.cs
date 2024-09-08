@@ -274,7 +274,7 @@ public class NewServerManager : MonoBehaviourPunCallbacks
 
         for (int i = 0; i < roomList.Count; i++)
         {
-            if (roomList[i].RemovedFromList)
+            if (roomList[i].IsVisible == false)
             {
                 _roomsCount = roomList.Count;
                 Debug.Log("Room is closed " + roomList[i].Name);
