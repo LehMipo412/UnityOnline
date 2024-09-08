@@ -96,8 +96,6 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
         }
           
     }
-   
-
     public void ExitGame()
     {
         Application.Quit();
@@ -105,7 +103,12 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
 
     public void LeaveCurrentRoomAfterGame()
     {
-        PhotonNetwork.LeaveRoom();
+            PhotonNetwork.LeaveRoom();     
+    }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
         PhotonNetwork.LoadLevel("MainMenu");
     }
 

@@ -216,16 +216,6 @@ public class PlayerController : MonoBehaviourPun
         }
     }
 
-
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Lava")) ;
-        {
-            isOnLAva = false;
-        }
-    }
-
     public void Jump()
     {
         playerRB.AddForce(Vector3.up * jumpModifier *4, ForceMode.Impulse  ) ;
@@ -261,7 +251,7 @@ public class PlayerController : MonoBehaviourPun
                 }
 
                 Debug.Log("Players Remaining: " + _champSelectManger.livingPlayersCounter);
-                StartCoroutine(DestroyDelay(0.2f, gameObject));
+                PhotonNetwork.Destroy(gameObject);
             }
             else
             {
@@ -279,29 +269,17 @@ public class PlayerController : MonoBehaviourPun
     }
 
     [PunRPC]
-    //this is not working, annoying :(
-    public void DisableProjectileMesh(ProjectileMovement otherProjectile)
-    {
-        if (photonView.IsMine)
-        {
-
-            otherProjectile.GetComponentInChildren<MeshRenderer>().enabled = false;
-        }
-    }
-
-
-    [PunRPC]
     public void StrikeFunc()
     {
         StartCoroutine(Strike());
     }
+    #region TriggersAndCollision
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Lava"))
         {
             isOnLAva = true;
-            Debug.LogWarning("The Floor Is Lava!");
             canJump = true;
         }
         if (collision.gameObject.CompareTag("Floor"))
@@ -309,8 +287,6 @@ public class PlayerController : MonoBehaviourPun
             canJump = true;
         }
     }
-
-    
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Lava")) ;
@@ -318,73 +294,64 @@ public class PlayerController : MonoBehaviourPun
             isOnLAva = false;
         }
     }
-
-    [PunRPC]
-    
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(ProjectileTag))
+        switch (other.tag)
         {
+          case ProjectileTag:
+
             ProjectileMovement otherProjectile = other.gameObject.GetComponent<ProjectileMovement>();
-            Debug.Log("player Got hurt!");
 
             if (otherProjectile.photonView.Owner.ActorNumber == photonView.Owner.ActorNumber)
+            {
                 return;
-
+            }
             if (otherProjectile.photonView.IsMine)
             {
                 photonView.RPC(RecievedamageRPC, RpcTarget.All, 10, otherProjectile.gameObject.GetPhotonView().Owner.NickName);
-                Debug.LogWarning("hitting player: " + otherProjectile.gameObject.GetPhotonView().Owner.NickName);
-
-               
                 StartCoroutine(DestroyDelay(1f, otherProjectile.gameObject));
-               
-                
-                
             }
-            
-
             otherProjectile.visualPanel.SetActive(false);
-            
-        }
-        if (other.CompareTag("Strike"))
-        {
+                 break;
+
+          case "Strike":
+
             if (photonView.IsMine)
             {
                 Debug.Log("A Player got knocked away!");
                 PlayerController strikingActor = other.GetComponentInParent<PlayerController>();
                 photonView.RPC(nameof(GetKnockedBack), RpcTarget.All, other.transform.localPosition, strikingActor.damage);
             }
-        }
-        
-        if (other.CompareTag(BoostBoxTag))
-        {
-            playerRB.AddForce(Vector3.up * 20, ForceMode.Impulse);
-        }
-        if (other.CompareTag(DamageBoxTag))
-        {
-            photonView.RPC(RecievedamageRPC, RpcTarget.All, 10);
-        }
-        if(other.CompareTag("HealthPickup"))
-        {
-            knockbackPrecentage -= 2;
-        }
-        if (other.CompareTag("SpeedPickUp"))
-        {
-            Debug.LogWarning("I AM SPEED");
-          //  StartCoroutine(DestroyDelay(0.2f, other.gameObject));
-            StartCoroutine(GetSpeedBoost());
+                  break;
+
+          case "HealthPickup":
+                knockbackPrecentage -= 2;
+                  break;
+
+          case "SpeedPickUp":
+                StartCoroutine(GetSpeedBoost());
+                  break;
+
+            default:
+                break;
         }
     }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Lava")) ;
+        {
+            isOnLAva = false;
+        }
+    }
+
+    #endregion
+
     [PunRPC]
     private void RecieveDamage(int damageAmount, string hitterNickName)
     {
         HP -= damageAmount;
         Debug.Log("Hp left is " + HP);
         TakeDamage(hitterNickName);
-     
-     
     }
     IEnumerator DestroyDelay(float delay, GameObject otherObject)
     {
