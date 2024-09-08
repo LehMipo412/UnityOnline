@@ -89,10 +89,15 @@ public class ChampSelectManger : MonoBehaviourPunCallbacks
         Debug.LogWarning("A Player killed a man");
         
       
-        if (livingPlayersCounter == 1 && PhotonNetwork.CurrentRoom.PlayerCount > 1)
+        if (livingPlayersCounter == 1)
         {
             Debug.LogWarning("OI! finish game!");
             photonView.RPC(nameof(FinishGame), RpcTarget.All);
+            if(PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.CurrentRoom.IsVisible = false;
+                PhotonNetwork.CurrentRoom.IsOpen = false;
+            }  
         }
           
     }
